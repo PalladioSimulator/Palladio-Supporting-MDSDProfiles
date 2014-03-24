@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<emfprofileapplication:ProfileApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:emfprofileapplication="http://www.modelversioning.org/emfprofile/application/1.1" xmlns:myprofile="http://www.modelversioning.org/emfprofile/library/1.0" xsi:schemaLocation="http://www.modelversioning.org/emfprofile/library/1.0 platform:/plugin/edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile/profile.emfprofile_diagram#_M_QJgPfHEeK1l6f60kloIQ">
+  <stereotypeApplications xsi:type="myprofile:TaggedBook" tags="Taf of TestBook">
+    <appliedTo href="platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.library/examples/Test.library#//@books.0"/>
+    <extension href="platform:/plugin/edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile/profile.emfprofile_diagram#_PEb8QPfmEeKZavaxa4N3Jw"/>
+  </stereotypeApplications>
+  <importedProfiles nsURI="http://www.modelversioning.org/emfprofile/library/1.0" location="platform:/plugin/edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile/profile.emfprofile_diagram"/>
+</emfprofileapplication:ProfileApplication>

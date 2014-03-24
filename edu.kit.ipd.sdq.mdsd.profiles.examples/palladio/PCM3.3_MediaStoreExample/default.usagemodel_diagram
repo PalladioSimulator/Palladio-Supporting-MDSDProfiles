@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//usagemodel" xmi:id="_jg7C8N2AEeGPU50OIFqSBg" type="PCM Usage Model" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_jmMkgN2AEeGPU50OIFqSBg" type="2004">
+    <children xmi:type="notation:DecorationNode" xmi:id="_jmMkhd2AEeGPU50OIFqSBg" type="5017"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_jmNLkN2AEeGPU50OIFqSBg" type="7012">
+      <children xmi:type="notation:Shape" xmi:id="_jnasgN2AEeGPU50OIFqSBg" type="3014" fontName="Segoe UI">
+        <children xmi:type="notation:DecorationNode" xmi:id="_jnbTkN2AEeGPU50OIFqSBg" type="7013">
+          <children xmi:type="notation:Node" xmi:id="_jne98N2AEeGPU50OIFqSBg" type="3001">
+            <styles xmi:type="notation:DescriptionStyle" xmi:id="_jne98d2AEeGPU50OIFqSBg"/>
+            <styles xmi:type="notation:FontStyle" xmi:id="_jne98t2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+            <styles xmi:type="notation:LineStyle" xmi:id="_jne9892AEeGPU50OIFqSBg"/>
+            <element xmi:type="usagemodel:Start" href="default.usagemodel#_TyV-MlBwEd6ActLj8Gdl_A"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jne99N2AEeGPU50OIFqSBg" x="665" y="629"/>
+          </children>
+          <children xmi:type="notation:Shape" xmi:id="_jne99d2AEeGPU50OIFqSBg" type="3002" fontName="Segoe UI">
+            <element xmi:type="usagemodel:Stop" href="default.usagemodel#_TyV-M1BwEd6ActLj8Gdl_A"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jne99t2AEeGPU50OIFqSBg" x="660" y="29"/>
+          </children>
+          <children xmi:type="notation:Shape" xmi:id="_jne9992AEeGPU50OIFqSBg" type="3008" fontName="Segoe UI">
+            <children xmi:type="notation:DecorationNode" xmi:id="_jnflAN2AEeGPU50OIFqSBg" type="7009">
+              <children xmi:type="notation:Shape" xmi:id="_jnng0N2AEeGPU50OIFqSBg" type="3009" fontName="Segoe UI">
+                <children xmi:type="notation:DecorationNode" xmi:id="_jnng0t2AEeGPU50OIFqSBg" type="5007"/>
+                <children xmi:type="notation:Shape" xmi:id="_jnsZUN2AEeGPU50OIFqSBg" type="3010" fontName="Segoe UI">
+                  <children xmi:type="notation:DecorationNode" xmi:id="_jnsZUt2AEeGPU50OIFqSBg" type="7008">
+                    <children xmi:type="notation:Node" xmi:id="_jnu1kN2AEeGPU50OIFqSBg" type="3001">
+                      <styles xmi:type="notation:DescriptionStyle" xmi:id="_jnu1kd2AEeGPU50OIFqSBg"/>
+                      <styles xmi:type="notation:FontStyle" xmi:id="_jnu1kt2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+                      <styles xmi:type="notation:LineStyle" xmi:id="_jnu1k92AEeGPU50OIFqSBg"/>
+                      <element xmi:type="usagemodel:Start" href="default.usagemodel#_deR4AVBwEd6ActLj8Gdl_A"/>
+                      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnu1lN2AEeGPU50OIFqSBg" x="380" y="326"/>
+                    </children>
+                    <children xmi:type="notation:Shape" xmi:id="_jnu1ld2AEeGPU50OIFqSBg" type="3002" fontName="Segoe UI">
+                      <element xmi:type="usagemodel:Stop" href="default.usagemodel#_deR4AlBwEd6ActLj8Gdl_A"/>
+                      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnu1lt2AEeGPU50OIFqSBg" x="375" y="31"/>
+                    </children>
+                    <children xmi:type="notation:Shape" xmi:id="_jnvcoN2AEeGPU50OIFqSBg" type="3003" fontName="Segoe UI">
+                      <children xmi:type="notation:DecorationNode" xmi:id="_jnvcot2AEeGPU50OIFqSBg" type="5004"/>
+                      <children xmi:type="notation:DecorationNode" xmi:id="_jnvco92AEeGPU50OIFqSBg" type="7002">
+                        <styles xmi:type="notation:SortingStyle" xmi:id="_jnvcpN2AEeGPU50OIFqSBg"/>
+                        <styles xmi:type="notation:FilteringStyle" xmi:id="_jnvcpd2AEeGPU50OIFqSBg"/>
+                      </children>
+                      <element xmi:type="usagemodel:EntryLevelSystemCall" href="default.usagemodel#_sZ-RsGF7Ed60Nobv0oIepQ"/>
+                      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnvcod2AEeGPU50OIFqSBg" x="30" y="121"/>
+                    </children>
+                  </children>
+                  <element xmi:type="usagemodel:ScenarioBehaviour" href="default.usagemodel#_deR4AFBwEd6ActLj8Gdl_A"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnsZUd2AEeGPU50OIFqSBg"/>
+                </children>
+                <element xmi:type="usagemodel:BranchTransition" href="default.usagemodel#//@usageScenario_UsageModel.0/@scenarioBehaviour_UsageScenario/@actions_ScenarioBehaviour.2/@branchTransitions_Branch.0"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnng0d2AEeGPU50OIFqSBg" x="30" y="30"/>
+              </children>
+              <children xmi:type="notation:Shape" xmi:id="_jnoH4N2AEeGPU50OIFqSBg" type="3009" fontName="Segoe UI">
+                <children xmi:type="notation:DecorationNode" xmi:id="_jnoH4t2AEeGPU50OIFqSBg" type="5007"/>
+                <children xmi:type="notation:Shape" xmi:id="_joRoIN2AEeGPU50OIFqSBg" type="3010" fontName="Segoe UI">
+                  <children xmi:type="notation:DecorationNode" xmi:id="_joRoIt2AEeGPU50OIFqSBg" type="7008">
+                    <children xmi:type="notation:Node" xmi:id="_joS2QN2AEeGPU50OIFqSBg" type="3001">
+                      <styles xmi:type="notation:DescriptionStyle" xmi:id="_joS2Qd2AEeGPU50OIFqSBg"/>
+                      <styles xmi:type="notation:FontStyle" xmi:id="_joS2Qt2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+                      <styles xmi:type="notation:LineStyle" xmi:id="_joS2Q92AEeGPU50OIFqSBg"/>
+                      <element xmi:type="usagemodel:Start" href="default.usagemodel#_fK4jwVBwEd6ActLj8Gdl_A"/>
+                      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_joS2RN2AEeGPU50OIFqSBg" x="215" y="291"/>
+                    </children>
+                    <children xmi:type="notation:Shape" xmi:id="_joS2Rd2AEeGPU50OIFqSBg" type="3002" fontName="Segoe UI">
+                      <element xmi:type="usagemodel:Stop" href="default.usagemodel#_fK4jwlBwEd6ActLj8Gdl_A"/>
+                      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_joS2Rt2AEeGPU50OIFqSBg" x="210" y="31"/>
+                    </children>
+                    <children xmi:type="notation:Shape" xmi:id="_joS2R92AEeGPU50OIFqSBg" type="3003" fontName="Segoe UI">
+                      <children xmi:type="notation:DecorationNode" xmi:id="_joTdUN2AEeGPU50OIFqSBg" type="5004"/>
+                      <children xmi:type="notation:DecorationNode" xmi:id="_joTdUd2AEeGPU50OIFqSBg" type="7002">
+                        <styles xmi:type="notation:SortingStyle" xmi:id="_joTdUt2AEeGPU50OIFqSBg"/>
+                        <styles xmi:type="notation:FilteringStyle" xmi:id="_joTdU92AEeGPU50OIFqSBg"/>
+                      </children>
+                      <element xmi:type="usagemodel:EntryLevelSystemCall" href="default.usagemodel#_vMVroGF7Ed60Nobv0oIepQ"/>
+                      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_joS2SN2AEeGPU50OIFqSBg" x="30" y="121"/>
+                    </children>
+                  </children>
+                  <element xmi:type="usagemodel:ScenarioBehaviour" href="default.usagemodel#_fK4jwFBwEd6ActLj8Gdl_A"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_joRoId2AEeGPU50OIFqSBg"/>
+                </children>
+                <element xmi:type="usagemodel:BranchTransition" href="default.usagemodel#//@usageScenario_UsageModel.0/@scenarioBehaviour_UsageScenario/@actions_ScenarioBehaviour.2/@branchTransitions_Branch.1"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnoH4d2AEeGPU50OIFqSBg" x="855" y="30"/>
+              </children>
+            </children>
+            <element xmi:type="usagemodel:Branch" href="default.usagemodel#_cwT-wFBwEd6ActLj8Gdl_A"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jne9-N2AEeGPU50OIFqSBg" x="30" y="119"/>
+          </children>
+        </children>
+        <element xmi:type="usagemodel:ScenarioBehaviour" href="default.usagemodel#_TyV-MVBwEd6ActLj8Gdl_A"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnasgd2AEeGPU50OIFqSBg" x="28" y="31"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_jnbTkd2AEeGPU50OIFqSBg" type="3015">
+        <children xmi:type="notation:DecorationNode" xmi:id="_jnbTlt2AEeGPU50OIFqSBg" type="5013"/>
+        <children xmi:type="notation:DecorationNode" xmi:id="_jnbTl92AEeGPU50OIFqSBg" type="5014"/>
+        <children xmi:type="notation:DecorationNode" xmi:id="_jnbTmN2AEeGPU50OIFqSBg" type="5015"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_jnbTkt2AEeGPU50OIFqSBg"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_jnbTk92AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_jnbTlN2AEeGPU50OIFqSBg"/>
+        <element xmi:type="usagemodel:ClosedWorkload" href="default.usagemodel#//@usageScenario_UsageModel.0/@workload_UsageScenario"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jnbTld2AEeGPU50OIFqSBg" x="1423" y="31"/>
+      </children>
+    </children>
+    <styles xmi:type="notation:DescriptionStyle" xmi:id="_jmMkgd2AEeGPU50OIFqSBg"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_jmMkgt2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <styles xmi:type="notation:FillStyle" xmi:id="_jmMkg92AEeGPU50OIFqSBg"/>
+    <element xmi:type="usagemodel:UsageScenario" href="default.usagemodel#_TyV-MFBwEd6ActLj8Gdl_A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jmMkhN2AEeGPU50OIFqSBg" x="30" y="30"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_jg7qAN2AEeGPU50OIFqSBg"/>
+  <element xmi:type="usagemodel:UsageModel" href="default.usagemodel#/"/>
+  <edges xmi:type="notation:Connector" xmi:id="_jorQwN2AEeGPU50OIFqSBg" type="4002" source="_jne98N2AEeGPU50OIFqSBg" target="_jne9992AEeGPU50OIFqSBg">
+    <styles xmi:type="notation:FontStyle" xmi:id="_jorQwd2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jorQwt2AEeGPU50OIFqSBg" points="[0, 0, 0, 60]$[0, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_kpChkd2AEeGPU50OIFqSBg" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_kpChkt2AEeGPU50OIFqSBg" id="(0.49961330239752516,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_jo-ywN2AEeGPU50OIFqSBg" type="4002" source="_jne9992AEeGPU50OIFqSBg" target="_jne99d2AEeGPU50OIFqSBg">
+    <styles xmi:type="notation:FontStyle" xmi:id="_jo-ywd2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jo-ywt2AEeGPU50OIFqSBg" points="[0, 0, 0, 60]$[0, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_kpB6gN2AEeGPU50OIFqSBg" id="(0.49961330239752516,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_kpChkN2AEeGPU50OIFqSBg" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_jpAA4N2AEeGPU50OIFqSBg" type="4002" source="_jnu1kN2AEeGPU50OIFqSBg" target="_jnvcoN2AEeGPU50OIFqSBg">
+    <styles xmi:type="notation:FontStyle" xmi:id="_jpAn8N2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jpAn8d2AEeGPU50OIFqSBg" points="[0, 0, 0, 60]$[0, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko4JgN2AEeGPU50OIFqSBg" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko4Jgd2AEeGPU50OIFqSBg" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_jpB2EN2AEeGPU50OIFqSBg" type="4002" source="_jnvcoN2AEeGPU50OIFqSBg" target="_jnu1ld2AEeGPU50OIFqSBg">
+    <styles xmi:type="notation:FontStyle" xmi:id="_jpB2Ed2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jpB2Et2AEeGPU50OIFqSBg" points="[0, 0, 0, 60]$[0, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko4Jgt2AEeGPU50OIFqSBg" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko4wkN2AEeGPU50OIFqSBg" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_jpDEMN2AEeGPU50OIFqSBg" type="4002" source="_joS2QN2AEeGPU50OIFqSBg" target="_joS2R92AEeGPU50OIFqSBg">
+    <styles xmi:type="notation:FontStyle" xmi:id="_jpDEMd2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jpDEMt2AEeGPU50OIFqSBg" points="[0, 0, 0, 60]$[0, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko-3MN2AEeGPU50OIFqSBg" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko-3Md2AEeGPU50OIFqSBg" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_jpESUN2AEeGPU50OIFqSBg" type="4002" source="_joS2R92AEeGPU50OIFqSBg" target="_joS2Rd2AEeGPU50OIFqSBg">
+    <styles xmi:type="notation:FontStyle" xmi:id="_jpESUd2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jpESUt2AEeGPU50OIFqSBg" points="[0, 0, 0, 60]$[0, -60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko-QIN2AEeGPU50OIFqSBg" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ko-QId2AEeGPU50OIFqSBg" id="(0.5,1.0)"/>
+  </edges>
+</notation:Diagram>

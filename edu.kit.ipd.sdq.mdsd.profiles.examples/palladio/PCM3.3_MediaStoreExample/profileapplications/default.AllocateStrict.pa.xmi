@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<emfprofileapplication:ProfileApplication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:allocatestrict="edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict/1.0" xmlns:emfprofileapplication="http://www.modelversioning.org/emfprofile/application/1.1" xsi:schemaLocation="edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict/1.0 platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict.profile/allocatestrict.emfprofile_diagram#_DO-ggEB8EeODVo7lnFxxgA">
+  <stereotypeApplications xsi:type="allocatestrict:AllocateStrict">
+    <appliedTo href="platform:/resource/PCM3.3_MediaStoreExample/default.allocation#_Cdi1kFBwEd6ActLj8Gdl_A"/>
+    <extension href="platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict.profile/allocatestrict.emfprofile_diagram#_RoaEMEB8EeODVo7lnFxxgA"/>
+  </stereotypeApplications>
+  <stereotypeApplications xsi:type="allocatestrict:AllocateStrict">
+    <appliedTo href="platform:/resource/PCM3.3_MediaStoreExample/default.allocation#_DzYnIFBwEd6ActLj8Gdl_A"/>
+    <extension href="platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict.profile/allocatestrict.emfprofile_diagram#_RoaEMEB8EeODVo7lnFxxgA"/>
+  </stereotypeApplications>
+  <importedProfiles nsURI="edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict/1.0" location="platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict.profile/allocatestrict.emfprofile_diagram"/>
+</emfprofileapplication:ProfileApplication>

@@ -1,0 +1,65 @@
+package edu.kit.ipd.sdq.mdsd.profiles.view.observer;
+
+import java.util.Collection;
+
+import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.modelversioning.emfprofile.application.registry.ProfileApplicationDecorator;
+import org.modelversioning.emfprofile.application.registry.ui.observer.ActiveEditorObserver;
+
+import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
+import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
+import edu.kit.ipd.sdq.mdsd.profiles.util.helper.Helper;
+
+/**
+ * Delegated observer which observes the active editors and selection for regarding decorators.
+ * 
+ * @author emretaspolat
+ *
+ */
+public class EStereotypedEditorObserver {
+		
+	private static Logger logger = Logger.getLogger(EStereotypedEditorObserver.class);
+	
+	protected ActiveEditorObserver INSTANCE;
+		
+	protected EStereotypedEditorObserver() {
+		INSTANCE = getActiveEditorObserver();
+	}
+	
+	public static ActiveEditorObserver getActiveEditorObserver() {
+		return ActiveEditorObserver.INSTANCE;
+	}
+	
+	private Collection<ProfileApplicationDecorator> decorators;
+	
+	/**
+	 * Delegated method, instead of overridden, to find Decorators of Profile Applications from own implemented ProfileApplicationRegistry.
+	 * 
+	 * @param eStereotypableObject
+	 * @return
+	 */
+	public Collection<ProfileApplicationDecorator> findProfileApplicationDecorators(EStereotypableObject eStereotypableObject) {
+		
+		if (eStereotypableObject.getAppliedStereotypes().isEmpty()) {
+			//do nothing
+		} else {
+			decorators = ProfileApplicationFileRegistry.INSTANCE
+					.getAllExistingProfileApplicationDecorators(eStereotypableObject);
+		}
+		
+		if (decorators == null || decorators.isEmpty()) {
+			logger.error("Delegated observer couldn't find an decorators for the selection.");
+			ProfileApplicationFileRegistry.INSTANCE.clear();
+			Collection<ProfileApplicationDecorator> newDecorators = 
+					ProfileApplicationFileRegistry.INSTANCE.getAllExistingProfileApplicationDecorators(eStereotypableObject);	
+			return newDecorators;
+		} else {
+			return decorators;
+		}
+	}
+	
+}

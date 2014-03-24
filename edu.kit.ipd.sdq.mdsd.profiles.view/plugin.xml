@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ProfilePropertiesView"
+            icon="icons/16x16_PCM_Profiles.png"
+            id="edu.kit.ipd.sdq.mdsd.profiles.view.columnbased.ColumnBasedPropertiesView"
+            name="PCM Profiles View">
+      </view>
+   </extension>
+</plugin>

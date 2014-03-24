@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:allocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:resourceenvironment="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//allocation http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//resourceenvironment" xmi:id="_ptKiwN2AEeGPU50OIFqSBg" type="allocation" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_pvAV0N2AEeGPU50OIFqSBg" type="2002">
+    <children xmi:type="notation:Node" xmi:id="_pvA84N2AEeGPU50OIFqSBg" type="5003"/>
+    <children xmi:type="notation:Node" xmi:id="_pvA84d2AEeGPU50OIFqSBg" type="7002">
+      <children xmi:type="notation:Node" xmi:id="_pvCyEN2AEeGPU50OIFqSBg" type="3001">
+        <children xmi:type="notation:Node" xmi:id="_pvDZIN2AEeGPU50OIFqSBg" type="5001"/>
+        <children xmi:type="notation:Node" xmi:id="_pvDZId2AEeGPU50OIFqSBg" type="5005"/>
+        <styles xmi:type="notation:ShapeStyle" xmi:id="_pvCyEd2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+        <element xmi:type="allocation:AllocationContext" href="PrioritizingMediaStore.allocation#_nZn1UGajEeCCuI19Qg4dIw"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pvCyEt2AEeGPU50OIFqSBg" x="30" y="28"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_pvDZIt2AEeGPU50OIFqSBg" type="3001">
+        <children xmi:type="notation:Node" xmi:id="_pvDZJd2AEeGPU50OIFqSBg" type="5001"/>
+        <children xmi:type="notation:Node" xmi:id="_pvEAMN2AEeGPU50OIFqSBg" type="5005"/>
+        <styles xmi:type="notation:ShapeStyle" xmi:id="_pvDZI92AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+        <element xmi:type="allocation:AllocationContext" href="PrioritizingMediaStore.allocation#_oT6TUGajEeCCuI19Qg4dIw"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pvDZJN2AEeGPU50OIFqSBg" x="390" y="28"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_pvEAMd2AEeGPU50OIFqSBg" type="3001">
+        <children xmi:type="notation:Node" xmi:id="_pvEANN2AEeGPU50OIFqSBg" type="5001"/>
+        <children xmi:type="notation:Node" xmi:id="_pvEANd2AEeGPU50OIFqSBg" type="5005"/>
+        <styles xmi:type="notation:ShapeStyle" xmi:id="_pvEAMt2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+        <element xmi:type="allocation:AllocationContext" href="PrioritizingMediaStore.allocation#_sL4DYGajEeCCuI19Qg4dIw"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pvEAM92AEeGPU50OIFqSBg" x="970" y="28"/>
+      </children>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_pvA84t2AEeGPU50OIFqSBg"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_pvA8492AEeGPU50OIFqSBg"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_pvAV0d2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xmi:type="resourceenvironment:ResourceContainer" href="mediastore.resourceenvironment#_5uTBUBpmEdyxqpPYxT_m3w"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pvAV0t2AEeGPU50OIFqSBg" x="30" y="30"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_pvBj8N2AEeGPU50OIFqSBg" type="2002">
+    <children xmi:type="notation:Node" xmi:id="_pvBj892AEeGPU50OIFqSBg" type="5003"/>
+    <children xmi:type="notation:Node" xmi:id="_pvBj9N2AEeGPU50OIFqSBg" type="7002">
+      <children xmi:type="notation:Node" xmi:id="_pvGccN2AEeGPU50OIFqSBg" type="3001">
+        <children xmi:type="notation:Node" xmi:id="_pvHDgN2AEeGPU50OIFqSBg" type="5001"/>
+        <children xmi:type="notation:Node" xmi:id="_pvHDgd2AEeGPU50OIFqSBg" type="5005"/>
+        <styles xmi:type="notation:ShapeStyle" xmi:id="_pvGccd2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+        <element xmi:type="allocation:AllocationContext" href="PrioritizingMediaStore.allocation#_pGME0GajEeCCuI19Qg4dIw"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pvGcct2AEeGPU50OIFqSBg" x="30" y="28"/>
+      </children>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_pvBj9d2AEeGPU50OIFqSBg"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_pvBj9t2AEeGPU50OIFqSBg"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_pvBj8d2AEeGPU50OIFqSBg" fontName="Segoe UI"/>
+    <element xmi:type="resourceenvironment:ResourceContainer" href="mediastore.resourceenvironment#_tVi40Dq_EeCCbpF63PfiyA"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pvBj8t2AEeGPU50OIFqSBg" x="1395" y="30"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_ptKiwd2AEeGPU50OIFqSBg"/>
+  <element xmi:type="allocation:Allocation" href="PrioritizingMediaStore.allocation#_lq630GajEeCCuI19Qg4dIw"/>
+</notation:Diagram>
