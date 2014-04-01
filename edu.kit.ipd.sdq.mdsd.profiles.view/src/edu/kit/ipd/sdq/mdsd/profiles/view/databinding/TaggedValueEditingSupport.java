@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.edit.command.ChangeCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -34,6 +35,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.modelversioning.emfprofile.EMFProfilePackage;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
+
+
+
 
 //import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ChangedListener;
 import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ProfilePropertiesView;
@@ -86,6 +90,7 @@ public class TaggedValueEditingSupport extends EditingSupport {
             return textEditor;
 
         } else if (((Object) attr.getEType()) instanceof EEnum) {
+            logger.info(((Object) attr.getEType()));
 
             EEnum eEnum = (EEnum) ((EAttribute) attr).getEType();
             literals = eEnum.getELiterals();
@@ -107,6 +112,22 @@ public class TaggedValueEditingSupport extends EditingSupport {
 
             // return new ComboBoxCellEditor(viewer.getTable(), elements,
             // SWT.DROP_DOWN | SWT.READ_ONLY);
+        } else if (((Object) attr.getEType()) instanceof EDataType) {
+            logger.info(((Object) attr.getEType()));
+            Boolean eDataType = (Boolean) ((EAttribute) attr).getDefaultValue();
+//            Boolean eBoolean = Boolean.getBoolean(((EDataType) attr.getEType()).;
+//            literals = eBoolean;
+//            String[] elements = new String[literals.size()];
+//            int i = 0;
+//            for (EEnumLiteral literal : literals) {
+//                elements[i++] = literal.getName();
+//            }
+            logger.info("asdfsadfasdfasdf " + eDataType);
+            comboBoxEditor = new ComboBoxViewerCellEditor(viewer.getTable(), SWT.DROP_DOWN | SWT.READ_ONLY);
+            comboBoxEditor.setLabelProvider(new LabelProvider());
+            comboBoxEditor.setContenProvider(new ArrayContentProvider());      
+//            comboBoxEditor.setInput(new Boolean[]{eDataType.booleanValue(), Boolean.valueOf(true)});
+            return comboBoxEditor;
         } else {
 
             return new TextCellEditor(viewer.getTable());
