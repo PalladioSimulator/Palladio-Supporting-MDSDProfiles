@@ -28,6 +28,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.emf.ecore.xmi.impl
 Export-Package: edu.kit.ipd.sdq.mdsd.profiles.view.action,
- edu.kit.ipd.sdq.mdsd.profiles.view.editing,
+ edu.kit.ipd.sdq.mdsd.profiles.view.databinding,
  edu.kit.ipd.sdq.mdsd.profiles.view.observer,
  edu.kit.ipd.sdq.mdsd.profiles.view.viewer

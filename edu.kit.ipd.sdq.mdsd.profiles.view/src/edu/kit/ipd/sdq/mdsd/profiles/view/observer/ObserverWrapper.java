@@ -8,19 +8,19 @@ import org.modelversioning.emfprofile.application.registry.ui.observer.ActiveEdi
  * TODO: Implement the Wrapper completely
  * 
  * @author emretaspolat
- *
+ * 
  */
 public class ObserverWrapper {
-	
-	private EStereotypedEditorObserver eStereotypedEditorObserver;
-	private ActiveEditorObserver activeEditorObserver;
-	
-	public ObserverWrapper (EStereotypedEditorObserver eStereotypedEditorObserver) {
-		this.eStereotypedEditorObserver = eStereotypedEditorObserver;
-	}
-	
-	public ObserverWrapper (ActiveEditorObserver activeEditorObserver) {
-		this.activeEditorObserver = activeEditorObserver;
-	}
+
+    private EStereotypedEditorObserver eStereotypedEditorObserver;
+    private ActiveEditorObserver activeEditorObserver;
+
+    public ObserverWrapper(final EStereotypedEditorObserver eStereotypedEditorObserver) {
+        this.eStereotypedEditorObserver = eStereotypedEditorObserver;
+    }
+
+    public ObserverWrapper(final ActiveEditorObserver activeEditorObserver) {
+        this.activeEditorObserver = activeEditorObserver;
+    }
 
 }

@@ -3,7 +3,7 @@
  */
 package edu.kit.ipd.sdq.mdsd.profiles.view.utility;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 
@@ -20,36 +20,38 @@ import org.modelversioning.emfprofileapplication.StereotypeApplication;
 
 /**
  * @author emretaspolat
- *
+ * 
  */
 public class EFeatureSorterUtilityTest {
 
-	private static Stereotype stereotype;
-	private static StereotypeApplication stereotypeApplication;
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws IOException {
-		ResourceSet rs = new ResourceSetImpl();
-		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-		URI uri = URI.createPlatformResourceURI("edu.kit.ipd.sdq.mdsd.profiles.view/test-resources/Library.ExtendedLibrary.pa.xmi", true);
-		CommonPlugin.resolve(uri);
-		Resource r = rs.createResource(uri);
-		r.load(null);
-		
-		stereotype = (Stereotype) r.getContents().get(0);
-		stereotypeApplication = (StereotypeApplication) r.getContents().get(0);
-	}
-	
-	@Test
-	public void testGetFeatureListOfStereotype() {
-		assertNotNull("Stereotyp war null", stereotype);
-		assertNotNull("Liste von EAttributes war null!", FeatureGetterUtility.getFeatureListOfStereotype(stereotype));
-	}
-	
-	@Test
-	public void testGetFeatureListOfStereotypeApplication() {
-		assertNotNull("Stereotyp war null", stereotype);
-		assertNotNull("Liste von EAttributes war null!", FeatureGetterUtility.getFeatureListOfStereotypeApplication(stereotypeApplication));
-	}
+    private static Stereotype stereotype;
+    private static StereotypeApplication stereotypeApplication;
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws IOException {
+        final ResourceSet rs = new ResourceSetImpl();
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+        final URI uri = URI.createPlatformResourceURI(
+                "edu.kit.ipd.sdq.mdsd.profiles.view/test-resources/Library.ExtendedLibrary.pa.xmi", true);
+        CommonPlugin.resolve(uri);
+        final Resource r = rs.createResource(uri);
+        r.load(null);
+
+        stereotype = (Stereotype) r.getContents().get(0);
+        stereotypeApplication = (StereotypeApplication) r.getContents().get(0);
+    }
+
+    @Test
+    public void testGetFeatureListOfStereotype() {
+        assertNotNull("Stereotyp war null", stereotype);
+        assertNotNull("Liste von EAttributes war null!", FeatureGetterUtility.getFeatureListOfStereotype(stereotype));
+    }
+
+    @Test
+    public void testGetFeatureListOfStereotypeApplication() {
+        assertNotNull("Stereotyp war null", stereotype);
+        assertNotNull("Liste von EAttributes war null!",
+                FeatureGetterUtility.getFeatureListOfStereotypeApplication(stereotypeApplication));
+    }
 
 }

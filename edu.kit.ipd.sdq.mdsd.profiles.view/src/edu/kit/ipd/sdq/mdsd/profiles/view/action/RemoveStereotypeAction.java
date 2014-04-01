@@ -20,35 +20,38 @@ import edu.kit.ipd.sdq.mdsd.profiles.ui.commands.RemoveStereotypeApplicationComm
  * Removes the in TreeViewer selected StereotypeApplication.
  * 
  * @author emretaspolat
- *
+ * 
  */
 public class RemoveStereotypeAction extends Action {
-	
-	private static Logger logger = Logger.getLogger(RemoveStereotypeAction.class);
-	private TreeViewer treeViewer;
-	private TableViewer tableViewer;
 
-	public RemoveStereotypeAction(TreeViewer viewer, TableViewer table) {
-		super("[Remove Stereotype]", IAction.AS_PUSH_BUTTON);
-		this.treeViewer = viewer;
-		this.tableViewer = table;
-	}
-	
-	public void run() {
-		final IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		StereotypeApplication sa = (StereotypeApplication) ((IStructuredSelection) treeViewer.getSelection()).getFirstElement();
-		logger.info("To be removed stereotype application is: " + sa.toString());
-		if (sa != null) {
-			EStereotypableObject temp = (EStereotypableObject) sa.getAppliedTo();
-			logger.info("Temp is: " + temp);
-			Stereotype stereotype = sa.getStereotype();
-			logger.info("Stereotype is: " + stereotype);
-				Command removeStereotypeCommand = new RemoveStereotypeApplicationCommand(temp, stereotype, sa);
-				((IEditingDomainProvider) editorPart).getEditingDomain().getCommandStack().execute(removeStereotypeCommand);
-				logger.info("Following stereotype is removed " + sa.toString() + " from " + temp.toString());
-			treeViewer.refresh();
-			tableViewer.setItemCount(0); // Workaround for tableViewer.refresh();
-		}
-	}
-	
+    private static Logger logger = Logger.getLogger(RemoveStereotypeAction.class);
+    private final TreeViewer treeViewer;
+    private final TableViewer tableViewer;
+
+    public RemoveStereotypeAction(final TreeViewer viewer, final TableViewer table) {
+        super("[Remove Stereotype]", IAction.AS_PUSH_BUTTON);
+        this.treeViewer = viewer;
+        this.tableViewer = table;
+    }
+
+    @Override
+    public void run() {
+        final IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                .getActiveEditor();
+        final StereotypeApplication sa = (StereotypeApplication) ((IStructuredSelection) this.treeViewer.getSelection())
+                .getFirstElement();
+        logger.info("To be removed stereotype application is: " + sa.toString());
+        if (sa != null) {
+            final EStereotypableObject temp = (EStereotypableObject) sa.getAppliedTo();
+            logger.info("Temp is: " + temp);
+            final Stereotype stereotype = sa.getStereotype();
+            logger.info("Stereotype is: " + stereotype);
+            final Command removeStereotypeCommand = new RemoveStereotypeApplicationCommand(temp, stereotype, sa);
+            ((IEditingDomainProvider) editorPart).getEditingDomain().getCommandStack().execute(removeStereotypeCommand);
+            logger.info("Following stereotype is removed " + sa.toString() + " from " + temp.toString());
+            this.treeViewer.refresh();
+            this.tableViewer.setItemCount(0); // Workaround for tableViewer.refresh();
+        }
+    }
+
 }
