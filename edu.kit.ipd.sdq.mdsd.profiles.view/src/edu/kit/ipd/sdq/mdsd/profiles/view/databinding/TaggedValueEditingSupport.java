@@ -136,14 +136,14 @@ public class TaggedValueEditingSupport extends EditingSupport {
 
             if (obj instanceof String) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr, value);
-                if (cmd.canExecute()) {
+                if (!obj.equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
 
             } else if (obj instanceof Integer) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Integer.valueOf((String) value));
-                if (cmd.canExecute()) {
+                if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
 
@@ -151,7 +151,7 @@ public class TaggedValueEditingSupport extends EditingSupport {
                 EEnumLiteral newEnum = ((EEnumLiteral) obj).getEEnum().getEEnumLiteral((String) value);
                 if (obj instanceof Enumerator) {
                     Enumerator oldEnum = (Enumerator) obj;
-                    if (oldEnum != null) {
+                    if (oldEnum != null && oldEnum != newEnum) {
                         cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                                 newEnum);
                         editingDomain.getCommandStack().execute(cmd);
