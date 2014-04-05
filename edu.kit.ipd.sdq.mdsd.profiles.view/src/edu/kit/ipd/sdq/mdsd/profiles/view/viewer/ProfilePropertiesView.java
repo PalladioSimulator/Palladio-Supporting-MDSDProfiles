@@ -180,6 +180,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                 } else {
+//                    ProfilePropertiesView.this.treeViewer.refresh();
+                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     logger.error("The root element was not an EStereotypablebject.");
                 }
                 if (ProfilePropertiesView.this.eStereotyped == null) {
@@ -214,10 +216,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      */
     private void callPerformObservation(final EStereotypableObject eStereotypableObject) {
         logger.info("Observation beginns.");
-        final Collection<EStereotypableObject> temp = this.loader.performObservation(eStereotypableObject); // List
-        // of
-        // EStereotyped
-        // Objects
+        //List of estereotyped objects
+        final Collection<EStereotypableObject> temp = this.loader.performObservation(eStereotypableObject);
         if (temp.isEmpty()) {
             logger.warn("Couldn't perform observation.");
         } else {
@@ -237,6 +237,10 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             public void run() {
                 if (ProfilePropertiesView.this.treeViewer.getInput().equals(null)
                         || ProfilePropertiesView.this.treeViewer.getInput().equals(Collections.emptyList())) {
+                    ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
+                            .getAllExistingProfileApplicationDecorators(eStereotypableObject));
+                } else if (!ProfilePropertiesView.this.treeViewer.getInput().equals(null)
+                        || !ProfilePropertiesView.this.treeViewer.getInput().equals(Collections.emptyList())) {
                     ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
                             .getAllExistingProfileApplicationDecorators(eStereotypableObject));
                 } else {

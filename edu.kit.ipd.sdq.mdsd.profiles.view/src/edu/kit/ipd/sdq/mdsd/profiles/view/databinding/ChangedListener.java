@@ -36,14 +36,6 @@ public class ChangedListener implements IValueChangeListener {
 
     private IObservableValue value;
 
-    // private EditingDomain editingDomain;
-    //
-    // public void setActivePart(IAction action, IWorkbenchPart workbenchPart) {
-    // if (workbenchPart instanceof IEditingDomainProvider) {
-    // editingDomain = ((IEditingDomainProvider) workbenchPart).getEditingDomain();
-    // }
-    // }
-
     public ChangedListener(final ProfilePropertiesView view) {
         this.view = view;
     }
@@ -71,11 +63,11 @@ public class ChangedListener implements IValueChangeListener {
             observableList.addAll(values);
             this.view.getTableViewer().setInput(observableList);
 
-            // edbc.bindList((IObservableList) view.getTableViewer().getInput(), observableList);
-
         } else if (event.diff.getNewValue() instanceof ProfileApplicationDecorator) {
-            final ProfileApplicationDecorator pad = (ProfileApplicationDecorator) event.diff.getNewValue();
-            this.view.getMaster().setValue(pad.getProfileApplications());
+            this.view.getTableViewer().setItemCount(0);
+            throw new ClassCastException();
+//            final ProfileApplicationDecorator pad = (ProfileApplicationDecorator) event.diff.getNewValue();
+//            this.view.getMaster().setValue(pad.getProfileApplications());
         }
     }
 
