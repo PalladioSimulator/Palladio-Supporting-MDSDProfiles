@@ -65,7 +65,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IPartService;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
@@ -73,6 +77,7 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.modelversioning.emfprofile.Extension;
 import org.modelversioning.emfprofile.application.registry.ui.providers.ProfileApplicationDecoratorReflectiveItemProviderAdapterFactory;
+import org.modelversioning.emfprofile.application.registry.ui.providers.ProfileProviderContentAdapter;
 import org.modelversioning.emfprofile.application.registry.ui.providers.ProfileProviderLabelAdapter;
 import org.modelversioning.emfprofile.provider.EMFProfileItemProviderAdapterFactory;
 import org.modelversioning.emfprofileapplication.ProfileApplication;
@@ -155,7 +160,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
     private RemoveStereotypeAction removeStereotypeAction;
     private ClearAction clearAction;
-
+        
     /**
      * The listener we register with the selection service.
      * 
@@ -164,10 +169,10 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      */
     private final ISelectionListener listener = new ISelectionListener() {
         @Override
-        public void selectionChanged(final IWorkbenchPart sourcepart, final ISelection selection) {
+        public void selectionChanged(IWorkbenchPart sourcepart, ISelection selection) {
             // Ignore our own selections
-            if (selection instanceof ITreeSelection) {
-                final ITreeSelection treeSelection = (ITreeSelection) selection;
+            if (sourcepart instanceof IEditorPart && selection instanceof ITreeSelection) {
+                ITreeSelection treeSelection = (ITreeSelection) selection;
                 if (treeSelection instanceof IAdaptable) {
                     // do nothing
                 }
@@ -179,6 +184,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     ProfileListMenu.createOrUpdateMenuForEachProfile(treeSelection);
                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
                 } else {
 //                    ProfilePropertiesView.this.treeViewer.refresh();
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
@@ -190,6 +196,51 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             }
         }
     };
+    
+    private final IPartListener partListener = new IPartListener() {
+    	private IWorkbenchPart activePart;
+		public void partActivated(IWorkbenchPart part) {
+			if (part instanceof IEditorPart) {
+				activePart = part;
+				logger.info("Active part: " + part.getTitle());
+			}
+		}
+
+		public void partClosed(IWorkbenchPart part) {
+			if (part != activePart && part.getTitle().equalsIgnoreCase("Library.xmi")) {
+				logger.info("Funny part: " + activePart.getTitle());
+				activePart = null;
+//				ProfileApplicationFileRegistry.INSTANCE.clear();
+				treeViewer.setInput(Collections.emptyList());
+				logger.info("Closed part: " + part.getTitle());
+			}
+		}
+
+		@Override
+		public void partBroughtToTop(IWorkbenchPart part) {
+			if (part instanceof IEditorPart) {
+				activePart = part;
+				logger.info("Top part: " + part.getTitle());
+			}
+		}
+
+		@Override
+		public void partDeactivated(IWorkbenchPart part) {
+			if (part == activePart) {
+				activePart = null;
+				logger.info("Deactivated part: " + part.getTitle());
+			}
+		}
+
+		@Override
+		public void partOpened(IWorkbenchPart part) {
+			if (part instanceof IEditorPart) {
+				activePart = part;
+				treeViewer.setInput(Collections.emptyList());
+				logger.info("Opened part: " + part.getTitle());
+			}			
+		}
+	};
 
     private final IResourceChangeListener changeListener = new IResourceChangeListener() {
         @Override
@@ -214,14 +265,16 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      * 
      * @param eStereotypableObject
      */
-    private void callPerformObservation(final EStereotypableObject eStereotypableObject) {
+    private Collection<EStereotypableObject> callPerformObservation(final EStereotypableObject eStereotypableObject) {
         logger.info("Observation beginns.");
         //List of estereotyped objects
-        final Collection<EStereotypableObject> temp = this.loader.performObservation(eStereotypableObject);
+        Collection<EStereotypableObject> temp = this.loader.performObservation(eStereotypableObject);
         if (temp.isEmpty()) {
             logger.warn("Couldn't perform observation.");
+            return null;
         } else {
             logger.info("Observation and refreshments performed completely.");
+            return temp;
         }
     }
 
@@ -232,18 +285,16 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         if (this.treeViewer == null || this.treeViewer.getTree().isDisposed()) {
             return;
         }
+        final EProfileApplicationLoader tempLoader = loader;
         this.treeViewer.getTree().getDisplay().asyncExec(new Runnable() {
             @Override
             public void run() {
-                if (ProfilePropertiesView.this.treeViewer.getInput().equals(null)
-                        || ProfilePropertiesView.this.treeViewer.getInput().equals(Collections.emptyList())) {
+                if (ProfilePropertiesView.this.treeViewer.getInput().equals(Collections.emptyList())) {
                     ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
                             .getAllExistingProfileApplicationDecorators(eStereotypableObject));
-                } else if (!ProfilePropertiesView.this.treeViewer.getInput().equals(null)
-                        || !ProfilePropertiesView.this.treeViewer.getInput().equals(Collections.emptyList())) {
+                } else if (ProfilePropertiesView.this.treeViewer.getInput().equals(tempLoader.getProfileApplicationDecorator(eStereotypableObject))){
                     ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
-                            .getAllExistingProfileApplicationDecorators(eStereotypableObject));
-                } else {
+                            .getAllExistingProfileApplicationDecorators(eStereotyped));;
                     ProfilePropertiesView.this.treeViewer.refresh();
                     ProfilePropertiesView.this.treeViewer.expandToLevel(2);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0); // Workaround for
@@ -251,6 +302,10 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 }
             }
         });
+    }
+    
+    private IWorkbenchPage getActivePage() {
+    	return getSite().getPage();
     }
 
     /**
@@ -264,6 +319,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         this.createTableViewer(parent);
         this.createRightComposite(parent);
         this.getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this.listener);
+        getActivePage().addPartListener(partListener);
         ResourcesPlugin.getWorkspace().addResourceChangeListener(this.changeListener, IResourceChangeEvent.POST_CHANGE);
         this.createActions();
         this.initializeToolBar();
@@ -277,13 +333,13 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
         this.treeViewer.setLabelProvider(new ProfileProviderLabelAdapter(getAdapterFactory()));
         // Using our own content adapter to support an IResourceChangeListener
-        this.treeViewer.setContentProvider(new EProfileProviderContentAdapter(getAdapterFactory()));
+//        this.treeViewer.setContentProvider(new EProfileProviderContentAdapter(getAdapterFactory()));
+        this.treeViewer.setContentProvider(new ProfileProviderContentAdapter(getAdapterFactory()));
 
         this.treeViewer.setSorter(new EObjectSorter().createGenericEObjectSorter());
         this.treeViewer.setAutoExpandLevel(2);
         this.getSite().setSelectionProvider(this.treeViewer);
         ProfilePropertiesView.resourceManager = new LocalResourceManager(JFaceResources.getResources());
-
         this.treeViewer.setUseHashlookup(true);
         this.treeViewer.setInput(Collections.emptyList());
 
@@ -595,7 +651,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
         // important: We need do unregister our listener when the view is disposed
         this.getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this.listener);
-
+        this.getSite().getPage().removePartListener(this.partListener);
+        
         super.dispose();
     }
 

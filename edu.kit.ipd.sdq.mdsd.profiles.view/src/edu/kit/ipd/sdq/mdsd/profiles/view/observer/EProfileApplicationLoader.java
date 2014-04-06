@@ -34,14 +34,7 @@ public class EProfileApplicationLoader {
     @SuppressWarnings("static-access")
     public Collection<EStereotypableObject> performObservation(EStereotypableObject eStereotypableObject) {
 
-        try {
-            this.profileApplicationDecorators = this.observer.findProfileApplicationDecorators(eStereotypableObject);
-            logger.info("Decorator(s): " + this.profileApplicationDecorators);
-        } catch (final Exception e) {
-            logger.error("Chosen Object was not stereotyped. Please select another one.");
-            e.printStackTrace();
-            throw new NullPointerException();
-        }
+        getProfileApplicationDecorator(eStereotypableObject);
 
         // if (profileApplicationDecorators.isEmpty()) {
         // profileApplicationDecorators =
@@ -64,4 +57,20 @@ public class EProfileApplicationLoader {
         logger.info("EStereotyped Objects: " + this.eStereotypableObjects.toString());
         return this.eStereotypableObjects;
     }
+
+	/**
+	 * @param eStereotypableObject
+	 */
+	public Collection<ProfileApplicationDecorator> getProfileApplicationDecorator(
+			EStereotypableObject eStereotypableObject) {
+		try {
+            this.profileApplicationDecorators = this.observer.findProfileApplicationDecorators(eStereotypableObject);
+            logger.info("Decorator(s): " + this.profileApplicationDecorators);
+        } catch (final Exception e) {
+            logger.error("Chosen Object was not stereotyped. Please select another one.");
+            e.printStackTrace();
+            throw new NullPointerException();
+        }
+		return profileApplicationDecorators;
+	}
 }
