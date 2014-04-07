@@ -210,7 +210,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 			if (part != activePart && part.getTitle().equalsIgnoreCase("Library.xmi")) {
 				logger.info("Funny part: " + activePart.getTitle());
 				activePart = null;
-				ProfileApplicationFileRegistry.INSTANCE.clear();
+//				ProfileApplicationFileRegistry.INSTANCE.clear();
 				treeViewer.setInput(Collections.emptyList());
 				logger.info("Closed part: " + part.getTitle());
 			}
