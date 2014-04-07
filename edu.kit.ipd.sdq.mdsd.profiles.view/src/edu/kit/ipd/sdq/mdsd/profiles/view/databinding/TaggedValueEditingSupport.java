@@ -97,7 +97,10 @@ public class TaggedValueEditingSupport extends EditingSupport {
         } else if (dataType instanceof EDataType) {
         	EDataType eDataType = (EDataType) dataType;
         	
-        	if (eDataType.getInstanceClass() == String.class || eDataType.getInstanceClass() == int.class) {
+        	if (eDataType.getInstanceClass() == String.class || eDataType.getInstanceClass() == int.class 
+        	        || eDataType.getInstanceClass() == byte.class || eDataType.getInstanceClass() == short.class 
+        	        || eDataType.getInstanceClass() == long.class || eDataType.getInstanceClass() == float.class 
+        	        || eDataType.getInstanceClass() == double.class || eDataType.getInstanceClass() == char.class) {
         		return textEditor;
         	
         	} else if (eDataType.getInstanceClass() == Boolean.class || eDataType.getInstanceClass() == Boolean.TYPE) {
@@ -139,10 +142,52 @@ public class TaggedValueEditingSupport extends EditingSupport {
                 if (!obj.equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-
+                
             } else if (obj instanceof Integer) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Integer.valueOf((String) value));
+                if (!obj.toString().equals(value) && cmd.canExecute()) {
+                    editingDomain.getCommandStack().execute(cmd);
+                }
+                
+            } else if (obj instanceof Byte) {
+                cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
+                        Byte.valueOf((String) value));
+                if (!obj.toString().equals(value) && cmd.canExecute()) {
+                    editingDomain.getCommandStack().execute(cmd);
+                }
+                
+            } else if (obj instanceof Short) {
+                cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
+                        Short.valueOf((String) value));
+                if (!obj.toString().equals(value) && cmd.canExecute()) {
+                    editingDomain.getCommandStack().execute(cmd);
+                }
+                
+            } else if (obj instanceof Long) {
+                cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
+                        Long.valueOf((String) value));
+                if (!obj.toString().equals(value) && cmd.canExecute()) {
+                    editingDomain.getCommandStack().execute(cmd);
+                }
+                
+            } else if (obj instanceof Float) {
+                cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
+                        Float.valueOf((String) value));
+                if (!obj.toString().equals(value) && cmd.canExecute()) {
+                    editingDomain.getCommandStack().execute(cmd);
+                }
+                
+            } else if (obj instanceof Double) {
+                cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
+                        Double.valueOf((String) value));
+                if (!obj.toString().equals(value) && cmd.canExecute()) {
+                    editingDomain.getCommandStack().execute(cmd);
+                }
+                
+            } else if (obj instanceof Character) {
+                cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
+                        Character.valueOf((char) value));
                 if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }

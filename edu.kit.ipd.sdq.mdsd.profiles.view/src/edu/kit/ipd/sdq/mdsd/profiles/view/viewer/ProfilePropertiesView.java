@@ -210,7 +210,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 			if (part != activePart && part.getTitle().equalsIgnoreCase("Library.xmi")) {
 				logger.info("Funny part: " + activePart.getTitle());
 				activePart = null;
-//				ProfileApplicationFileRegistry.INSTANCE.clear();
+				ProfileApplicationFileRegistry.INSTANCE.clear();
 				treeViewer.setInput(Collections.emptyList());
 				logger.info("Closed part: " + part.getTitle());
 			}
@@ -261,7 +261,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
     /**
      * The method is called by the registered listener for -almost- every ITreeSelection. It
-     * initializes the Loader, which then looks to StereotypeApplicationFIleRegistry.
+     * initializes the Loader, which then looks to StereotypeApplicationFileRegistry.
      * 
      * @param eStereotypableObject
      */
@@ -294,7 +294,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                             .getAllExistingProfileApplicationDecorators(eStereotypableObject));
                 } else if (ProfilePropertiesView.this.treeViewer.getInput().equals(tempLoader.getProfileApplicationDecorator(eStereotypableObject))){
                     ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
-                            .getAllExistingProfileApplicationDecorators(eStereotyped));;
+                            .getAllExistingProfileApplicationDecorators(eStereotypableObject));;
                     ProfilePropertiesView.this.treeViewer.refresh();
                     ProfilePropertiesView.this.treeViewer.expandToLevel(2);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0); // Workaround for
