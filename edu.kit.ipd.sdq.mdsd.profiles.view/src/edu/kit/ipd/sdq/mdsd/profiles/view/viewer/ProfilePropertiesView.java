@@ -176,7 +176,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 if (treeSelection instanceof IAdaptable) {
                     // do nothing
                 }
-                if (treeSelection.getFirstElement() instanceof EStereotypableObject) {
+                if (treeSelection.getFirstElement() instanceof EStereotypableObject 
+                		&& !((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
                     logger.info("TreeSelection: " + treeSelection);
                     logger.info(treeSelection.getFirstElement() instanceof EStereotypableObject);
                     ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
@@ -185,13 +186,12 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                } else {
-//                    ProfilePropertiesView.this.treeViewer.refresh();
+                } else if (ProfilePropertiesView.this.eStereotyped == null) {
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    logger.error("The root element was not an EStereotypablebject.");
-                }
-                if (ProfilePropertiesView.this.eStereotyped == null) {
                     logger.warn("Object was not an stereotyped.");
+                } else {
+                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
+                    logger.error("The root element was not an EStereotypablebject or if so, had no applied stereotypes.");
                 }
             }
         }
