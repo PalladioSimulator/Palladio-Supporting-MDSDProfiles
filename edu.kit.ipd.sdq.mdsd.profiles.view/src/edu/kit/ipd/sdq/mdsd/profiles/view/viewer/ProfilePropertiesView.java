@@ -168,6 +168,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      * EObject, which should be a EStereotypableObject.
      */
     private final ISelectionListener listener = new ISelectionListener() {
+        
+        private EStereotypableObject localEStereotyped;
         @Override
         public void selectionChanged(IWorkbenchPart sourcepart, ISelection selection) {
             // Ignore our own selections
@@ -177,7 +179,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     // do nothing
                 }
                 if (treeSelection.getFirstElement() instanceof EStereotypableObject 
-                		&& !((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
+                        && !((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
                     logger.info("TreeSelection: " + treeSelection);
                     logger.info(treeSelection.getFirstElement() instanceof EStereotypableObject);
                     ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
@@ -186,12 +188,18 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                } else if (ProfilePropertiesView.this.eStereotyped == null) {
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    logger.warn("Object was not an stereotyped.");
-                } else {
+                } else if (treeSelection.getFirstElement() instanceof EStereotypableObject 
+                        && ((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
+                    ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
+                    // The following two code is temporary untill the "load twice"-problem is out of the way
+                    ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
+                    ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    logger.error("The root element was not an EStereotypablebject or if so, had no applied stereotypes.");
+                    logger.warn("The root element wasn't applied any stereotypes.");
+                } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
+                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
+                    logger.error("The root element was not an EStereotypableObject.");
                 }
             }
         }

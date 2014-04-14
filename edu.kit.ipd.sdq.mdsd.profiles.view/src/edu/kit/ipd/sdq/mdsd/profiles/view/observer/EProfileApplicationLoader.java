@@ -36,18 +36,6 @@ public class EProfileApplicationLoader {
 
         getProfileApplicationDecorator(eStereotypableObject);
 
-        // if (profileApplicationDecorators.isEmpty()) {
-        // profileApplicationDecorators =
-        // EStereotypedEditorObserver.findProfileApplicationDecorators(eStereotypableObject);
-        // logger.error("ProfileApplicationDecorators is empty.");
-        // } else {
-        // profileApplicationDecorators =
-        // ProfileApplicationFileRegistry.INSTANCE.getAllExistingProfileApplicationDecorators(eStereotypableObject);
-        // logger.info("Decorators taken from ProfileApplicationFileRegistry.");
-        // }
-
-        // observer.getActiveEditorObserver().refreshViewer();
-
         if (this.profileApplicationDecorators.iterator().hasNext()) {
             for (final StereotypeApplication stereotypeApplication : this.profileApplicationDecorators.iterator()
                     .next().getStereotypeApplications()) {
