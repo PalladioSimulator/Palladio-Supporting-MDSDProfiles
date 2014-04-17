@@ -192,9 +192,10 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 } else if (treeSelection.getFirstElement() instanceof EStereotypableObject 
                         && ((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
                     ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
-                    // The following two code is temporary untill the "load twice"-problem is out of the way
-                    ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
-                    ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+                    // The following two lines of code is temporary and have to out-commented if to work on the "load twice"-problem
+                    // And the first selection from a resource must than be a EStereotypableObject WITH APLIED STEREOTYPES
+//                    ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
+//                    ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     logger.warn("The root element wasn't applied any stereotypes.");
                 } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
