@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/edu.kit.ipd.sdq.mdsd.profiles.feature_1.0.0.201405041921.jar" id="edu.kit.ipd.sdq.mdsd.profiles.feature" version="1.0.0.201405041921">
+      <category name="profiles"/>
+   </feature>
+   <category-def name="profiles" label="Profiles"/>
+</site>
