@@ -13,46 +13,43 @@ import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
  */
 public class UnapplyStereotypeCommand extends AbstractStereotypeCommand {
 
-	// is set after execution was successful
-	private EList<RemoveStereotypeApplicationCommand> removeSACommands;
+    // is set after execution was successful
+    private EList<RemoveStereotypeApplicationCommand> removeSACommands;
 
-	/**
-	 * 
-	 * @param eStereotypableObject
-	 *            The EStereotypableObject from which all stereotype
-	 *            applications of the given stereotype shall be removew at
-	 *            execution.
-	 * @param stereotype
-	 *            The stereotype to be applied.
-	 */
-	public UnapplyStereotypeCommand(
-			final EStereotypableObject eStereotypableObject,
-			final Stereotype stereotype) {
-		super("Unapply Stereotype", eStereotypableObject, stereotype);
-		this.removeSACommands = new BasicEList<RemoveStereotypeApplicationCommand>();
-	}
+    /**
+     * 
+     * @param eStereotypableObject
+     *            The EStereotypableObject from which all stereotype applications of the given
+     *            stereotype shall be removew at execution.
+     * @param stereotype
+     *            The stereotype to be applied.
+     */
+    public UnapplyStereotypeCommand(final EStereotypableObject eStereotypableObject, final Stereotype stereotype) {
+        super("Unapply Stereotype", eStereotypableObject, stereotype);
+        this.removeSACommands = new BasicEList<RemoveStereotypeApplicationCommand>();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.emf.common.command.Command#execute()
-	 */
-	@Override
-	public void execute() {
-		EList<StereotypeApplication> stereotypeApplications = this.eStereotypableObject
-				.getStereotypeApplications();
-		for (StereotypeApplication stereotypeApplication : stereotypeApplications) {
-			RemoveStereotypeApplicationCommand removeSACommand = new RemoveStereotypeApplicationCommand(this.eStereotypableObject, this.stereotype, stereotypeApplication);
-			removeSACommand.execute();
-			this.removeSACommands.add(removeSACommand);
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.emf.common.command.Command#execute()
+     */
+    @Override
+    public void execute() {
+        EList<StereotypeApplication> stereotypeApplications = this.eStereotypableObject.getStereotypeApplications();
+        for (StereotypeApplication stereotypeApplication : stereotypeApplications) {
+            RemoveStereotypeApplicationCommand removeSACommand = new RemoveStereotypeApplicationCommand(
+                    this.eStereotypableObject, this.stereotype, stereotypeApplication);
+            removeSACommand.execute();
+            this.removeSACommands.add(removeSACommand);
+        }
+    }
 
-	@Override
-	public void undo() {
-		for (RemoveStereotypeApplicationCommand removeSACommand : this.removeSACommands) {
-			removeSACommand.undo();
-		}
-	}
+    @Override
+    public void undo() {
+        for (RemoveStereotypeApplicationCommand removeSACommand : this.removeSACommands) {
+            removeSACommand.undo();
+        }
+    }
 
 }

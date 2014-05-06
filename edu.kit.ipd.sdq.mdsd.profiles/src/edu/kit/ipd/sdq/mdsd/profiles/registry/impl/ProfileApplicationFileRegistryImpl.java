@@ -262,7 +262,7 @@ public class ProfileApplicationFileRegistryImpl implements ProfileApplicationFil
                 fileToDecoratorMap.put(profileApplicationFile, profileApplicationDecorator);
 
                 String modelURI = eStereotypableObject.eResource().getURI().toString();
-                
+
                 modelToDecoratorMap.get(modelURI).put(profile, profileApplicationDecorator);
 
                 logger.debug("created decorator for existing file '" + profileApplicationFile.getFullPath() + "'");
@@ -279,9 +279,9 @@ public class ProfileApplicationFileRegistryImpl implements ProfileApplicationFil
 
                 while (iterator.hasNext()) {
                     final Resource resource = iterator.next();
-                    URI uri = resource.getURI();                    
+                    URI uri = resource.getURI();
                     if (uri.isPlatformResource()) {
-                    	String platformString = uri.toPlatformString(false);
+                        String platformString = uri.toPlatformString(false);
                         if (platformString != null && platformString.endsWith(profileApplicationFile.getName())) {
                             iterator.remove();
                         }
@@ -335,7 +335,7 @@ public class ProfileApplicationFileRegistryImpl implements ProfileApplicationFil
             fileToDecoratorMap.put(newProfileApplicationFile, profileApplicationDecorator);
 
             String modelURI = eStereotypableObject.eResource().getURI().toString();
-            
+
             modelToDecoratorMap.get(modelURI).put(profile, profileApplicationDecorator);
 
         } else {
@@ -357,7 +357,8 @@ public class ProfileApplicationFileRegistryImpl implements ProfileApplicationFil
      * Initializes the profile-to-decorator map for the specified resource.
      * 
      * @param modelURI
-     *            The String representation of the URI of the model resource for which to initialize the map.
+     *            The String representation of the URI of the model resource for which to initialize
+     *            the map.
      */
     private void initializeProfileToDecoratorMap(final String modelURI) {
 

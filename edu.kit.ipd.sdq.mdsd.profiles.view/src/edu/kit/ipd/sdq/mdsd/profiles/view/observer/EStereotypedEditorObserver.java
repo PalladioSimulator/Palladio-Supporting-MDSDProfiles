@@ -58,6 +58,5 @@ public class EStereotypedEditorObserver {
             return this.decorators;
         }
     }
-    
 
 }

@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
+
 //import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ChangedListener;
 
 public class TaggedValueEditingSupport extends EditingSupport {
@@ -72,7 +73,7 @@ public class TaggedValueEditingSupport extends EditingSupport {
         EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
         Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
         Object dataType = (Object) attr.getEType();
-        
+
         if (dataType instanceof EEnum) {
             logger.info(((Object) attr.getEType()));
 
@@ -95,23 +96,23 @@ public class TaggedValueEditingSupport extends EditingSupport {
             return comboBoxEditor;
 
         } else if (dataType instanceof EDataType) {
-        	EDataType eDataType = (EDataType) dataType;
-        	
-        	if (eDataType.getInstanceClass() == String.class || eDataType.getInstanceClass() == int.class 
-        	        || eDataType.getInstanceClass() == byte.class || eDataType.getInstanceClass() == short.class 
-        	        || eDataType.getInstanceClass() == long.class || eDataType.getInstanceClass() == float.class 
-        	        || eDataType.getInstanceClass() == double.class || eDataType.getInstanceClass() == char.class) {
-        		return textEditor;
-        	
-        	} else if (eDataType.getInstanceClass() == Boolean.class || eDataType.getInstanceClass() == Boolean.TYPE) {
-        		comboBoxEditor = new ComboBoxViewerCellEditor(viewer.getTable(), SWT.DROP_DOWN | SWT.READ_ONLY);
-        		comboBoxEditor.setLabelProvider(new LabelProvider());
-        		comboBoxEditor.setContenProvider(new ArrayContentProvider());      
-        		comboBoxEditor.setInput(Arrays.asList(new Boolean[] {(Boolean) obj, !(Boolean) obj}));
-        		
-        	}
+            EDataType eDataType = (EDataType) dataType;
+
+            if (eDataType.getInstanceClass() == String.class || eDataType.getInstanceClass() == int.class
+                    || eDataType.getInstanceClass() == byte.class || eDataType.getInstanceClass() == short.class
+                    || eDataType.getInstanceClass() == long.class || eDataType.getInstanceClass() == float.class
+                    || eDataType.getInstanceClass() == double.class || eDataType.getInstanceClass() == char.class) {
+                return textEditor;
+
+            } else if (eDataType.getInstanceClass() == Boolean.class || eDataType.getInstanceClass() == Boolean.TYPE) {
+                comboBoxEditor = new ComboBoxViewerCellEditor(viewer.getTable(), SWT.DROP_DOWN | SWT.READ_ONLY);
+                comboBoxEditor.setLabelProvider(new LabelProvider());
+                comboBoxEditor.setContenProvider(new ArrayContentProvider());
+                comboBoxEditor.setInput(Arrays.asList(new Boolean[] { (Boolean) obj, !(Boolean) obj }));
+
+            }
             return comboBoxEditor;
-            
+
         } else {
             return new TextCellEditor(viewer.getTable());
 
@@ -142,49 +143,49 @@ public class TaggedValueEditingSupport extends EditingSupport {
                 if (!obj.equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-                
+
             } else if (obj instanceof Integer) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Integer.valueOf((String) value));
                 if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-                
+
             } else if (obj instanceof Byte) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Byte.valueOf((String) value));
                 if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-                
+
             } else if (obj instanceof Short) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Short.valueOf((String) value));
                 if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-                
+
             } else if (obj instanceof Long) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Long.valueOf((String) value));
                 if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-                
+
             } else if (obj instanceof Float) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Float.valueOf((String) value));
                 if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-                
+
             } else if (obj instanceof Double) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Double.valueOf((String) value));
                 if (!obj.toString().equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
                 }
-                
+
             } else if (obj instanceof Character) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
                         Character.valueOf((char) value));
@@ -204,18 +205,17 @@ public class TaggedValueEditingSupport extends EditingSupport {
                 }
 
             } else if (obj instanceof Boolean) {
-            	Boolean oldBoolean = Boolean.valueOf((Boolean) obj);
-            	Boolean newBoolean = Boolean.valueOf((Boolean) value);
-        			if (newBoolean == null || (newBoolean.toString()).trim().length() == 0) {
-                        cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr, 
-                        		null);
-                        editingDomain.getCommandStack().execute(cmd);
-        			} else if (oldBoolean != null && oldBoolean != newBoolean) {
-                        cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr, 
-                        		newBoolean);
-                        editingDomain.getCommandStack().execute(cmd);
-        			}
-        			
+                Boolean oldBoolean = Boolean.valueOf((Boolean) obj);
+                Boolean newBoolean = Boolean.valueOf((Boolean) value);
+                if (newBoolean == null || (newBoolean.toString()).trim().length() == 0) {
+                    cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr, null);
+                    editingDomain.getCommandStack().execute(cmd);
+                } else if (oldBoolean != null && oldBoolean != newBoolean) {
+                    cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr,
+                            newBoolean);
+                    editingDomain.getCommandStack().execute(cmd);
+                }
+
             } else {
                 // do nothing
             }

@@ -66,8 +66,9 @@ public class ChangedListener implements IValueChangeListener {
         } else if (event.diff.getNewValue() instanceof ProfileApplicationDecorator) {
             this.view.getTableViewer().setItemCount(0);
             throw new ClassCastException();
-//            final ProfileApplicationDecorator pad = (ProfileApplicationDecorator) event.diff.getNewValue();
-//            this.view.getMaster().setValue(pad.getProfileApplications());
+            // final ProfileApplicationDecorator pad = (ProfileApplicationDecorator)
+            // event.diff.getNewValue();
+            // this.view.getMaster().setValue(pad.getProfileApplications());
         }
     }
 

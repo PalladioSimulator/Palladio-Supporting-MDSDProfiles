@@ -62,7 +62,7 @@ public class EStereotypableObjectImpl extends EObjectImpl implements EStereotypa
             logger.debug("method=getStereotypeApplications | eStereotypableObject=" + this);
         }
 
-        final EList<StereotypeApplication> stereotypeApplications = new BasicEList<StereotypeApplication>();
+        EList<StereotypeApplication> stereotypeApplications = new BasicEList<StereotypeApplication>();
 
         for (final ProfileApplicationDecorator profileApplicationDecorator : getProfileApplicationDecorators()) {
             stereotypeApplications.addAll(profileApplicationDecorator.getStereotypeApplications(this));
@@ -78,31 +78,25 @@ public class EStereotypableObjectImpl extends EObjectImpl implements EStereotypa
     public EList<StereotypeApplication> getStereotypeApplications(final Stereotype stereotype) {
         final EList<StereotypeApplication> stereotypeApplications = new BasicEList<StereotypeApplication>();
 
-		for (StereotypeApplication stereotypeApplication : getStereotypeApplications()) {
-			Stereotype appliedStereotype = stereotypeApplication
-					.getStereotype();
-			boolean sameStereotypes = appliedStereotype != null
-					&& appliedStereotype.equals(stereotype);
-			boolean equalStereotypes = false;
-			if (!sameStereotypes) {
-				String appliedNsURI = appliedStereotype.getEPackage()
-						.getNsURI();
-				String appliedQualifiedName = EMFCoreUtil.getQualifiedName(
-						appliedStereotype, true);
-				String appliedFullyQualifiedName = appliedNsURI
-						+ appliedQualifiedName;
-				String nsURI = stereotype.getEPackage().getNsURI();
-				String qualifiedName = EMFCoreUtil.getQualifiedName(stereotype,
-						true);
-				String fullyQualifiedName = nsURI + qualifiedName;
-				equalStereotypes = appliedFullyQualifiedName != null
-						&& appliedFullyQualifiedName.equals(fullyQualifiedName);
-			}
-			if (sameStereotypes || equalStereotypes) {
-				stereotypeApplications.add(stereotypeApplication);
-			}
-		}
-		return stereotypeApplications;
+        for (StereotypeApplication stereotypeApplication : getStereotypeApplications()) {
+            Stereotype appliedStereotype = stereotypeApplication.getStereotype();
+            boolean sameStereotypes = appliedStereotype != null && appliedStereotype.equals(stereotype);
+            boolean equalStereotypes = false;
+            if (!sameStereotypes) {
+                String appliedNsURI = appliedStereotype.getEPackage().getNsURI();
+                String appliedQualifiedName = EMFCoreUtil.getQualifiedName(appliedStereotype, true);
+                String appliedFullyQualifiedName = appliedNsURI + appliedQualifiedName;
+                String nsURI = stereotype.getEPackage().getNsURI();
+                String qualifiedName = EMFCoreUtil.getQualifiedName(stereotype, true);
+                String fullyQualifiedName = nsURI + qualifiedName;
+                equalStereotypes = appliedFullyQualifiedName != null
+                        && appliedFullyQualifiedName.equals(fullyQualifiedName);
+            }
+            if (sameStereotypes || equalStereotypes) {
+                stereotypeApplications.add(stereotypeApplication);
+            }
+        }
+        return stereotypeApplications;
     }
 
     /**
@@ -127,7 +121,7 @@ public class EStereotypableObjectImpl extends EObjectImpl implements EStereotypa
     @Override
     public EList<Stereotype> getAppliedStereotypes() {
 
-        final EList<Stereotype> appliedStereotypes = new BasicEList<Stereotype>();
+        EList<Stereotype> appliedStereotypes = new BasicEList<Stereotype>();
 
         for (StereotypeApplication stereotypeApplication : getStereotypeApplications()) {
             appliedStereotypes.add(stereotypeApplication.getStereotype());
@@ -244,31 +238,31 @@ public class EStereotypableObjectImpl extends EObjectImpl implements EStereotypa
 
         for (final Profile profile : IProfileRegistry.INSTANCE.getRegisteredProfiles()) {
 
-        	applicableStereotypes.addAll(getApplicableStereotypes(profile));
+            applicableStereotypes.addAll(getApplicableStereotypes(profile));
         }
 
         return applicableStereotypes;
     }
 
     @Override
-	public EList<Stereotype> getApplicableStereotypes(final Profile profile) {
+    public EList<Stereotype> getApplicableStereotypes(final Profile profile) {
         // Check applicability of stereotypes by calling existing decorators. This ensures that
         // upper and lower bounds of stereotype extensions are checked by EMF Profile internally.
         final EList<Stereotype> applicableStereotypes = new BasicEList<Stereotype>();
-		final ProfileApplicationDecorator profileApplicationDecorator = ProfileApplicationFileRegistry.INSTANCE
-		        .getExistingProfileApplicationDecorator(this, profile);
+        final ProfileApplicationDecorator profileApplicationDecorator = ProfileApplicationFileRegistry.INSTANCE
+                .getExistingProfileApplicationDecorator(this, profile);
 
-		if (profileApplicationDecorator != null) {
-		    for (final StereotypeApplicability stereotypeApplicability : profileApplicationDecorator
-		            .getApplicableStereotypes(this)) {
-		        applicableStereotypes.add(stereotypeApplicability.getStereotype());
-		    }
-		} else {
+        if (profileApplicationDecorator != null) {
+            for (final StereotypeApplicability stereotypeApplicability : profileApplicationDecorator
+                    .getApplicableStereotypes(this)) {
+                applicableStereotypes.add(stereotypeApplicability.getStereotype());
+            }
+        } else {
 
-		    applicableStereotypes.addAll(profile.getApplicableStereotypes(this.eClass()));
-		}
-		return applicableStereotypes;
-	}
+            applicableStereotypes.addAll(profile.getApplicableStereotypes(this.eClass()));
+        }
+        return applicableStereotypes;
+    }
 
     /**
      * {@inheritDoc}
@@ -337,12 +331,12 @@ public class EStereotypableObjectImpl extends EObjectImpl implements EStereotypa
         }
     }
 
-	@Override
-	public EList<StereotypeApplication> removeAllStereotypeApplications(Stereotype stereotype) {
-		EList<StereotypeApplication> stereotypeApplications = getStereotypeApplications(stereotype);
-		for (StereotypeApplication stereotypeApplication : stereotypeApplications) {
-			removeStereotypeApplication(stereotypeApplication);
-		}
-		return stereotypeApplications;
-	}
+    @Override
+    public EList<StereotypeApplication> removeAllStereotypeApplications(Stereotype stereotype) {
+        EList<StereotypeApplication> stereotypeApplications = getStereotypeApplications(stereotype);
+        for (StereotypeApplication stereotypeApplication : stereotypeApplications) {
+            removeStereotypeApplication(stereotypeApplication);
+        }
+        return stereotypeApplications;
+    }
 }

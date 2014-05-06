@@ -27,123 +27,112 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.helper.Helper;
  */
 public abstract class AbstractStereotypeHandler extends AbstractHandler {
 
-	private static final Logger logger = Logger
-			.getLogger(ApplyStereotypeHandler.class.getName());
+    private static final Logger logger = Logger.getLogger(ApplyStereotypeHandler.class.getName());
 
-	protected abstract String getStereotypeParameterID();
+    protected abstract String getStereotypeParameterID();
 
-	protected abstract String getProfileParameterID();
+    protected abstract String getProfileParameterID();
 
-	protected abstract String getActionName();
+    protected abstract String getActionName();
 
-	protected abstract Command getCommand(
-			EStereotypableObject eStereotypableObject, Stereotype stereotype);
+    protected abstract Command getCommand(EStereotypableObject eStereotypableObject, Stereotype stereotype);
 
-	protected abstract void handle(EStereotypableObject eStereotypableObject, Stereotype stereotype);
+    protected abstract void handle(EStereotypableObject eStereotypableObject, Stereotype stereotype);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("method=execute | event=" + event.toString());
-		}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        if (logger.isDebugEnabled()) {
+            logger.debug("method=execute | event=" + event.toString());
+        }
 
-		// TODO: maybe use static variables from ApplicableStereotypesSubmenu
-		// here?
-		final String stereotypeParameterID = getStereotypeParameterID();
-		final String profileParameterID = getProfileParameterID();
-		
-		final String selectedStereotype = event.getParameter(stereotypeParameterID);
-		final String selectedProfile = event.getParameter(profileParameterID);
+        // TODO: maybe use static variables from ApplicableStereotypesSubmenu
+        // here?
+        final String stereotypeParameterID = getStereotypeParameterID();
+        final String profileParameterID = getProfileParameterID();
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("selected stereotype '" + selectedStereotype
-					+ "' from profile '" + selectedProfile + "' for "
-					+ getActionName());
-		}
+        final String selectedStereotype = event.getParameter(stereotypeParameterID);
+        final String selectedProfile = event.getParameter(profileParameterID);
 
-		final ISelection selection = HandlerUtil.getActiveMenuSelection(event);
+        if (logger.isDebugEnabled()) {
+            logger.debug("selected stereotype '" + selectedStereotype + "' from profile '" + selectedProfile + "' for "
+                    + getActionName());
+        }
 
-		if (selection == null || !(selection instanceof IStructuredSelection)) {
-			return null;
-		}
+        final ISelection selection = HandlerUtil.getActiveMenuSelection(event);
 
-		final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+        if (selection == null || !(selection instanceof IStructuredSelection)) {
+            return null;
+        }
 
-		final Object firstElement = structuredSelection.getFirstElement();
+        final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
-		if (firstElement != null
-				&& firstElement instanceof EStereotypableObject) {
+        final Object firstElement = structuredSelection.getFirstElement();
 
-			final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
+        if (firstElement != null && firstElement instanceof EStereotypableObject) {
 
-			final Profile profile = Helper.getProfile(selectedProfile);
-			
-			if (profile != null) {
-				final Stereotype applicableStereotype = profile
-						.getStereotype(selectedStereotype);
-	
-				if (applicableStereotype != null) {
-	
-					final IEditorPart editorPart = HandlerUtil
-							.getActiveEditor(event);
-	
-					if (editorPart != null
-							&& editorPart instanceof IEditingDomainProvider) {
-						Command stereotypeCommand = getCommand(
-								eStereotypableObject, applicableStereotype);
-	
-						((IEditingDomainProvider) editorPart).getEditingDomain()
-								.getCommandStack().execute(stereotypeCommand);
-					}
-				}
-			}
+            final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
 
-			return null;
-		}
+            final Profile profile = Helper.getProfile(selectedProfile);
 
-		// TODO: check if this is obsolete for graphical editors
-		final Shell shell = HandlerUtil.getActiveShell(event);
+            if (profile != null) {
+                final Stereotype applicableStereotype = profile.getStereotype(selectedStereotype);
 
-		if (firstElement != null && firstElement instanceof EditPart) {
-			EditPart editPart = (EditPart) firstElement;
-			Object model = editPart.getModel();
+                if (applicableStereotype != null) {
 
-			if (model != null && model instanceof Node) {
-				Node node = (Node) model;
-				EObject selectedObject = node.getElement();
+                    final IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
 
-				if (selectedObject != null
-						&& selectedObject instanceof EStereotypableObject) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("selected object is instance of EStereotypableObject | class="
-								+ selectedObject.getClass());
-					}
+                    if (editorPart != null && editorPart instanceof IEditingDomainProvider) {
+                        Command stereotypeCommand = getCommand(eStereotypableObject, applicableStereotype);
 
-					final EStereotypableObject eStereotypableObject = (EStereotypableObject) selectedObject;
-					final Stereotype applicableStereotype = eStereotypableObject
-							.getApplicableStereotype(selectedStereotype);
+                        ((IEditingDomainProvider) editorPart).getEditingDomain().getCommandStack()
+                                .execute(stereotypeCommand);
+                    }
+                }
+            }
 
-					handle(eStereotypableObject, applicableStereotype);
+            return null;
+        }
 
-				} else {
-					if (logger.isDebugEnabled()) {
-						logger.debug("selected object is not instance of EStereotypableObject | class="
-								+ selectedObject.getClass());
-					}
-				}
+        // TODO: check if this is obsolete for graphical editors
+        final Shell shell = HandlerUtil.getActiveShell(event);
 
-			} else {
-				MessageDialog.openInformation(shell, "Info",
-						"model from edit part is not an instance of Node!");
-			}
+        if (firstElement != null && firstElement instanceof EditPart) {
+            EditPart editPart = (EditPart) firstElement;
+            Object model = editPart.getModel();
 
-		} else {
-			MessageDialog.openInformation(shell, "Info",
-					"Please select an edit part");
-		}
-		return null;
-	}
+            if (model != null && model instanceof Node) {
+                Node node = (Node) model;
+                EObject selectedObject = node.getElement();
+
+                if (selectedObject != null && selectedObject instanceof EStereotypableObject) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("selected object is instance of EStereotypableObject | class="
+                                + selectedObject.getClass());
+                    }
+
+                    final EStereotypableObject eStereotypableObject = (EStereotypableObject) selectedObject;
+                    final Stereotype applicableStereotype = eStereotypableObject
+                            .getApplicableStereotype(selectedStereotype);
+
+                    handle(eStereotypableObject, applicableStereotype);
+
+                } else {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("selected object is not instance of EStereotypableObject | class="
+                                + selectedObject.getClass());
+                    }
+                }
+
+            } else {
+                MessageDialog.openInformation(shell, "Info", "model from edit part is not an instance of Node!");
+            }
+
+        } else {
+            MessageDialog.openInformation(shell, "Info", "Please select an edit part");
+        }
+        return null;
+    }
 }

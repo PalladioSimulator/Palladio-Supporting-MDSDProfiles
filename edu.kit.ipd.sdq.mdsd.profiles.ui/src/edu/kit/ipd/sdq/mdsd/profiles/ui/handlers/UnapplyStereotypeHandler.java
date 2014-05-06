@@ -15,30 +15,28 @@ import edu.kit.ipd.sdq.mdsd.profiles.ui.commands.UnapplyStereotypeCommand;
  * 
  */
 public class UnapplyStereotypeHandler extends AbstractStereotypeHandler {
-	@Override
-	protected String getStereotypeParameterID() {
-		return Constants.UNAPPLY_STEREO_PARAM_ID;
-	}
+    @Override
+    protected String getStereotypeParameterID() {
+        return Constants.UNAPPLY_STEREO_PARAM_ID;
+    }
 
-	@Override
-	protected String getProfileParameterID() {
-		return Constants.UNAPPLY_PROFILE_PARAM_ID;
-	}
+    @Override
+    protected String getProfileParameterID() {
+        return Constants.UNAPPLY_PROFILE_PARAM_ID;
+    }
 
-	@Override
-	protected String getActionName() {
-		return Constants.UNAPPLY_ACTION_NAME;
-	}
+    @Override
+    protected String getActionName() {
+        return Constants.UNAPPLY_ACTION_NAME;
+    }
 
-	@Override
-	protected Command getCommand(EStereotypableObject eStereotypableObject,
-			Stereotype stereotype) {
-		return new UnapplyStereotypeCommand(eStereotypableObject, stereotype);
-	}
+    @Override
+    protected Command getCommand(EStereotypableObject eStereotypableObject, Stereotype stereotype) {
+        return new UnapplyStereotypeCommand(eStereotypableObject, stereotype);
+    }
 
-	@Override
-	protected void handle(EStereotypableObject eStereotypableObject,
-			Stereotype stereotype) {
-		eStereotypableObject.removeAllStereotypeApplications(stereotype);
-	}
+    @Override
+    protected void handle(EStereotypableObject eStereotypableObject, Stereotype stereotype) {
+        eStereotypableObject.removeAllStereotypeApplications(stereotype);
+    }
 }

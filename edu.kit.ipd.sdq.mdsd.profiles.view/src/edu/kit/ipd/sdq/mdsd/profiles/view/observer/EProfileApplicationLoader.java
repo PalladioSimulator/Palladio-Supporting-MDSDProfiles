@@ -46,12 +46,12 @@ public class EProfileApplicationLoader {
         return this.eStereotypableObjects;
     }
 
-	/**
-	 * @param eStereotypableObject
-	 */
-	public Collection<ProfileApplicationDecorator> getProfileApplicationDecorator(
-			EStereotypableObject eStereotypableObject) {
-		try {
+    /**
+     * @param eStereotypableObject
+     */
+    public Collection<ProfileApplicationDecorator> getProfileApplicationDecorator(
+            EStereotypableObject eStereotypableObject) {
+        try {
             this.profileApplicationDecorators = this.observer.findProfileApplicationDecorators(eStereotypableObject);
             logger.info("Decorator(s): " + this.profileApplicationDecorators);
         } catch (final Exception e) {
@@ -59,6 +59,6 @@ public class EProfileApplicationLoader {
             e.printStackTrace();
             throw new NullPointerException();
         }
-		return profileApplicationDecorators;
-	}
+        return profileApplicationDecorators;
+    }
 }

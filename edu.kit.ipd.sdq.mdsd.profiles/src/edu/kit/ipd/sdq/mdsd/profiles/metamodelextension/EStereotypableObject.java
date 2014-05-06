@@ -88,10 +88,13 @@ public interface EStereotypableObject extends EObject {
      * @return The stereotype application, or null if stereotype wasn't applied successfully.
      */
     StereotypeApplication applyStereotype(Stereotype stereotype);
-    
+
     /**
-     * Unapplies the specified stereotype for this element by removing all applications of the specified stereotype and returns these applications.
-     * @param stereotype The stereotype to unapply.
+     * Unapplies the specified stereotype for this element by removing all applications of the
+     * specified stereotype and returns these applications.
+     * 
+     * @param stereotype
+     *            The stereotype to unapply.
      * @return The removed stereotype applications.
      */
     EList<StereotypeApplication> removeAllStereotypeApplications(Stereotype stereotype);
@@ -114,10 +117,10 @@ public interface EStereotypableObject extends EObject {
      * @return The stereotypes that are applicable to this element.
      */
     EList<Stereotype> getApplicableStereotypes();
-    
+
     /**
-     * Retrieves the stereotypes of the given profile that are applicable to this element, including those that are
-     * already applied.
+     * Retrieves the stereotypes of the given profile that are applicable to this element, including
+     * those that are already applied.
      * 
      * The current state of this element is considered, which means that upper and lower bounds of
      * the stereotype extensions are checked.

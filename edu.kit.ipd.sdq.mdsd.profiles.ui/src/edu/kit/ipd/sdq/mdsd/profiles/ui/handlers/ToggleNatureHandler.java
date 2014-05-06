@@ -24,66 +24,64 @@ import edu.kit.ipd.sdq.mdsd.profiles.nature.ProfileProjectNature;
  */
 public class ToggleNatureHandler extends AbstractHandler {
 
-	private QualifiedName path = new QualifiedName("html", "path");
+    private QualifiedName path = new QualifiedName("html", "path");
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Shell shell = HandlerUtil.getActiveShell(event);
-		ISelection selection = HandlerUtil.getActiveMenuSelection(event);
-		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        Shell shell = HandlerUtil.getActiveShell(event);
+        ISelection selection = HandlerUtil.getActiveMenuSelection(event);
+        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
-		Object firstElement = structuredSelection.getFirstElement();
-		if (firstElement instanceof IProject) {
-			// createOutput(shell, firstElement);
-			IProject project = (IProject) firstElement;
-			System.out.println(path);
-			toggleNature(project);
+        Object firstElement = structuredSelection.getFirstElement();
+        if (firstElement instanceof IProject) {
+            // createOutput(shell, firstElement);
+            IProject project = (IProject) firstElement;
+            System.out.println(path);
+            toggleNature(project);
 
-		} else {
-			MessageDialog.openInformation(shell, "Info",
-					"Please select a project folder");
-		}
-		return null;
-	}
+        } else {
+            MessageDialog.openInformation(shell, "Info", "Please select a project folder");
+        }
+        return null;
+    }
 
-	/**
-	 * Toggles sample nature on a project
-	 * 
-	 * @param project
-	 *            to have sample nature added or removed
-	 */
-	private void toggleNature(final IProject project) {
-		try {
-			IProjectDescription description = project.getDescription();
-			String[] natures = description.getNatureIds();
+    /**
+     * Toggles sample nature on a project
+     * 
+     * @param project
+     *            to have sample nature added or removed
+     */
+    private void toggleNature(final IProject project) {
+        try {
+            IProjectDescription description = project.getDescription();
+            String[] natures = description.getNatureIds();
 
-			System.out.println("DBG: ToggleNatureAction.toggleNature");
-			System.out.println("DBG: nature ids: ");
+            System.out.println("DBG: ToggleNatureAction.toggleNature");
+            System.out.println("DBG: nature ids: ");
 
-			for (int i = 0; i < natures.length; ++i) {
-				if (ProfileProjectNature.NATURE_ID.equals(natures[i])) {
-					// Remove the nature
-					System.out.println("DBG: --- " + natures[i]);
-					String[] newNatures = new String[natures.length - 1];
-					System.arraycopy(natures, 0, newNatures, 0, i);
-					System.arraycopy(natures, i + 1, newNatures, i,
-							natures.length - i - 1);
-					description.setNatureIds(newNatures);
-					project.setDescription(description, null);
-					return;
-				}
-			}
+            for (int i = 0; i < natures.length; ++i) {
+                if (ProfileProjectNature.NATURE_ID.equals(natures[i])) {
+                    // Remove the nature
+                    System.out.println("DBG: --- " + natures[i]);
+                    String[] newNatures = new String[natures.length - 1];
+                    System.arraycopy(natures, 0, newNatures, 0, i);
+                    System.arraycopy(natures, i + 1, newNatures, i, natures.length - i - 1);
+                    description.setNatureIds(newNatures);
+                    project.setDescription(description, null);
+                    return;
+                }
+            }
 
-			// Add the nature
-			String[] newNatures = new String[natures.length + 1];
-			System.arraycopy(natures, 0, newNatures, 0, natures.length);
-			newNatures[natures.length] = ProfileProjectNature.NATURE_ID;
-			description.setNatureIds(newNatures);
-			project.setDescription(description, null);
-		} catch (CoreException e) {
-		}
-	}
+            // Add the nature
+            String[] newNatures = new String[natures.length + 1];
+            System.arraycopy(natures, 0, newNatures, 0, natures.length);
+            newNatures[natures.length] = ProfileProjectNature.NATURE_ID;
+            description.setNatureIds(newNatures);
+            project.setDescription(description, null);
+        } catch (CoreException e) {
+        }
+    }
 }
