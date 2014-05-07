@@ -2,8 +2,9 @@
 <feature
       id="edu.kit.ipd.sdq.mdsd.profiles.feature"
       label="Profiles"
-      version="1.0.0.qualifier"
-      provider-name="Chair of Software Desigin and Quality at K.I.T.">
+      version="3.5.0.qualifier"
+      provider-name="sdq.ipd.uka.de"
+      plugin="de.uka.ipd.sdq.branding">
 
    <description url="http://www.example.com/description">
       An extension of EMF-Profiles, which adapts the concept of the
