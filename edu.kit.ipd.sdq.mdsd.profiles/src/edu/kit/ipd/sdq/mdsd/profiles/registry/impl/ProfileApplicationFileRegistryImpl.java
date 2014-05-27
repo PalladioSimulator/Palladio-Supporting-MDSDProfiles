@@ -142,12 +142,12 @@ public class ProfileApplicationFileRegistryImpl implements ProfileApplicationFil
         setUpProfileApplicationDecoratorsForExistingFiles(eStereotypableObject);
 
         if (logger.isDebugEnabled()) {
-            if (!modelToDecoratorMap.get(eStereotypableObject.eResource()).containsKey(profileFromRegistryResourceSet)) {
+            if (!modelToDecoratorMap.get(eStereotypableObject.eResource().getURI().toString()).containsKey(profileFromRegistryResourceSet)) {
                 logger.debug("no decorator for profile '" + profileFromRegistryResourceSet.getName() + "'");
             }
         }
 
-        return modelToDecoratorMap.get(eStereotypableObject.eResource()).get(profileFromRegistryResourceSet);
+        return modelToDecoratorMap.get(eStereotypableObject.eResource().getURI().toString()).get(profileFromRegistryResourceSet);
     }
 
     @Override
