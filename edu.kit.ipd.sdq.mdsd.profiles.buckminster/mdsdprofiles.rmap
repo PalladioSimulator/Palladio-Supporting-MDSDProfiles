@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
   <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
+  <rm:locator searchPathRef="EMFProfiles" failOnError="false"/>
   <rm:locator searchPathRef="eclipse-release" failOnError="false"/>
   <rm:locator searchPathRef="orbit" failOnError="false"/>
   <rm:searchPath name="MDSDProfiles">
@@ -10,6 +11,16 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
+  <searchPath name="EMFProfiles">
+    <provider readerType="git" componentTypes="osgi.bundle,eclipse.feature" resolutionFilter="">
+        <uri format="{0}/develop-kit,{1}">
+          <bc:propertyRef key="workspace.root" />
+          <bc:propertyRef key="buckminster.component" />
+        </uri>
+      <property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>
+      <property key="git.remote.name" value="develop-kit"/>
+    </provider>
+  </searchPath>
   <rm:searchPath name="eclipse-release">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
       <rm:property key="buckminster.source" value="false"/>
