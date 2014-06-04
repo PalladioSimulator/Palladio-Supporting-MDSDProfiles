@@ -67,7 +67,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IPartService;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -91,7 +90,6 @@ import edu.kit.ipd.sdq.mdsd.profiles.ui.menu.ProfileListMenu;
 import edu.kit.ipd.sdq.mdsd.profiles.view.action.ClearAction;
 import edu.kit.ipd.sdq.mdsd.profiles.view.action.RemoveStereotypeAction;
 import edu.kit.ipd.sdq.mdsd.profiles.view.databinding.ChangedListener;
-import edu.kit.ipd.sdq.mdsd.profiles.view.databinding.EProfileProviderContentAdapter;
 import edu.kit.ipd.sdq.mdsd.profiles.view.databinding.TaggedValueEditingSupport;
 import edu.kit.ipd.sdq.mdsd.profiles.view.observer.EProfileApplicationLoader;
 import edu.kit.ipd.sdq.mdsd.profiles.view.observer.EStereotypedEditorObserver;
@@ -160,7 +158,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
     private RemoveStereotypeAction removeStereotypeAction;
     private ClearAction clearAction;
-        
+
     /**
      * The listener we register with the selection service.
      * 
@@ -168,8 +166,9 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      * EObject, which should be a EStereotypableObject.
      */
     private final ISelectionListener listener = new ISelectionListener() {
-        
+
         private EStereotypableObject localEStereotyped;
+
         @Override
         public void selectionChanged(IWorkbenchPart sourcepart, ISelection selection) {
             // Ignore our own selections
@@ -178,7 +177,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 if (treeSelection instanceof IAdaptable) {
                     // do nothing
                 }
-                if (treeSelection.getFirstElement() instanceof EStereotypableObject 
+                if (treeSelection.getFirstElement() instanceof EStereotypableObject
                         && !((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
                     logger.info("TreeSelection: " + treeSelection);
                     logger.info(treeSelection.getFirstElement() instanceof EStereotypableObject);
@@ -189,13 +188,15 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                } else if (treeSelection.getFirstElement() instanceof EStereotypableObject 
+                } else if (treeSelection.getFirstElement() instanceof EStereotypableObject
                         && ((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
                     ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
-                    // The following two lines of code is temporary and have to out-commented if to work on the "load twice"-problem
-                    // And the first selection from a resource must than be a EStereotypableObject WITH APLIED STEREOTYPES
-//                    ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
-//                    ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+                    // The following two lines of code is temporary and have to out-commented if to
+                    // work on the "load twice"-problem
+                    // And the first selection from a resource must than be a EStereotypableObject
+                    // WITH APLIED STEREOTYPES
+                    // ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
+                    // ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     logger.warn("The root element wasn't applied any stereotypes.");
                 } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
@@ -205,50 +206,51 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             }
         }
     };
-    
+
     private final IPartListener partListener = new IPartListener() {
-    	private IWorkbenchPart activePart;
-		public void partActivated(IWorkbenchPart part) {
-			if (part instanceof IEditorPart) {
-				activePart = part;
-				logger.info("Active part: " + part.getTitle());
-			}
-		}
+        private IWorkbenchPart activePart;
 
-		public void partClosed(IWorkbenchPart part) {
-			if (part != activePart) {
-				activePart = null;
-//				ProfileApplicationFileRegistry.INSTANCE.clear();
-				treeViewer.setInput(Collections.emptyList());
-				logger.info("Closed part: " + part.getTitle());
-			}
-		}
+        public void partActivated(IWorkbenchPart part) {
+            if (part instanceof IEditorPart) {
+                activePart = part;
+                logger.info("Active part: " + part.getTitle());
+            }
+        }
 
-		@Override
-		public void partBroughtToTop(IWorkbenchPart part) {
-			if (part instanceof IEditorPart) {
-				activePart = part;
-				logger.info("Top part: " + part.getTitle());
-			}
-		}
+        public void partClosed(IWorkbenchPart part) {
+            if (part != activePart) {
+                activePart = null;
+                // ProfileApplicationFileRegistry.INSTANCE.clear();
+                treeViewer.setInput(Collections.emptyList());
+                logger.info("Closed part: " + part.getTitle());
+            }
+        }
 
-		@Override
-		public void partDeactivated(IWorkbenchPart part) {
-			if (part == activePart) {
-				activePart = null;
-				logger.info("Deactivated part: " + part.getTitle());
-			}
-		}
+        @Override
+        public void partBroughtToTop(IWorkbenchPart part) {
+            if (part instanceof IEditorPart) {
+                activePart = part;
+                logger.info("Top part: " + part.getTitle());
+            }
+        }
 
-		@Override
-		public void partOpened(IWorkbenchPart part) {
-			if (part instanceof IEditorPart) {
-				activePart = part;
-				treeViewer.setInput(Collections.emptyList());
-				logger.info("Opened part: " + part.getTitle());
-			}			
-		}
-	};
+        @Override
+        public void partDeactivated(IWorkbenchPart part) {
+            if (part == activePart) {
+                activePart = null;
+                logger.info("Deactivated part: " + part.getTitle());
+            }
+        }
+
+        @Override
+        public void partOpened(IWorkbenchPart part) {
+            if (part instanceof IEditorPart) {
+                activePart = part;
+                treeViewer.setInput(Collections.emptyList());
+                logger.info("Opened part: " + part.getTitle());
+            }
+        }
+    };
 
     private final IResourceChangeListener changeListener = new IResourceChangeListener() {
         @Override
@@ -275,7 +277,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      */
     private Collection<EStereotypableObject> callPerformObservation(final EStereotypableObject eStereotypableObject) {
         logger.info("Observation beginns.");
-        //List of estereotyped objects
+        // List of estereotyped objects
         Collection<EStereotypableObject> temp = this.loader.performObservation(eStereotypableObject);
         if (temp.isEmpty()) {
             logger.warn("Couldn't perform observation.");
@@ -300,9 +302,11 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 if (ProfilePropertiesView.this.treeViewer.getInput().equals(Collections.emptyList())) {
                     ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
                             .getAllExistingProfileApplicationDecorators(eStereotypableObject));
-                } else if (ProfilePropertiesView.this.treeViewer.getInput().equals(tempLoader.getProfileApplicationDecorator(eStereotypableObject))){
+                } else if (ProfilePropertiesView.this.treeViewer.getInput().equals(
+                        tempLoader.getProfileApplicationDecorator(eStereotypableObject))) {
                     ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
-                            .getAllExistingProfileApplicationDecorators(eStereotypableObject));;
+                            .getAllExistingProfileApplicationDecorators(eStereotypableObject));
+                    ;
                     ProfilePropertiesView.this.treeViewer.refresh();
                     ProfilePropertiesView.this.treeViewer.expandToLevel(2);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0); // Workaround for
@@ -311,9 +315,9 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             }
         });
     }
-    
+
     private IWorkbenchPage getActivePage() {
-    	return getSite().getPage();
+        return getSite().getPage();
     }
 
     /**
@@ -341,7 +345,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
         this.treeViewer.setLabelProvider(new ProfileProviderLabelAdapter(getAdapterFactory()));
         // Using our own content adapter to support an IResourceChangeListener
-//        this.treeViewer.setContentProvider(new EProfileProviderContentAdapter(getAdapterFactory()));
+        // this.treeViewer.setContentProvider(new
+        // EProfileProviderContentAdapter(getAdapterFactory()));
         this.treeViewer.setContentProvider(new ProfileProviderContentAdapter(getAdapterFactory()));
 
         this.treeViewer.setSorter(new EObjectSorter().createGenericEObjectSorter());
@@ -660,7 +665,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         // important: We need do unregister our listener when the view is disposed
         this.getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this.listener);
         this.getSite().getPage().removePartListener(this.partListener);
-        
+
         super.dispose();
     }
 

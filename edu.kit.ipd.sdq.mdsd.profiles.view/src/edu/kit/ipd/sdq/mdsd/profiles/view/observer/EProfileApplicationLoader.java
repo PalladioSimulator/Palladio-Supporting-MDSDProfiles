@@ -19,7 +19,7 @@ public class EProfileApplicationLoader {
 
     private static Logger logger = Logger.getLogger(EProfileApplicationLoader.class);
 
-    private Collection<EStereotypableObject> eStereotypableObjects = new BasicEList<>();
+    private final Collection<EStereotypableObject> eStereotypableObjects = new BasicEList<>();
     private Collection<ProfileApplicationDecorator> profileApplicationDecorators;
 
     private final EStereotypedEditorObserver observer = new EStereotypedEditorObserver();
@@ -31,7 +31,6 @@ public class EProfileApplicationLoader {
      * @param eStereotypableObject
      * @return
      */
-    @SuppressWarnings("static-access")
     public Collection<EStereotypableObject> performObservation(EStereotypableObject eStereotypableObject) {
 
         getProfileApplicationDecorator(eStereotypableObject);

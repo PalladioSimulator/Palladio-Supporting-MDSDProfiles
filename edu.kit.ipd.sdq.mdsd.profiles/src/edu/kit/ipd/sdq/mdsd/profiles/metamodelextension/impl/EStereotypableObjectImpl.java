@@ -10,10 +10,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EcoreUtil.EqualityHelper;
 import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
@@ -28,7 +25,6 @@ import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
 
 /**
  * @author Matthias Eisenmann
- * 
  */
 public class EStereotypableObjectImpl extends EObjectImpl implements EStereotypableObject {
 
