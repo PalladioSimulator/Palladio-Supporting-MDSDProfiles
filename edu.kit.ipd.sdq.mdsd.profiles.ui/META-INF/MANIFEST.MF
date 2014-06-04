@@ -16,9 +16,8 @@ Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.ui.workbench,
  org.eclipse.jface,
  org.eclipse.core.expressions;bundle-version="3.4.500",
- edu.kit.ipd.sdq.mdsd.profiles.util
-Import-Package: edu.kit.ipd.sdq.mdsd.profiles.metamodelextension,
- edu.kit.ipd.sdq.mdsd.profiles.nature,
- edu.kit.ipd.sdq.mdsd.profiles.util.helper
+ edu.kit.ipd.sdq.mdsd.profiles.util,
+ edu.kit.ipd.sdq.mdsd.profiles;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.mdsd.profiles.nature;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.mdsd.profiles.ui.commands,
  edu.kit.ipd.sdq.mdsd.profiles.ui.menu
