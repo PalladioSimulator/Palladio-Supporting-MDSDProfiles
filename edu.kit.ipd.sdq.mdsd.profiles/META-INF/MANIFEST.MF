@@ -14,8 +14,7 @@ Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
  org.modelversioning.emfprofile;bundle-version="1.1.0",
  org.modelversioning.emfprofile.registry;bundle-version="1.0.0",
  org.modelversioning.emfprofile.application.registry;bundle-version="1.0.0",
- org.eclipse.gmf.runtime.emf.core
-Import-Package: edu.kit.ipd.sdq.mdsd.profiles.builder,
- edu.kit.ipd.sdq.mdsd.profiles.nature,
- edu.kit.ipd.sdq.mdsd.profiles.util.helper,
- edu.kit.ipd.sdq.mdsd.profiles.util.observer
+ org.eclipse.gmf.runtime.emf.core,
+ edu.kit.ipd.sdq.mdsd.profiles.builder;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.mdsd.profiles.nature;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.mdsd.profiles.util;bundle-version="1.0.0"
