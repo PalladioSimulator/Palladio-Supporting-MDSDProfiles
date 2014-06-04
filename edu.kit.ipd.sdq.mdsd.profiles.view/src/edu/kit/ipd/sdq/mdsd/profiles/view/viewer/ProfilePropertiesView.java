@@ -210,6 +210,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     private final IPartListener partListener = new IPartListener() {
         private IWorkbenchPart activePart;
 
+        @Override
         public void partActivated(IWorkbenchPart part) {
             if (part instanceof IEditorPart) {
                 activePart = part;
@@ -217,6 +218,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             }
         }
 
+        @Override
         public void partClosed(IWorkbenchPart part) {
             if (part != activePart) {
                 activePart = null;
@@ -499,7 +501,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         }
     }
 
-    @SuppressWarnings("static-access")
     protected void initializeEditingDomain() {
         // Create an adapter factory that yields item providers.
         ProfilePropertiesView.adapterFactory = new ComposedAdapterFactory(
