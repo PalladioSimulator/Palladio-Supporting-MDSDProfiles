@@ -17,8 +17,7 @@
           <bc:propertyRef key="workspace.root" />
           <bc:propertyRef key="buckminster.component" />
         </rm:uri>
-      <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>
-      <rm:property key="git.remote.name" value="develop-kit-lehrig"/>
+      <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>      
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="eclipse-release">
