@@ -17,4 +17,4 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.8.1",
  edu.kit.ipd.sdq.mdsd.profiles.builder;bundle-version="1.0.0",
  edu.kit.ipd.sdq.mdsd.profiles.nature;bundle-version="1.0.0",
  edu.kit.ipd.sdq.mdsd.profiles.util;bundle-version="1.0.0",
- org.apache.log4j;bundle-version="1.2.15"
+ org.apache.log4j;bundle-version="1.2.15";visibility:=reexport
