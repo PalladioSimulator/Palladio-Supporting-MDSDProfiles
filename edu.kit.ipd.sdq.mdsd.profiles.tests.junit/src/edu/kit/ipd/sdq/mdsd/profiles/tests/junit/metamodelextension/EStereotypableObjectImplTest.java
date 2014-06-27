@@ -658,8 +658,16 @@ public class EStereotypableObjectImplTest {
         stereotypeApplications = b1.getStereotypeApplications(SESSION_BEAN_QUALIFIED_NAME);
         assertEquals(1, stereotypeApplications.size());
 
+        stereotypeApplication = stereotypeApplications.get(0);
+        
         stateful = getValueOfEStructuralFeature(stereotypeApplication, "stateful");
         assertEquals(true, stateful);
+        
+        // set and persist the old value
+        setValueOfEStructuralFeature(stereotypeApplication, "stateful", false);
+        b1.saveContainingProfileApplication();
+        stateful = getValueOfEStructuralFeature(stereotypeApplication, "stateful");
+        assertEquals(false, stateful);
     }
 
     /**
@@ -729,6 +737,13 @@ public class EStereotypableObjectImplTest {
 
         referencedStereotypeApplication = (StereotypeApplication) myReferencedStereotype;
         assertEquals("referencedStereotype2", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
+        
+        // reset and persist the old value
+        referencedStereotypeApplication = stereotypeApplicationsOfA1.get(0);
+        setValueOfEStructuralFeature(stereotypeApplicationOfB1, "myReferencedStereotype",
+        		referencedStereotypeApplication);
+        a1.saveContainingProfileApplication();
+        assertEquals("referencedStereotype1", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
     }
 
     /**
