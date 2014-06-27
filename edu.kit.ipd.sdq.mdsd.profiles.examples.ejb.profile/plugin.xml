@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin
-  id="edu.kit.ipd.sdq.mdsd.profiles.tests.testsets.ejb.profile"
-   name="edu.kit.ipd.sdq.mdsd.profiles.tests.testsets.ejb.profile"
+  id="edu.kit.ipd.sdq.mdsd.profiles.examples.ejb.profile"
+   name="edu.kit.ipd.sdq.mdsd.profiles.examples.ejb.profile"
    version="1.0.0.qualifier"
   provider="">
   <requires>
