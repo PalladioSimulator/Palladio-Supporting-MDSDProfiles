@@ -70,40 +70,6 @@ UML profiles, to support Palladio Componenent Models.
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model.editor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="edu.kit.ipd.sdq.mdsd.profiles.nature"
          download-size="0"
          install-size="0"
