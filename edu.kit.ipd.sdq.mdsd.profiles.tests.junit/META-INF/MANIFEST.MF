@@ -14,4 +14,4 @@ Require-Bundle: org.junit,
  org.apache.log4j;bundle-version="1.2.15",
  edu.kit.ipd.sdq.mdsd.profiles;bundle-version="1.0.0",
  edu.kit.ipd.sdq.mdsd.profiles.examples.simplemodel.model;bundle-version="1.0.0",
- edu.kit.ipd.sdq.mdsd.profiles.tests.testsets.ejb.profile;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.mdsd.profiles.examples.ejb.profile;bundle-version="1.0.0"
