@@ -602,7 +602,7 @@ public class EStereotypableObjectImplTest {
     @Test
     public void testValidatePersistedReferencesOfEStereotypableObjectsAndProfileApplication() {
 
-        final String RESOURCES_PROJECT_NAME = "Resources";
+        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
         final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs.xmi";
 
         Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
@@ -625,7 +625,7 @@ public class EStereotypableObjectImplTest {
      */
     @Test
     public void testCheckTaggedValuePersistence() {
-        final String RESOURCES_PROJECT_NAME = "Resources";
+        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
         final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs_TaggedValuePersistenceTest.xmi";
 
         Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
@@ -668,7 +668,7 @@ public class EStereotypableObjectImplTest {
      */
     @Test
     public void testCheckStereotypeReferencePersistence() {
-        final String RESOURCES_PROJECT_NAME = "Resources";
+        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
         final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs_ReferencePersistenceTest.xmi";
 
         Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
@@ -738,7 +738,7 @@ public class EStereotypableObjectImplTest {
      */
     @Test
     public void testNumberOfLoadedResourcesInResourceSet() {
-        final String RESOURCES_PROJECT_NAME = "Resources";
+        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
         final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs.xmi";
 
         Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
