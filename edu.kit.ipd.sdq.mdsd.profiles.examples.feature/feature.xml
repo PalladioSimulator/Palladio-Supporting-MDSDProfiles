@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="edu.kit.ipd.sdq.mdsds.profiles.examples.feature"
+      id="edu.kit.ipd.sdq.mdsd.profiles.examples.feature"
       label="Profiles Examples"
       version="3.5.0.qualifier"
       provider-name="palladiosimulator.org">
@@ -50,5 +50,45 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.mdsd.profiles.examples.ejb.profile"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict.profile"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.mdsd.profiles.examples.simplemodel.model"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.mdsd.profiles.examples.simplemodel.model.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.mdsd.profiles.examples.simplemodel.model.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.mdsd.profiles.examples.simplemodel.model.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
