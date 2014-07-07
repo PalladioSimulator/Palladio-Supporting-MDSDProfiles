@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:emfprofile="http://www.modelversioning.org/emfprofile/1.1" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <emfprofile:Profile xmi:id="_DO-ggEB8EeODVo7lnFxxgA" name="AllocateStrict" nsURI="edu.kit.ipd.sdq.mdsd.profiles.examples.palladio.allocatestrict/1.0" nsPrefix="allocatestrict">
+    <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_EoLvIEB8EeODVo7lnFxxgA" name="AllocateStrict">
+      <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
+      <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_s44y0EB8EeOJ3KU12oikjw" name="isStrict">
+        <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      </eStructuralFeatures>
+      <extensions xmi:type="emfprofile:Extension" xmi:id="_RoaEMEB8EeODVo7lnFxxgA" upperBound="1">
+        <target xmi:type="ecore:EClass" href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//allocation/AllocationContext"/>
+      </extensions>
+    </eClassifiers>
+  </emfprofile:Profile>
+  <notation:Diagram xmi:id="_DO_HkEB8EeODVo7lnFxxgA" type="EMFProfile" element="_DO-ggEB8EeODVo7lnFxxgA" name="profile.emfprofile_diagram" measurementUnit="Pixel">
+    <children xmi:type="notation:Node" xmi:id="_EoQAkEB8EeODVo7lnFxxgA" type="2006" element="_EoLvIEB8EeODVo7lnFxxgA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_EoROsEB8EeODVo7lnFxxgA" type="5008"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_EoROsUB8EeODVo7lnFxxgA" type="7008">
+        <children xmi:type="notation:Node" xmi:id="_s5-X8EB8EeOJ3KU12oikjw" type="3001" element="_s44y0EB8EeOJ3KU12oikjw">
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_s5-X8UB8EeOJ3KU12oikjw"/>
+        </children>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_EoROskB8EeODVo7lnFxxgA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_EoROs0B8EeODVo7lnFxxgA"/>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_EoQAkUB8EeODVo7lnFxxgA"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_EoQAkkB8EeODVo7lnFxxgA" fontName="Segoe UI"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_EoQAk0B8EeODVo7lnFxxgA" x="40" y="105"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_Qb84IEB8EeODVo7lnFxxgA" type="2002">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Qb-tUEB8EeODVo7lnFxxgA" source="Shortcut">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Qb-tUUB8EeODVo7lnFxxgA" key="modelID" value="EMFProfile"/>
+      </eAnnotations>
+      <children xmi:type="notation:DecorationNode" xmi:id="_Qb9fMEB8EeODVo7lnFxxgA" type="5002"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_Qb-GQEB8EeODVo7lnFxxgA" type="7004">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_Qb-GQUB8EeODVo7lnFxxgA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_Qb-GQkB8EeODVo7lnFxxgA"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_Qb-GQ0B8EeODVo7lnFxxgA" type="7005">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_Qb-GREB8EeODVo7lnFxxgA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_Qb-GRUB8EeODVo7lnFxxgA"/>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_Qb84IUB8EeODVo7lnFxxgA"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_Qb84IkB8EeODVo7lnFxxgA" fontName="Segoe UI"/>
+      <element xmi:type="ecore:EClass" href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//allocation/AllocationContext"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Qb84I0B8EeODVo7lnFxxgA" x="30" y="20"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_DO_HkUB8EeODVo7lnFxxgA"/>
+    <edges xmi:type="notation:Edge" xmi:id="_RocgcEB8EeODVo7lnFxxgA" type="4005" element="_RoaEMEB8EeODVo7lnFxxgA" source="_EoQAkEB8EeODVo7lnFxxgA" target="_Qb84IEB8EeODVo7lnFxxgA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_RodukEB8EeODVo7lnFxxgA" type="6004">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_RodukUB8EeODVo7lnFxxgA" x="-5" y="22"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_RocgcUB8EeODVo7lnFxxgA"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_RocgckB8EeODVo7lnFxxgA" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Rocgc0B8EeODVo7lnFxxgA" points="[-45, -16, 267, 100]$[-310, -96, 2, 20]"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>
