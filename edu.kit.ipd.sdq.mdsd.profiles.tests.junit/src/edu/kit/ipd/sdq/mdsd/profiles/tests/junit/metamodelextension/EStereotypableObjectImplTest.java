@@ -19,16 +19,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,58 +52,80 @@ public class EStereotypableObjectImplTest {
      */
     private EStereotypableObject testee;
 
+    /**
+     *
+     */
     private ResourceSet resourceSet;
+    /**
+     *
+     */
     private Resource resource;
+    /**
+     *
+     */
     private IProject project;
-    private final String MODEL_FILE_NAME = "model.xmi";
-    private final String PROJECT_NAME = "DummyProject";
-
-    private final String ENTITY_BEAN_QUALIFIED_NAME = "EntityBean";
-    private final String SESSION_BEAN_QUALIFIED_NAME = "SessionBean";
-    private final String OTHER_BEAN_QUALIFIED_NAME = "OtherBean";
+    /**
+     *
+     */
+    private final String modelFileName = "model.xmi";
+    /**
+    *
+    */
+    private final String projectName = "DummyProject";
+    /**
+    *
+    */
+    private final String entityBeanQualifiedName = "EntityBean";
+    /**
+    *
+    */
+    private final String sessionBeanQualifiedName = "SessionBean";
+    /**
+    *
+    */
+    private final String otherBeanQualifiedName = "OtherBean";
 
     /**
-     * @throws java.lang.Exception
+     *
      */
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() {
         // TODO: remove to test suite if more test classes exist
 
         // configure logger
-        PatternLayout layout = new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
+        PatternLayout layout =
+                new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
         ConsoleAppender appender = new ConsoleAppender(layout);
         BasicConfigurator.resetConfiguration();
         BasicConfigurator.configure(appender);
     }
 
     /**
-     * @throws java.lang.Exception
-     */
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    /**
-     * @throws java.lang.Exception
+     * @throws CoreException
+     *             if project cannot be created or opened
      */
     @Before
-    public void setUp() throws Exception {
+    public final void setUp() throws CoreException {
 
         // Create a resource set to hold the resources.
         resourceSet = new ResourceSetImpl();
 
         // Register the appropriate resource factory to handle all file
         // extensions.
-        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+        resourceSet
+                .getResourceFactoryRegistry()
+                .getExtensionToFactoryMap()
+                .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+                        new XMIResourceFactoryImpl());
 
         // Register the package to ensure it is available during loading.
-        resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI,
+                simplemodelPackage.eINSTANCE);
 
         // create a dummy project that is used as container for xmi files
 
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        project = root.getProject(PROJECT_NAME);
+        project = root.getProject(projectName);
 
         if (!project.exists()) {
             project.create(null);
@@ -114,18 +135,20 @@ public class EStereotypableObjectImplTest {
             project.open(null);
         }
 
-        resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/"
-                + MODEL_FILE_NAME, true));
+        resource =
+                resourceSet.createResource(URI.createPlatformResourceURI(
+                        project.getFullPath() + "/" + modelFileName, true));
 
         testee = simplemodelFactory.eINSTANCE.createA();
-        resource.getContents().add((EObject) testee);
+        resource.getContents().add(testee);
     }
 
     /**
-     * @throws java.lang.Exception
+     * @throws CoreException
+     *             if the project cannot be deleted
      */
     @After
-    public void tearDown() throws Exception {
+    public final void tearDown() throws CoreException {
         ProfileApplicationFileRegistry.INSTANCE.clear();
         project.delete(IResource.ALWAYS_DELETE_PROJECT_CONTENT, null);
         resourceSet.getResources().remove(resource);
@@ -162,21 +185,26 @@ public class EStereotypableObjectImplTest {
     public void testGetStereotypeApplications() {
 
         // retrieve stereotypes for application
-        Stereotype entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
-        Stereotype sessionBeanStereotype = testee.getApplicableStereotype(SESSION_BEAN_QUALIFIED_NAME);
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        Stereotype sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
 
         // check that there are no stereotype applications at the beginning
-        EList<StereotypeApplication> stereotypeApplications = testee.getStereotypeApplications();
+        EList<StereotypeApplication> stereotypeApplications =
+                testee.getStereotypeApplications();
         assertEquals(0, stereotypeApplications.size());
 
         // first stereotype application
-        StereotypeApplication entityBeanApplication = testee.applyStereotype(entityBeanStereotype);
+        StereotypeApplication entityBeanApplication =
+                testee.applyStereotype(entityBeanStereotype);
         stereotypeApplications = testee.getStereotypeApplications();
         assertEquals(1, stereotypeApplications.size());
         assertSame(entityBeanApplication, stereotypeApplications.get(0));
 
         // second stereotype application
-        StereotypeApplication sessionBeanApplication = testee.applyStereotype(sessionBeanStereotype);
+        StereotypeApplication sessionBeanApplication =
+                testee.applyStereotype(sessionBeanStereotype);
         stereotypeApplications = testee.getStereotypeApplications();
         assertEquals(2, stereotypeApplications.size());
         assertSame(sessionBeanApplication, stereotypeApplications.get(1));
@@ -191,46 +219,63 @@ public class EStereotypableObjectImplTest {
     public void testGetStereotypeApplicationsStereotype() {
 
         // retrieve stereotypes for application
-        Stereotype entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
-        Stereotype sessionBeanStereotype = testee.getApplicableStereotype(SESSION_BEAN_QUALIFIED_NAME);
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        Stereotype sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
 
         // check that there are no stereotype applications at the beginning
-        EList<StereotypeApplication> entityBeanApplications = testee.getStereotypeApplications(entityBeanStereotype);
+        EList<StereotypeApplication> entityBeanApplications =
+                testee.getStereotypeApplications(entityBeanStereotype);
         assertTrue(entityBeanApplications.isEmpty());
 
-        EList<StereotypeApplication> sessionBeanApplications = testee.getStereotypeApplications(sessionBeanStereotype);
+        EList<StereotypeApplication> sessionBeanApplications =
+                testee.getStereotypeApplications(sessionBeanStereotype);
         assertTrue(sessionBeanApplications.isEmpty());
 
         // first stereotype application
         testee.applyStereotype(entityBeanStereotype);
 
-        // get the stereotype again, this time from the resource set of the model to which it is
-        // applied (before it was the stereotype of the resource set of the profile registry)
-        entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        // get the stereotype again, this time from the resource set of the
+        // model to which it is
+        // applied (before it was the stereotype of the resource set of the
+        // profile registry)
+        entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
 
-        entityBeanApplications = testee.getStereotypeApplications(entityBeanStereotype);
+        entityBeanApplications =
+                testee.getStereotypeApplications(entityBeanStereotype);
         assertEquals(1, entityBeanApplications.size());
 
-        sessionBeanApplications = testee.getStereotypeApplications(sessionBeanStereotype);
+        sessionBeanApplications =
+                testee.getStereotypeApplications(sessionBeanStereotype);
         assertTrue(sessionBeanApplications.isEmpty());
 
         // second stereotype application
         testee.applyStereotype(sessionBeanStereotype);
 
-        // get the stereotype again, this time from the resource set of the model to which it is
-        // applied (before it was the stereotype of the resource set of the profile registry)
-        sessionBeanStereotype = testee.getApplicableStereotype(SESSION_BEAN_QUALIFIED_NAME);
+        // get the stereotype again, this time from the resource set of the
+        // model to which it is
+        // applied (before it was the stereotype of the resource set of the
+        // profile registry)
+        sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
 
-        entityBeanApplications = testee.getStereotypeApplications(entityBeanStereotype);
+        entityBeanApplications =
+                testee.getStereotypeApplications(entityBeanStereotype);
         assertEquals(1, entityBeanApplications.size());
 
-        sessionBeanApplications = testee.getStereotypeApplications(sessionBeanStereotype);
+        sessionBeanApplications =
+                testee.getStereotypeApplications(sessionBeanStereotype);
         assertEquals(1, sessionBeanApplications.size());
 
-        assertNotSame(entityBeanApplications.get(0), sessionBeanApplications.get(0));
+        assertNotSame(entityBeanApplications.get(0),
+                sessionBeanApplications.get(0));
 
-        assertSame(entityBeanStereotype, entityBeanApplications.get(0).getStereotype());
-        assertSame(sessionBeanStereotype, sessionBeanApplications.get(0).getStereotype());
+        assertSame(entityBeanStereotype, entityBeanApplications.get(0)
+                .getStereotype());
+        assertSame(sessionBeanStereotype, sessionBeanApplications.get(0)
+                .getStereotype());
     }
 
     /**
@@ -238,14 +283,16 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getStereotypeApplications(org.modelversioning.emfprofile.Stereotype)}
      * .
      * 
-     * It checks that a NullPointerException doesn't occur if null is passed as parameter.
+     * It checks that a NullPointerException doesn't occur if null is passed as
+     * parameter.
      */
     @Test
     public void testGetStereotypeApplicationsStereotypeNull() {
 
         Stereotype stereotype = null;
 
-        EList<StereotypeApplication> stereotypeApplications = testee.getStereotypeApplications(stereotype);
+        EList<StereotypeApplication> stereotypeApplications =
+                testee.getStereotypeApplications(stereotype);
 
         assertTrue(stereotypeApplications.isEmpty());
     }
@@ -259,48 +306,63 @@ public class EStereotypableObjectImplTest {
     public void testGetStereotypeApplicationsString() {
 
         // retrieve stereotypes for application
-        Stereotype entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
-        Stereotype sessionBeanStereotype = testee.getApplicableStereotype(SESSION_BEAN_QUALIFIED_NAME);
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        Stereotype sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
 
         // check that there are no stereotype applications at the beginning
-        EList<StereotypeApplication> entityBeanApplications = testee
-                .getStereotypeApplications(ENTITY_BEAN_QUALIFIED_NAME);
+        EList<StereotypeApplication> entityBeanApplications =
+                testee.getStereotypeApplications(entityBeanQualifiedName);
         assertTrue(entityBeanApplications.isEmpty());
 
-        EList<StereotypeApplication> sessionBeanApplications = testee
-                .getStereotypeApplications(SESSION_BEAN_QUALIFIED_NAME);
+        EList<StereotypeApplication> sessionBeanApplications =
+                testee.getStereotypeApplications(sessionBeanQualifiedName);
         assertTrue(sessionBeanApplications.isEmpty());
 
         // first stereotype application
         testee.applyStereotype(entityBeanStereotype);
 
-        entityBeanApplications = testee.getStereotypeApplications(ENTITY_BEAN_QUALIFIED_NAME);
+        entityBeanApplications =
+                testee.getStereotypeApplications(entityBeanQualifiedName);
         assertEquals(1, entityBeanApplications.size());
 
-        sessionBeanApplications = testee.getStereotypeApplications(SESSION_BEAN_QUALIFIED_NAME);
+        sessionBeanApplications =
+                testee.getStereotypeApplications(sessionBeanQualifiedName);
         assertTrue(sessionBeanApplications.isEmpty());
 
         // second stereotype application
         testee.applyStereotype(sessionBeanStereotype);
 
-        entityBeanApplications = testee.getStereotypeApplications(ENTITY_BEAN_QUALIFIED_NAME);
+        entityBeanApplications =
+                testee.getStereotypeApplications(entityBeanQualifiedName);
         assertEquals(1, entityBeanApplications.size());
 
-        sessionBeanApplications = testee.getStereotypeApplications(SESSION_BEAN_QUALIFIED_NAME);
+        sessionBeanApplications =
+                testee.getStereotypeApplications(sessionBeanQualifiedName);
         assertEquals(1, sessionBeanApplications.size());
 
-        assertNotSame(entityBeanApplications.get(0), sessionBeanApplications.get(0));
+        assertNotSame(entityBeanApplications.get(0),
+                sessionBeanApplications.get(0));
 
-        // get the stereotypes again, this time from the resource set of the model to which it is
-        // applied (before it was the stereotype of the resource set of the profile registry)
-        entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
-        sessionBeanStereotype = testee.getApplicableStereotype(SESSION_BEAN_QUALIFIED_NAME);
+        // get the stereotypes again, this time from the resource set of the
+        // model to which it is
+        // applied (before it was the stereotype of the resource set of the
+        // profile registry)
+        entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
 
-        assertSame(entityBeanStereotype, entityBeanApplications.get(0).getStereotype());
-        assertSame(sessionBeanStereotype, sessionBeanApplications.get(0).getStereotype());
+        assertSame(entityBeanStereotype, entityBeanApplications.get(0)
+                .getStereotype());
+        assertSame(sessionBeanStereotype, sessionBeanApplications.get(0)
+                .getStereotype());
 
-        assertEquals(ENTITY_BEAN_QUALIFIED_NAME, entityBeanApplications.get(0).getStereotype().getName());
-        assertEquals(SESSION_BEAN_QUALIFIED_NAME, sessionBeanApplications.get(0).getStereotype().getName());
+        assertEquals(entityBeanQualifiedName, entityBeanApplications.get(0)
+                .getStereotype().getName());
+        assertEquals(sessionBeanQualifiedName, sessionBeanApplications.get(0)
+                .getStereotype().getName());
     }
 
     /**
@@ -308,14 +370,16 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getStereotypeApplications(java.lang.String)}
      * .
      * 
-     * It checks that a NullPointerException doesn't occur if null is passed as parameter.
+     * It checks that a NullPointerException doesn't occur if null is passed as
+     * parameter.
      */
     @Test
     public void testGetStereotypeApplicationsStringNull() {
 
         String qualifiedName = null;
 
-        EList<StereotypeApplication> stereotypeApplications = testee.getStereotypeApplications(qualifiedName);
+        EList<StereotypeApplication> stereotypeApplications =
+                testee.getStereotypeApplications(qualifiedName);
 
         assertTrue(stereotypeApplications.isEmpty());
     }
@@ -369,13 +433,17 @@ public class EStereotypableObjectImplTest {
     public void testApplyStereotypeOnce() {
 
         // retrieve a stereotype for application
-        Stereotype stereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        Stereotype stereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
 
-        StereotypeApplication stereotypeApplication = testee.applyStereotype(stereotype);
+        StereotypeApplication stereotypeApplication =
+                testee.applyStereotype(stereotype);
 
-        // get the stereotype again, this time from the resource set of the model to which it is
-        // applied (before it was the stereotype of the resource set of the profile registry)
-        stereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        // get the stereotype again, this time from the resource set of the
+        // model to which it is
+        // applied (before it was the stereotype of the resource set of the
+        // profile registry)
+        stereotype = testee.getApplicableStereotype(entityBeanQualifiedName);
 
         assertNotNull(stereotypeApplication);
 
@@ -393,12 +461,15 @@ public class EStereotypableObjectImplTest {
     public void testApplyStereotypeTwice() {
 
         // retrieve a stereotype for application
-        Stereotype stereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        Stereotype stereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
 
-        StereotypeApplication firstStereotypeApplication = testee.applyStereotype(stereotype);
+        StereotypeApplication firstStereotypeApplication =
+                testee.applyStereotype(stereotype);
         assertNotNull(firstStereotypeApplication);
 
-        StereotypeApplication secondStereotypeApplication = testee.applyStereotype(stereotype);
+        StereotypeApplication secondStereotypeApplication =
+                testee.applyStereotype(stereotype);
         assertNotNull(secondStereotypeApplication);
 
         assertNotSame(firstStereotypeApplication, secondStereotypeApplication);
@@ -409,12 +480,14 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#applyStereotype(org.modelversioning.emfprofile.Stereotype)}
      * .
      * 
-     * It checks that a NullPointerException doesn't occur if null is passed as parameter.
+     * It checks that a NullPointerException doesn't occur if null is passed as
+     * parameter.
      */
     @Test
     public void testApplyStereotypeNull() {
 
-        StereotypeApplication stereotypeApplication = testee.applyStereotype(null);
+        StereotypeApplication stereotypeApplication =
+                testee.applyStereotype(null);
 
         assertNull(stereotypeApplication);
     }
@@ -430,9 +503,11 @@ public class EStereotypableObjectImplTest {
     public void testRemoveStereotypeApplicationOnce() {
 
         // retrieve stereotypes for application
-        Stereotype entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
 
-        StereotypeApplication entityBeanApplication = testee.applyStereotype(entityBeanStereotype);
+        StereotypeApplication entityBeanApplication =
+                testee.applyStereotype(entityBeanStereotype);
         assertEquals(1, testee.getStereotypeApplications().size());
 
         testee.removeStereotypeApplication(entityBeanApplication);
@@ -444,16 +519,18 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#removeStereotypeApplication(org.modelversioning.emfprofileapplication.StereotypeApplications)}
      * .
      * 
-     * It checks the behavior in case that a stereotype application which has already been removed
-     * is tried to be removed again.
+     * It checks the behavior in case that a stereotype application which has
+     * already been removed is tried to be removed again.
      */
     @Test
     public void testRemoveStereotypeApplicationTwice() {
 
         // retrieve stereotypes for application
-        Stereotype entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
 
-        StereotypeApplication entityBeanApplication = testee.applyStereotype(entityBeanStereotype);
+        StereotypeApplication entityBeanApplication =
+                testee.applyStereotype(entityBeanStereotype);
         assertEquals(1, testee.getStereotypeApplications().size());
 
         testee.removeStereotypeApplication(entityBeanApplication);
@@ -468,22 +545,26 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#removeStereotypeApplication(org.modelversioning.emfprofileapplication.StereotypeApplications)}
      * .
      * 
-     * It checks that the correct stereotype application is removed if two stereotypes of the same
-     * type are applied.
+     * It checks that the correct stereotype application is removed if two
+     * stereotypes of the same type are applied.
      */
     @Test
     public void testRemoveStereotypeApplicationOneOutOfTwo() {
 
         // retrieve stereotypes for application
-        Stereotype entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
 
-        StereotypeApplication firstStereotypeApplication = testee.applyStereotype(entityBeanStereotype);
-        StereotypeApplication secondStereotypeApplication = testee.applyStereotype(entityBeanStereotype);
+        StereotypeApplication firstStereotypeApplication =
+                testee.applyStereotype(entityBeanStereotype);
+        StereotypeApplication secondStereotypeApplication =
+                testee.applyStereotype(entityBeanStereotype);
 
         testee.removeStereotypeApplication(secondStereotypeApplication);
 
         assertEquals(1, testee.getStereotypeApplications().size());
-        assertSame(firstStereotypeApplication, testee.getStereotypeApplications().get(0));
+        assertSame(firstStereotypeApplication, testee
+                .getStereotypeApplications().get(0));
     }
 
     /**
@@ -491,7 +572,8 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#removeStereotypeApplication(org.modelversioning.emfprofileapplication.StereotypeApplications)}
      * .
      * 
-     * It checks that a NullPointerException doesn't occur if null is passed as parameter.
+     * It checks that a NullPointerException doesn't occur if null is passed as
+     * parameter.
      */
     @Test
     public void testRemoveStereotypeApplicationNull() {
@@ -506,23 +588,28 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#removeStereotypeApplication(org.modelversioning.emfprofileapplication.StereotypeApplications)}
      * .
      * 
-     * It checks the behavior in case that someone tries to remove a stereotype application which
-     * belongs to another object.
+     * It checks the behavior in case that someone tries to remove a stereotype
+     * application which belongs to another object.
      */
     @Test
     public void testRemoveStereotypeApplicationFromOtherObject() {
 
         // set up a second EStereotypableObject
-        EStereotypableObject otherTestee = simplemodelFactory.eINSTANCE.createA();
-        resource.getContents().add((EObject) otherTestee);
+        EStereotypableObject otherTestee =
+                simplemodelFactory.eINSTANCE.createA();
+        resource.getContents().add(otherTestee);
 
         // retrieve stereotypes for application
-        Stereotype entityBeanStereotype = testee.getApplicableStereotype(ENTITY_BEAN_QUALIFIED_NAME);
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
 
-        StereotypeApplication testeeStereotypeApplication = testee.applyStereotype(entityBeanStereotype);
-        StereotypeApplication otherTesteeStereotypeApplication = otherTestee.applyStereotype(entityBeanStereotype);
+        StereotypeApplication testeeStereotypeApplication =
+                testee.applyStereotype(entityBeanStereotype);
+        StereotypeApplication otherTesteeStereotypeApplication =
+                otherTestee.applyStereotype(entityBeanStereotype);
 
-        // try to remove otherTestee's stereotype application from testee and vice versa
+        // try to remove otherTestee's stereotype application from testee and
+        // vice versa
         testee.removeStereotypeApplication(otherTesteeStereotypeApplication);
         assertEquals(1, testee.getStereotypeApplications().size());
 
@@ -538,7 +625,8 @@ public class EStereotypableObjectImplTest {
     @Test
     public void testGetApplicableStereotypes() {
 
-        EList<Stereotype> applicableStereotypes = testee.getApplicableStereotypes();
+        EList<Stereotype> applicableStereotypes =
+                testee.getApplicableStereotypes();
 
         assertTrue(!applicableStereotypes.isEmpty());
     }
@@ -553,10 +641,11 @@ public class EStereotypableObjectImplTest {
     @Test
     public void testGetApplicableStereotypeExisting() {
 
-        Stereotype applicableStereotype = testee.getApplicableStereotype(SESSION_BEAN_QUALIFIED_NAME);
+        Stereotype applicableStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
 
         assertNotNull(applicableStereotype);
-        assertEquals(SESSION_BEAN_QUALIFIED_NAME, applicableStereotype.getName());
+        assertEquals(sessionBeanQualifiedName, applicableStereotype.getName());
     }
 
     /**
@@ -571,7 +660,8 @@ public class EStereotypableObjectImplTest {
 
         final String QUALIFIED_NAME = "UnavailableStereotype";
 
-        Stereotype applicableStereotype = testee.getApplicableStereotype(QUALIFIED_NAME);
+        Stereotype applicableStereotype =
+                testee.getApplicableStereotype(QUALIFIED_NAME);
 
         assertNull(applicableStereotype);
     }
@@ -581,7 +671,8 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getApplicableStereotype(java.lang.String)}
      * .
      * 
-     * It checks that a NullPointerException doesn't occur if null is passed as parameter.
+     * It checks that a NullPointerException doesn't occur if null is passed as
+     * parameter.
      */
     @Test
     public void testGetApplicableStereotypeNull() {
@@ -596,18 +687,25 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getStereotypeApplications()}
      * .
      * 
-     * It checks that the references of EStereotypableObject and applied-to in StereotypeApplication
-     * is correct after loading persisted model instances file and profile application file.
+     * It checks that the references of EStereotypableObject and applied-to in
+     * StereotypeApplication is correct after loading persisted model instances
+     * file and profile application file.
      */
     @Test
-    public void testValidatePersistedReferencesOfEStereotypableObjectsAndProfileApplication() {
+    public
+            void
+            testValidatePersistedReferencesOfEStereotypableObjectsAndProfileApplication() {
 
         final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs.xmi";
+        final String MODEL_INSTANCES_FILE_PATH =
+                "/modelinstances/AContainsTwoBs.xmi";
 
-        Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
+        Resource modelInstancesResource =
+                getModelInstancesResource(RESOURCES_PROJECT_NAME,
+                        MODEL_INSTANCES_FILE_PATH);
 
-        // implicitly a look-up in existing profile application file takes place when requesting
+        // implicitly a look-up in existing profile application file takes place
+        // when requesting
         // stereotype applications
 
         final B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
@@ -620,26 +718,33 @@ public class EStereotypableObjectImplTest {
     }
 
     /**
-     * It checks that an already persisted tagged value is loaded correctly and a change to this
-     * tagged value is persisted correctly. This is done by reloading the tagged value.
+     * It checks that an already persisted tagged value is loaded correctly and
+     * a change to this tagged value is persisted correctly. This is done by
+     * reloading the tagged value.
      */
     @Test
     public void testCheckTaggedValuePersistence() {
         final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs_TaggedValuePersistenceTest.xmi";
+        final String MODEL_INSTANCES_FILE_PATH =
+                "/modelinstances/AContainsTwoBs_TaggedValuePersistenceTest.xmi";
 
-        Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
+        Resource modelInstancesResource =
+                getModelInstancesResource(RESOURCES_PROJECT_NAME,
+                        MODEL_INSTANCES_FILE_PATH);
 
         // setup for checking the precondition
         B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
         assertEquals("b1", b1.getName());
 
-        EList<StereotypeApplication> stereotypeApplications = b1.getStereotypeApplications(SESSION_BEAN_QUALIFIED_NAME);
+        EList<StereotypeApplication> stereotypeApplications =
+                b1.getStereotypeApplications(sessionBeanQualifiedName);
         assertEquals(1, stereotypeApplications.size());
 
-        StereotypeApplication stereotypeApplication = stereotypeApplications.get(0);
+        StereotypeApplication stereotypeApplication =
+                stereotypeApplications.get(0);
 
-        Object stateful = getValueOfEStructuralFeature(stereotypeApplication, "stateful");
+        Object stateful =
+                getValueOfEStructuralFeature(stereotypeApplication, "stateful");
         assertEquals("revert profile application file", false, stateful);
 
         // set and persist the new value
@@ -652,67 +757,88 @@ public class EStereotypableObjectImplTest {
         ProfileApplicationFileRegistry.INSTANCE.clear();
 
         // check the reloaded attribute value
-        modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
+        modelInstancesResource =
+                getModelInstancesResource(RESOURCES_PROJECT_NAME,
+                        MODEL_INSTANCES_FILE_PATH);
 
         b1 = (B) modelInstancesResource.getEObject("//@bs.0");
-        stereotypeApplications = b1.getStereotypeApplications(SESSION_BEAN_QUALIFIED_NAME);
+        stereotypeApplications =
+                b1.getStereotypeApplications(sessionBeanQualifiedName);
         assertEquals(1, stereotypeApplications.size());
 
         stereotypeApplication = stereotypeApplications.get(0);
-        
-        stateful = getValueOfEStructuralFeature(stereotypeApplication, "stateful");
+
+        stateful =
+                getValueOfEStructuralFeature(stereotypeApplication, "stateful");
         assertEquals(true, stateful);
-        
+
         // set and persist the old value
         setValueOfEStructuralFeature(stereotypeApplication, "stateful", false);
         b1.saveContainingProfileApplication();
-        stateful = getValueOfEStructuralFeature(stereotypeApplication, "stateful");
+        stateful =
+                getValueOfEStructuralFeature(stereotypeApplication, "stateful");
         assertEquals(false, stateful);
     }
 
     /**
-     * It checks that an already persisted StereotypeApplication reference is loaded correctly and a
-     * change to this reference is persisted correctly. This is done by reloading the reference.
+     * It checks that an already persisted StereotypeApplication reference is
+     * loaded correctly and a change to this reference is persisted correctly.
+     * This is done by reloading the reference.
      */
     @Test
     public void testCheckStereotypeReferencePersistence() {
         final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs_ReferencePersistenceTest.xmi";
+        final String MODEL_INSTANCES_FILE_PATH =
+                "/modelinstances/AContainsTwoBs_ReferencePersistenceTest.xmi";
 
-        Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
+        Resource modelInstancesResource =
+                getModelInstancesResource(RESOURCES_PROJECT_NAME,
+                        MODEL_INSTANCES_FILE_PATH);
 
         // setup for checking the precondition
         B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
         assertEquals("b1", b1.getName());
 
-        EList<StereotypeApplication> stereotypeApplicationsOfB1 = b1
-                .getStereotypeApplications(OTHER_BEAN_QUALIFIED_NAME);
+        EList<StereotypeApplication> stereotypeApplicationsOfB1 =
+                b1.getStereotypeApplications(otherBeanQualifiedName);
         assertEquals(1, stereotypeApplicationsOfB1.size());
 
-        StereotypeApplication stereotypeApplicationOfB1 = stereotypeApplicationsOfB1.get(0);
+        StereotypeApplication stereotypeApplicationOfB1 =
+                stereotypeApplicationsOfB1.get(0);
 
-        Object myReferencedStereotype = getValueOfEStructuralFeature(stereotypeApplicationOfB1,
-                "myReferencedStereotype");
+        Object myReferencedStereotype =
+                getValueOfEStructuralFeature(stereotypeApplicationOfB1,
+                        "myReferencedStereotype");
         assertNotNull(myReferencedStereotype);
-        assertEquals(true, myReferencedStereotype instanceof StereotypeApplication);
+        assertEquals(true,
+                myReferencedStereotype instanceof StereotypeApplication);
 
-        StereotypeApplication referencedStereotypeApplication = (StereotypeApplication) myReferencedStereotype;
-        assertEquals("referencedStereotype1", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
+        StereotypeApplication referencedStereotypeApplication =
+                (StereotypeApplication) myReferencedStereotype;
+        assertEquals(
+                "referencedStereotype1",
+                getValueOfEStructuralFeature(referencedStereotypeApplication,
+                        "name"));
 
         // retrieve the reference to be set as new value
         // both ReferencedStereotypes are applied to root object A
         A a1 = (A) modelInstancesResource.getEObject("/");
         assertEquals("a1", a1.getName());
 
-        EList<StereotypeApplication> stereotypeApplicationsOfA1 = a1.getStereotypeApplications("ReferencedStereotype");
+        EList<StereotypeApplication> stereotypeApplicationsOfA1 =
+                a1.getStereotypeApplications("ReferencedStereotype");
         assertEquals(2, stereotypeApplicationsOfA1.size());
 
-        StereotypeApplication newReferencedStereotypeApplication = stereotypeApplicationsOfA1.get(1);
-        assertEquals("referencedStereotype2", getValueOfEStructuralFeature(newReferencedStereotypeApplication, "name"));
+        StereotypeApplication newReferencedStereotypeApplication =
+                stereotypeApplicationsOfA1.get(1);
+        assertEquals(
+                "referencedStereotype2",
+                getValueOfEStructuralFeature(
+                        newReferencedStereotypeApplication, "name"));
 
         // set and persist the new value
-        setValueOfEStructuralFeature(stereotypeApplicationOfB1, "myReferencedStereotype",
-                newReferencedStereotypeApplication);
+        setValueOfEStructuralFeature(stereotypeApplicationOfB1,
+                "myReferencedStereotype", newReferencedStereotypeApplication);
         a1.saveContainingProfileApplication();
 
         // cleanup
@@ -721,54 +847,77 @@ public class EStereotypableObjectImplTest {
         ProfileApplicationFileRegistry.INSTANCE.clear();
 
         // check the reloaded attribute value
-        modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
+        modelInstancesResource =
+                getModelInstancesResource(RESOURCES_PROJECT_NAME,
+                        MODEL_INSTANCES_FILE_PATH);
 
         b1 = (B) modelInstancesResource.getEObject("//@bs.0");
         assertEquals("b1", b1.getName());
 
-        stereotypeApplicationsOfB1 = b1.getStereotypeApplications(OTHER_BEAN_QUALIFIED_NAME);
+        stereotypeApplicationsOfB1 =
+                b1.getStereotypeApplications(otherBeanQualifiedName);
         assertEquals(1, stereotypeApplicationsOfB1.size());
 
         stereotypeApplicationOfB1 = stereotypeApplicationsOfB1.get(0);
 
-        myReferencedStereotype = getValueOfEStructuralFeature(stereotypeApplicationOfB1, "myReferencedStereotype");
+        myReferencedStereotype =
+                getValueOfEStructuralFeature(stereotypeApplicationOfB1,
+                        "myReferencedStereotype");
         assertNotNull(myReferencedStereotype);
-        assertEquals(true, myReferencedStereotype instanceof StereotypeApplication);
+        assertEquals(true,
+                myReferencedStereotype instanceof StereotypeApplication);
 
-        referencedStereotypeApplication = (StereotypeApplication) myReferencedStereotype;
-        assertEquals("referencedStereotype2", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
-        
+        referencedStereotypeApplication =
+                (StereotypeApplication) myReferencedStereotype;
+        assertEquals(
+                "referencedStereotype2",
+                getValueOfEStructuralFeature(referencedStereotypeApplication,
+                        "name"));
+
         // reset and persist the old value
         b1 = (B) modelInstancesResource.getEObject("//@bs.0");
-        stereotypeApplicationsOfB1 = b1
-                .getStereotypeApplications(OTHER_BEAN_QUALIFIED_NAME);
+        stereotypeApplicationsOfB1 =
+                b1.getStereotypeApplications(otherBeanQualifiedName);
         assertEquals(1, stereotypeApplicationsOfB1.size());
         stereotypeApplicationOfB1 = stereotypeApplicationsOfB1.get(0);
-        myReferencedStereotype = getValueOfEStructuralFeature(stereotypeApplicationOfB1,
-                "myReferencedStereotype");
+        myReferencedStereotype =
+                getValueOfEStructuralFeature(stereotypeApplicationOfB1,
+                        "myReferencedStereotype");
         assertNotNull(myReferencedStereotype);
-        assertEquals(true, myReferencedStereotype instanceof StereotypeApplication);
-        referencedStereotypeApplication = (StereotypeApplication) myReferencedStereotype;
-        assertEquals("referencedStereotype2", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
+        assertEquals(true,
+                myReferencedStereotype instanceof StereotypeApplication);
+        referencedStereotypeApplication =
+                (StereotypeApplication) myReferencedStereotype;
+        assertEquals(
+                "referencedStereotype2",
+                getValueOfEStructuralFeature(referencedStereotypeApplication,
+                        "name"));
 
         referencedStereotypeApplication = stereotypeApplicationsOfA1.get(0);
-        assertEquals("referencedStereotype1", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
-        setValueOfEStructuralFeature(stereotypeApplicationOfB1, "myReferencedStereotype",
-        		referencedStereotypeApplication);
+        assertEquals(
+                "referencedStereotype1",
+                getValueOfEStructuralFeature(referencedStereotypeApplication,
+                        "name"));
+        setValueOfEStructuralFeature(stereotypeApplicationOfB1,
+                "myReferencedStereotype", referencedStereotypeApplication);
         b1.saveContainingProfileApplication();
     }
 
     /**
-     * It checks that the number of loaded resources in a resource set after retrieving the
-     * applicable stereotypes of an EStereotypableObject is the same after retrieving the applicable
-     * stereotypes of another EStereotypableObject (from the same model).
+     * It checks that the number of loaded resources in a resource set after
+     * retrieving the applicable stereotypes of an EStereotypableObject is the
+     * same after retrieving the applicable stereotypes of another
+     * EStereotypableObject (from the same model).
      */
     @Test
     public void testNumberOfLoadedResourcesInResourceSet() {
         final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH = "/modelinstances/AContainsTwoBs.xmi";
+        final String MODEL_INSTANCES_FILE_PATH =
+                "/modelinstances/AContainsTwoBs.xmi";
 
-        Resource modelInstancesResource = getModelInstancesResource(RESOURCES_PROJECT_NAME, MODEL_INSTANCES_FILE_PATH);
+        Resource modelInstancesResource =
+                getModelInstancesResource(RESOURCES_PROJECT_NAME,
+                        MODEL_INSTANCES_FILE_PATH);
 
         final B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
         b1.getApplicableStereotypes();
@@ -781,7 +930,8 @@ public class EStereotypableObjectImplTest {
         assertEquals(numberOfResources, resourceSet.getResources().size());
     }
 
-    private Resource getModelInstancesResource(final String projectName, final String modelInstancesFilePath) {
+    private Resource getModelInstancesResource(final String projectName,
+            final String modelInstancesFilePath) {
         final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 
         final IProject resourcesProject = root.getProject(projectName);
@@ -790,13 +940,16 @@ public class EStereotypableObjectImplTest {
             fail("project '" + projectName + "' does not exist");
         }
 
-        final IFile modelInstancesFile = resourcesProject.getFile(modelInstancesFilePath);
+        final IFile modelInstancesFile =
+                resourcesProject.getFile(modelInstancesFilePath);
 
         if (!modelInstancesFile.exists()) {
             fail("file '" + modelInstancesFilePath + "' does not exist");
         }
 
-        final URI uri = URI.createPlatformResourceURI(modelInstancesFile.getFullPath().toString(), true);
+        final URI uri =
+                URI.createPlatformResourceURI(modelInstancesFile.getFullPath()
+                        .toString(), true);
 
         Resource modelInstancesResource = null;
 
@@ -810,8 +963,8 @@ public class EStereotypableObjectImplTest {
     }
 
     /**
-     * Retrieves the value of the specified StereotypeApplication's EStructuralFeature given by the
-     * name of the feature.
+     * Retrieves the value of the specified StereotypeApplication's
+     * EStructuralFeature given by the name of the feature.
      * 
      * @param stereotypeApplication
      *            The StereotypeApplication containing the EStructuralFeature.
@@ -819,8 +972,10 @@ public class EStereotypableObjectImplTest {
      *            The name of the EStructuralFeature.
      * @return The value of the EStructuralFeature.
      */
-    private static Object getValueOfEStructuralFeature(final StereotypeApplication stereotypeApplication,
-            final String name) {
+    private static Object
+            getValueOfEStructuralFeature(
+                    final StereotypeApplication stereotypeApplication,
+                    final String name) {
         assertNotNull(stereotypeApplication);
         assertNotNull(name);
 
@@ -832,8 +987,8 @@ public class EStereotypableObjectImplTest {
     }
 
     /**
-     * Sets the value of the specified StereotypeApplication's EStructuralFeature given by the name
-     * of the feature.
+     * Sets the value of the specified StereotypeApplication's
+     * EStructuralFeature given by the name of the feature.
      * 
      * @param stereotypeApplication
      *            The StereotypeApplication containing the EStructuralFeature.
@@ -842,7 +997,8 @@ public class EStereotypableObjectImplTest {
      * @param newValue
      *            The new value to be set.
      */
-    private static void setValueOfEStructuralFeature(final StereotypeApplication stereotypeApplication,
+    private static void setValueOfEStructuralFeature(
+            final StereotypeApplication stereotypeApplication,
             final String name, final Object newValue) {
         assertNotNull(stereotypeApplication);
         assertNotNull(name);
