@@ -739,11 +739,23 @@ public class EStereotypableObjectImplTest {
         assertEquals("referencedStereotype2", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
         
         // reset and persist the old value
+        b1 = (B) modelInstancesResource.getEObject("//@bs.0");
+        stereotypeApplicationsOfB1 = b1
+                .getStereotypeApplications(OTHER_BEAN_QUALIFIED_NAME);
+        assertEquals(1, stereotypeApplicationsOfB1.size());
+        stereotypeApplicationOfB1 = stereotypeApplicationsOfB1.get(0);
+        myReferencedStereotype = getValueOfEStructuralFeature(stereotypeApplicationOfB1,
+                "myReferencedStereotype");
+        assertNotNull(myReferencedStereotype);
+        assertEquals(true, myReferencedStereotype instanceof StereotypeApplication);
+        referencedStereotypeApplication = (StereotypeApplication) myReferencedStereotype;
+        assertEquals("referencedStereotype2", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
+
         referencedStereotypeApplication = stereotypeApplicationsOfA1.get(0);
+        assertEquals("referencedStereotype1", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
         setValueOfEStructuralFeature(stereotypeApplicationOfB1, "myReferencedStereotype",
         		referencedStereotypeApplication);
-        a1.saveContainingProfileApplication();
-        assertEquals("referencedStereotype1", getValueOfEStructuralFeature(referencedStereotypeApplication, "name"));
+        b1.saveContainingProfileApplication();
     }
 
     /**
