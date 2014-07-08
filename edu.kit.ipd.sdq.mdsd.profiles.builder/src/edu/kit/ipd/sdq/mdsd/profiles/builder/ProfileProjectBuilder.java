@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package edu.kit.ipd.sdq.mdsd.profiles.builder;
 
@@ -27,81 +27,140 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.observer.IObserver;
 
 /**
  * @author Matthias Eisenmann
- * 
  */
-public class ProfileProjectBuilder extends IncrementalProjectBuilder implements IObservable<IFile> {
+public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
+        IObservable<IFile> {
 
-    private static final Logger logger = Logger.getLogger(ProfileProjectBuilder.class.getName());
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOGGER = Logger
+            .getLogger(ProfileProjectBuilder.class.getName());
 
-    public static final String BUILDER_ID = "edu.kit.ipd.sdq.mdsd.profiles.builder.profileprojectbuilder";
-
+    /**
+     * The identifier of this builder.
+     */
+    public static final String BUILDER_ID = "edu.kit.ipd.sdq.mdsd.profiles"
+            + ".builder.profileprojectbuilder";
+    /**
+     * The file extension for all profile application files.
+     */
     public static final String PROFILE_APPLICATION_FILE_EXTENSION = "pa.xmi";
 
-    private final List<IObserver<IFile>> observers = new ArrayList<IObserver<IFile>>();
+    /**
+     * A list of alls observers for profile application files.
+     */
+    private final List<IObserver<IFile>> observers =
+            new ArrayList<IObserver<IFile>>();
 
     // FIXME: find a better solution for accessing profile project builder in
     // ProfileApplicationFileRegistry
-    private static final Collection<ProfileProjectBuilder> builders = new ArrayList<ProfileProjectBuilder>();
+    /**
+     * All builders.
+     */
+    private static final Collection<ProfileProjectBuilder> BUILDERS =
+            new ArrayList<ProfileProjectBuilder>();
 
+    /**
+     * Constructor that adds the new builder to the static list of all builders.
+     */
     public ProfileProjectBuilder() {
-        builders.add(this);
+        BUILDERS.add(this);
     }
 
-    public static Collection<ProfileProjectBuilder> getAllProfileProjectBuilders() {
-        return builders;
+    /**
+     * Returns all profile builders.
+     * 
+     * @return all builders
+     */
+    public static Collection<ProfileProjectBuilder>
+            getAllProfileProjectBuilders() {
+        return BUILDERS;
     }
 
+    /**
+     * A delta-based visitor that notifies observers in case of an addition of a
+     * profile application file.
+     * 
+     * @author Matthias Eisenmann
+     * 
+     */
     class ProfileProjectResourceDeltaVisitor implements IResourceDeltaVisitor {
 
         /**
          * {@inheritDoc}
          * 
-         * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
+         * @see org.eclipse.core.resources.IResourceDeltaVisitor
+         *      #visit(org.eclipse.core.resources.IResourceDelta)
          */
-        public boolean visit(IResourceDelta delta) throws CoreException {
+        @Override
+        public boolean visit(final IResourceDelta delta) throws CoreException {
             IResource resource = delta.getResource();
             switch (delta.getKind()) {
-            case IResourceDelta.ADDED: {
+            case IResourceDelta.ADDED:
                 // handle added resource
                 if (isProfileApplicationFile(resource)) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
-                                + " | method=ProfileProjectResourceDeltaVisitor.visit | kind=added | resource="
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("project="
+                                + ProfileProjectBuilder.this.getProject()
+                                        .getName()
+                                + " | method=ProfileProjectResourceDeltaVisitor"
+                                + ".visit | kind=added | resource="
                                 + resource.getFullPath());
                     }
                     notifyObservers((IFile) resource);
                 }
                 break;
-            }
-            case IResourceDelta.REMOVED: {
+            case IResourceDelta.REMOVED:
                 // handle removed resource
-                if (logger.isDebugEnabled()) {
-                    logger.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
-                            + " | method=ProfileProjectResourceDeltaVisitor.visit | kind=removed | resource="
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("project="
+                            + ProfileProjectBuilder.this.getProject().getName()
+                            + " | method=ProfileProjectResourceDeltaVisitor"
+                            + ".visit | kind=removed | resource="
                             + resource.getFullPath());
                 }
                 break;
-            }
-            case IResourceDelta.CHANGED: {
+            case IResourceDelta.CHANGED:
                 // handle changed resource
-                if (logger.isDebugEnabled()) {
-                    logger.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
-                            + " | method=ProfileProjectResourceDeltaVisitor.visit | kind=changed | resource="
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("project="
+                            + ProfileProjectBuilder.this.getProject().getName()
+                            + " | method=ProfileProjectResourceDeltaVisitor"
+                            + ".visit | kind=changed | resource="
                             + resource.getFullPath());
                 }
                 break;
-            }
+            default:
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("project="
+                            + ProfileProjectBuilder.this.getProject().getName()
+                            + " | method=ProfileProjectResourceDeltaVisitor"
+                            + ".visit | kind=UNKNOWN! | resource="
+                            + resource.getFullPath());
+                }
+                break;
             }
             // return true to continue visiting children.
             return true;
         }
     }
 
+    /**
+     * A visitor for a given resource that notifies observers of the resource is
+     * a profile application file. profile application file
+     * 
+     * @author Matthias Eisenmann
+     * 
+     */
     class ProfileProjectResourceVisitor implements IResourceVisitor {
-        public boolean visit(IResource resource) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
-                        + " | method=ProfileProjectResourceVisitor.visit | resource=" + resource.getFullPath());
+        @Override
+        public boolean visit(final IResource resource) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("project="
+                        + ProfileProjectBuilder.this.getProject().getName()
+                        + " | method=ProfileProjectResourceVisitor"
+                        + ".visit | resource=" + resource.getFullPath());
             }
 
             if (isProfileApplicationFile(resource)) {
@@ -116,7 +175,9 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements 
      * {@inheritDoc}
      */
     @Override
-    protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
+    protected final IProject[] build(final int kind,
+            final Map<String, String> args, final IProgressMonitor monitor)
+            throws CoreException {
 
         if (kind == FULL_BUILD) {
             fullBuild(monitor);
@@ -131,79 +192,118 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements 
         return null;
     }
 
+    /**
+     * Configures the logger for this builder class.
+     */
     private static void configureLogger() {
 
-        PatternLayout layout = new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
+        PatternLayout layout =
+                new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
         ConsoleAppender appender = new ConsoleAppender(layout);
         BasicConfigurator.resetConfiguration();
         BasicConfigurator.configure(appender);
 
         // TODO: use logger configuration file
-        // PropertyConfigurator.configureAndWatch("log4j.properties", 60 * 1000);
+        // PropertyConfigurator.configureAndWatch("log4j.properties", 60 *
+        // 1000);
     }
 
     /**
-     * {@inheritDoc}
-     * 
-     * <br/>
+     * {@inheritDoc} <br/>
      * <br/>
      * 
-     * At the builder's startup all profile application files which are contained in the project for
-     * which the builder is configured for are requested.
+     * At the builder's startup all profile application files which are
+     * contained in the project for which the builder is configured for are
+     * requested.
      */
     @Override
-    protected void startupOnInitialize() {
+    protected final void startupOnInitialize() {
         super.startupOnInitialize();
 
         // add builder init logic here
         configureLogger();
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("project=" + this.getProject().getName() + " | method=startupOnInitialize");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("project=" + this.getProject().getName()
+                    + " | method=startupOnInitialize");
         }
 
-        Collection<IFile> files = findProfileApplicationFiles(this.getProject());
+        Collection<IFile> files =
+                findProfileApplicationFiles(this.getProject());
 
         for (IFile file : files) {
             notifyObservers(file);
         }
     }
 
-    protected void clean(IProgressMonitor monitor) {
+    @Override
+    protected final void clean(final IProgressMonitor monitor) {
         // add builder clean logic here
-        if (logger.isDebugEnabled()) {
-            logger.debug("project=" + this.getProject().getName() + " | method=clean");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("project=" + this.getProject().getName()
+                    + " | method=clean");
         }
     }
 
-    protected void fullBuild(final IProgressMonitor monitor) throws CoreException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("project=" + this.getProject().getName() + " | method=fullBuild");
+    /**
+     * Performs a full build.
+     * 
+     * @param monitor
+     *            the progress monitor to be used
+     * @throws CoreException
+     */
+    protected final void fullBuild(final IProgressMonitor monitor) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("project=" + this.getProject().getName()
+                    + " | method=fullBuild");
         }
 
         try {
             getProject().accept(new ProfileProjectResourceVisitor());
         } catch (CoreException e) {
-            logger.error("project=" + this.getProject().getName() + " | full build failed", e);
+            LOGGER.error("project=" + this.getProject().getName()
+                    + " | full build failed", e);
         }
     }
 
-    protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) throws CoreException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("project=" + this.getProject().getName() + " | method=incrementalBuild");
+    /**
+     * Performs an incremental build using the given delta.
+     * 
+     * @param delta
+     *            the delta to be used
+     * @param monitor
+     *            the progress monitor to be used
+     * @throws CoreException
+     *             if the visitor fails on the delta
+     */
+    protected final void incrementalBuild(final IResourceDelta delta,
+            final IProgressMonitor monitor) throws CoreException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("project=" + this.getProject().getName()
+                    + " | method=incrementalBuild");
         }
         // the visitor does the work.
         delta.accept(new ProfileProjectResourceDeltaVisitor());
     }
 
-    public static Collection<IFile> findProfileApplicationFiles(final IProject project) {
+    /**
+     * Finds all profile application files in the given project.
+     * 
+     * @param project
+     *            the project to be searched
+     * @return a collection of all profile application files
+     */
+    public static Collection<IFile> findProfileApplicationFiles(
+            final IProject project) {
         final Collection<IFile> files = new ArrayList<IFile>();
 
         if (project != null) {
 
             // visitor for finding all files contained in the project
             final IResourceVisitor resourceVisitor = new IResourceVisitor() {
-                public boolean visit(final IResource resource) throws CoreException {
+                @Override
+                public boolean visit(final IResource resource)
+                        throws CoreException {
                     if (isProfileApplicationFile(resource)) {
                         files.add((IFile) resource);
                     }
@@ -223,24 +323,27 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements 
     }
 
     /**
-     * Determines whether the specified resource is a profile application file. It's assumed that
-     * all file resources with file extension "pa.xmi" are profile application files. The file
-     * content is not considered.
+     * Determines whether the specified resource is a profile application file.
+     * It's assumed that all file resources with file extension "pa.xmi" are
+     * profile application files. The file content is not considered.
      * 
      * @param resource
      *            The resource in question.
-     * @return True if resource is a file with extension "pa.xmi", otherwise false.
+     * @return True if resource is a file with extension "pa.xmi", otherwise
+     *         false.
      */
     public static boolean isProfileApplicationFile(final IResource resource) {
-        return (resource instanceof IFile && resource.getName().endsWith(PROFILE_APPLICATION_FILE_EXTENSION));
+        return (resource instanceof IFile && resource.getName().endsWith(
+                PROFILE_APPLICATION_FILE_EXTENSION));
     }
 
     @Override
-    public boolean addObserver(final IObserver<IFile> observer) {
+    public final boolean addObserver(final IObserver<IFile> observer) {
         if (!observers.contains(observer)) {
             observers.add(observer);
 
-            Collection<IFile> files = findProfileApplicationFiles(this.getProject());
+            Collection<IFile> files =
+                    findProfileApplicationFiles(this.getProject());
 
             for (IFile file : files) {
                 notifyObservers(file);
@@ -253,12 +356,12 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements 
     }
 
     @Override
-    public void removeObserver(final IObserver<IFile> observer) {
+    public final void removeObserver(final IObserver<IFile> observer) {
         observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers(final IFile file) {
+    public final void notifyObservers(final IFile file) {
         for (final IObserver<IFile> observer : observers) {
             observer.update(file);
         }

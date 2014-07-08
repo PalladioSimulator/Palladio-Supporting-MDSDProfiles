@@ -24,16 +24,17 @@ import edu.kit.ipd.sdq.mdsd.profiles.nature.ProfileProjectNature;
  */
 public class ToggleNatureHandler extends AbstractHandler {
 
-    private QualifiedName path = new QualifiedName("html", "path");
+    private final QualifiedName path = new QualifiedName("html", "path");
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
         Shell shell = HandlerUtil.getActiveShell(event);
         ISelection selection = HandlerUtil.getActiveMenuSelection(event);
-        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+        IStructuredSelection structuredSelection =
+                (IStructuredSelection) selection;
 
         Object firstElement = structuredSelection.getFirstElement();
         if (firstElement instanceof IProject) {
@@ -43,7 +44,8 @@ public class ToggleNatureHandler extends AbstractHandler {
             toggleNature(project);
 
         } else {
-            MessageDialog.openInformation(shell, "Info", "Please select a project folder");
+            MessageDialog.openInformation(shell, "Info",
+                    "Please select a project folder");
         }
         return null;
     }
@@ -68,7 +70,8 @@ public class ToggleNatureHandler extends AbstractHandler {
                     System.out.println("DBG: --- " + natures[i]);
                     String[] newNatures = new String[natures.length - 1];
                     System.arraycopy(natures, 0, newNatures, 0, i);
-                    System.arraycopy(natures, i + 1, newNatures, i, natures.length - i - 1);
+                    System.arraycopy(natures, i + 1, newNatures, i,
+                            natures.length - i - 1);
                     description.setNatureIds(newNatures);
                     project.setDescription(description, null);
                     return;
@@ -82,6 +85,8 @@ public class ToggleNatureHandler extends AbstractHandler {
             description.setNatureIds(newNatures);
             project.setDescription(description, null);
         } catch (CoreException e) {
+            // soften
+            throw new RuntimeException(e);
         }
     }
 }

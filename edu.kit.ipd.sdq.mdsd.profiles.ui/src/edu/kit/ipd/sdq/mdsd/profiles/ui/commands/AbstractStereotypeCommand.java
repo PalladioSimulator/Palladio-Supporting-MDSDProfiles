@@ -5,22 +5,41 @@ import org.modelversioning.emfprofile.Stereotype;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 
+/**
+ * Abstract superclass for all stereotype commands.
+ * 
+ * @author Max Kramer
+ * 
+ */
 public abstract class AbstractStereotypeCommand extends AbstractCommand {
 
+    /**
+     * The stereotypable object of the command.
+     */
     protected EStereotypableObject eStereotypableObject;
+    /**
+     * The stereotype of the command.
+     */
     protected Stereotype stereotype;
 
-    public AbstractStereotypeCommand(final String label, final EStereotypableObject eStereotypableObject,
+    /**
+     * Default constructor for labeled stereotype commands.
+     * 
+     * @param label
+     *            the label of the command
+     * @param eStereotypableObject
+     *            stereotypable object of the command
+     * @param stereotype
+     *            the stereotype of the command
+     */
+    public AbstractStereotypeCommand(final String label,
+            final EStereotypableObject eStereotypableObject,
             final Stereotype stereotype) {
         super(label);
         this.eStereotypableObject = eStereotypableObject;
         this.stereotype = stereotype;
         this.isExecutable = true;
         this.isPrepared = true;
-    }
-
-    public AbstractStereotypeCommand(String label, String description) {
-        super(label, description);
     }
 
     @Override

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package edu.kit.ipd.sdq.mdsd.profiles.nature;
 
 import org.eclipse.core.resources.ICommand;
@@ -17,7 +14,11 @@ import edu.kit.ipd.sdq.mdsd.profiles.builder.ProfileProjectBuilder;
  */
 public class ProfileProjectNature implements IProjectNature {
 
-    public static final String NATURE_ID = "edu.kit.ipd.sdq.mdsd.profiles.nature.profileprojectnature";
+    /**
+     * Identifier for the profile project nature.
+     */
+    public static final String NATURE_ID =
+            "edu.kit.ipd.sdq.mdsd.profiles.nature.profileprojectnature";
 
     /**
      * The project to which this project nature applies.
@@ -28,7 +29,7 @@ public class ProfileProjectNature implements IProjectNature {
      * {@inheritDoc}
      */
     @Override
-    public void configure() throws CoreException {
+    public final void configure() throws CoreException {
         // Add nature-specific information
         // for the project, such as adding a builder
         // to a project's build spec.
@@ -37,7 +38,8 @@ public class ProfileProjectNature implements IProjectNature {
         ICommand[] commands = desc.getBuildSpec();
 
         for (int i = 0; i < commands.length; ++i) {
-            if (commands[i].getBuilderName().equals(ProfileProjectBuilder.BUILDER_ID)) {
+            if (commands[i].getBuilderName().equals(
+                    ProfileProjectBuilder.BUILDER_ID)) {
                 return;
             }
         }
@@ -55,16 +57,18 @@ public class ProfileProjectNature implements IProjectNature {
      * {@inheritDoc}
      */
     @Override
-    public void deconfigure() throws CoreException {
+    public final void deconfigure() throws CoreException {
         // Remove the nature-specific information here.
         System.out.println("DBG: ProfileProjectNature.deconfigure");
         IProjectDescription description = getProject().getDescription();
         ICommand[] commands = description.getBuildSpec();
         for (int i = 0; i < commands.length; ++i) {
-            if (commands[i].getBuilderName().equals(ProfileProjectBuilder.BUILDER_ID)) {
+            if (commands[i].getBuilderName().equals(
+                    ProfileProjectBuilder.BUILDER_ID)) {
                 ICommand[] newCommands = new ICommand[commands.length - 1];
                 System.arraycopy(commands, 0, newCommands, 0, i);
-                System.arraycopy(commands, i + 1, newCommands, i, commands.length - i - 1);
+                System.arraycopy(commands, i + 1, newCommands, i,
+                        commands.length - i - 1);
                 description.setBuildSpec(newCommands);
                 project.setDescription(description, null);
                 return;
@@ -76,7 +80,7 @@ public class ProfileProjectNature implements IProjectNature {
      * {@inheritDoc}
      */
     @Override
-    public IProject getProject() {
+    public final IProject getProject() {
         return project;
     }
 
@@ -84,8 +88,8 @@ public class ProfileProjectNature implements IProjectNature {
      * {@inheritDoc}
      */
     @Override
-    public void setProject(IProject project) {
-        this.project = project;
+    public final void setProject(final IProject newProject) {
+        this.project = newProject;
 
     }
 

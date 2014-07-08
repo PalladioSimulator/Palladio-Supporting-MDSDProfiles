@@ -27,25 +27,62 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.helper.Helper;
  */
 public abstract class AbstractStereotypeHandler extends AbstractHandler {
 
-    private static final Logger logger = Logger.getLogger(ApplyStereotypeHandler.class.getName());
+    private static final Logger LOGGER = Logger
+            .getLogger(ApplyStereotypeHandler.class.getName());
 
+    /**
+     * Returns the identifier for the stereotype command parameter as defined in
+     * the plugin.xml.
+     * 
+     * @return the identifier
+     */
     protected abstract String getStereotypeParameterID();
 
+    /**
+     * Returns the identifier for the profile command parameter as defined in
+     * the plugin.xml.
+     * 
+     * @return the identifier
+     */
     protected abstract String getProfileParameterID();
 
+    /**
+     * Returns the action name for debugging.
+     * 
+     * @return the name
+     */
     protected abstract String getActionName();
 
-    protected abstract Command getCommand(EStereotypableObject eStereotypableObject, Stereotype stereotype);
+    /**
+     * Returns a command object for the concrete handler.
+     * 
+     * @param eStereotypableObject
+     *            the target object on which the command should be executed
+     * @param stereotype
+     *            the stereotype for the command
+     * @return the command object
+     */
+    protected abstract Command getCommand(
+            EStereotypableObject eStereotypableObject, Stereotype stereotype);
 
-    protected abstract void handle(EStereotypableObject eStereotypableObject, Stereotype stereotype);
+    /**
+     * Performs the concrete command in the concrete handler.
+     * 
+     * @param eStereotypableObject
+     *            the target object on which the command should be executed
+     * @param stereotype
+     *            the stereotype for the command
+     */
+    protected abstract void handle(EStereotypableObject eStereotypableObject,
+            Stereotype stereotype);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("method=execute | event=" + event.toString());
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("method=execute | event=" + event.toString());
         }
 
         // TODO: maybe use static variables from ApplicableStereotypesSubmenu
@@ -53,11 +90,13 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
         final String stereotypeParameterID = getStereotypeParameterID();
         final String profileParameterID = getProfileParameterID();
 
-        final String selectedStereotype = event.getParameter(stereotypeParameterID);
+        final String selectedStereotype =
+                event.getParameter(stereotypeParameterID);
         final String selectedProfile = event.getParameter(profileParameterID);
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("selected stereotype '" + selectedStereotype + "' from profile '" + selectedProfile + "' for "
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("selected stereotype '" + selectedStereotype
+                    + "' from profile '" + selectedProfile + "' for "
                     + getActionName());
         }
 
@@ -67,27 +106,36 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
             return null;
         }
 
-        final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+        final IStructuredSelection structuredSelection =
+                (IStructuredSelection) selection;
 
         final Object firstElement = structuredSelection.getFirstElement();
 
-        if (firstElement != null && firstElement instanceof EStereotypableObject) {
+        if (firstElement != null
+                && firstElement instanceof EStereotypableObject) {
 
-            final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
+            final EStereotypableObject eStereotypableObject =
+                    (EStereotypableObject) firstElement;
 
             final Profile profile = Helper.getProfile(selectedProfile);
 
             if (profile != null) {
-                final Stereotype applicableStereotype = profile.getStereotype(selectedStereotype);
+                final Stereotype applicableStereotype =
+                        profile.getStereotype(selectedStereotype);
 
                 if (applicableStereotype != null) {
 
-                    final IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
+                    final IEditorPart editorPart =
+                            HandlerUtil.getActiveEditor(event);
 
-                    if (editorPart != null && editorPart instanceof IEditingDomainProvider) {
-                        Command stereotypeCommand = getCommand(eStereotypableObject, applicableStereotype);
+                    if (editorPart != null
+                            && editorPart instanceof IEditingDomainProvider) {
+                        Command stereotypeCommand =
+                                getCommand(eStereotypableObject,
+                                        applicableStereotype);
 
-                        ((IEditingDomainProvider) editorPart).getEditingDomain().getCommandStack()
+                        ((IEditingDomainProvider) editorPart)
+                                .getEditingDomain().getCommandStack()
                                 .execute(stereotypeCommand);
                     }
                 }
@@ -107,31 +155,36 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
                 Node node = (Node) model;
                 EObject selectedObject = node.getElement();
 
-                if (selectedObject != null && selectedObject instanceof EStereotypableObject) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("selected object is instance of EStereotypableObject | class="
+                if (selectedObject != null
+                        && selectedObject instanceof EStereotypableObject) {
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("selected object is instance of EStereotypableObject | class="
                                 + selectedObject.getClass());
                     }
 
-                    final EStereotypableObject eStereotypableObject = (EStereotypableObject) selectedObject;
-                    final Stereotype applicableStereotype = eStereotypableObject
-                            .getApplicableStereotype(selectedStereotype);
+                    final EStereotypableObject eStereotypableObject =
+                            (EStereotypableObject) selectedObject;
+                    final Stereotype applicableStereotype =
+                            eStereotypableObject
+                                    .getApplicableStereotype(selectedStereotype);
 
                     handle(eStereotypableObject, applicableStereotype);
 
                 } else {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("selected object is not instance of EStereotypableObject | class="
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("selected object is not instance of EStereotypableObject | class="
                                 + selectedObject.getClass());
                     }
                 }
 
             } else {
-                MessageDialog.openInformation(shell, "Info", "model from edit part is not an instance of Node!");
+                MessageDialog.openInformation(shell, "Info",
+                        "model from edit part is not an instance of Node!");
             }
 
         } else {
-            MessageDialog.openInformation(shell, "Info", "Please select an edit part");
+            MessageDialog.openInformation(shell, "Info",
+                    "Please select an edit part");
         }
         return null;
     }

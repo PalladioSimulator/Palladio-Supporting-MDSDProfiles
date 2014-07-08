@@ -30,13 +30,16 @@ import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
  * 
  */
 
-public class ApplicableStereotypesSubmenu extends CompoundContributionItem implements IWorkbenchContribution {
+public class ApplicableStereotypesSubmenu extends CompoundContributionItem
+        implements IWorkbenchContribution {
 
-    private static final Logger logger = Logger.getLogger(ApplicableStereotypesSubmenu.class.getName());
+    private static final Logger LOGGER = Logger
+            .getLogger(ApplicableStereotypesSubmenu.class.getName());
 
     static {
         // TODO: remove logger configuration
-        PatternLayout layout = new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
+        PatternLayout layout =
+                new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
         ConsoleAppender appender = new ConsoleAppender(layout);
         BasicConfigurator.resetConfiguration();
         BasicConfigurator.configure(appender);
@@ -45,17 +48,20 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
     /**
      * This command id is also used in plugin.xml.
      */
-    private static final String COMMAND_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand";
+    private static final String COMMAND_ID =
+            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand";
 
     /**
      * This stereotype command parameter id is also used in plugin.xml.
      */
-    private static final String STEREOTYPE_COMMAND_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
+    private static final String STEREOTYPE_COMMAND_PARAMETER_ID =
+            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
 
     /**
      * This profile command parameter id is also used in plugin.xml.
      */
-    private static final String PROFILE_COMMAND_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
+    private static final String PROFILE_COMMAND_PARAMETER_ID =
+            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
 
     private IServiceLocator serviceLocator;
 
@@ -67,9 +73,12 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
     }
 
     /**
+     * Creates an applicable stereotypes submenu with the given (optional) id.
+     * 
      * @param id
+     *            the contribution item identifier, or <code>null</code>
      */
-    public ApplicableStereotypesSubmenu(String id) {
+    public ApplicableStereotypesSubmenu(final String id) {
         super(id);
         // TODO Auto-generated constructor stub
     }
@@ -77,40 +86,49 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
     /*
      * (non-Javadoc)
      * 
-     * @see org.eclipse.ui.actions.CompoundContributionItem#getContributionItems()
+     * @see
+     * org.eclipse.ui.actions.CompoundContributionItem#getContributionItems()
      */
     @Override
     protected IContributionItem[] getContributionItems() {
 
-        ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
-                .getSelection();
+        ISelection selection =
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                        .getSelectionService().getSelection();
 
         if (selection == null || !(selection instanceof IStructuredSelection)) {
-            logger.debug("selection is null or not instance of IStructuredSelection");
+            LOGGER.debug("selection is null or not instance of IStructuredSelection");
             return new IContributionItem[] {};
         }
 
-        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+        IStructuredSelection structuredSelection =
+                (IStructuredSelection) selection;
 
         Object firstElement = structuredSelection.getFirstElement();
 
-        if (firstElement == null || !(firstElement instanceof EStereotypableObject)) {
-            logger.debug("firstElement is null or not instance of EStereotypableObject");
+        if (firstElement == null
+                || !(firstElement instanceof EStereotypableObject)) {
+            LOGGER.debug("firstElement is null or not instance of EStereotypableObject");
             return new IContributionItem[] {};
         }
 
-        final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
+        final EStereotypableObject eStereotypableObject =
+                (EStereotypableObject) firstElement;
 
-        final EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes();
+        final EList<Stereotype> applicableStereotypes =
+                eStereotypableObject.getApplicableStereotypes();
 
-        IContributionItem[] items = new IContributionItem[applicableStereotypes.size()];
+        IContributionItem[] items =
+                new IContributionItem[applicableStereotypes.size()];
 
         for (int i = 0; i < items.length; i++) {
             Stereotype applicableStereotype = applicableStereotypes.get(i);
 
             Profile profile = applicableStereotype.getProfile();
 
-            items[i] = createContributionItem(applicableStereotype.getName(), profile.getName());
+            items[i] =
+                    createContributionItem(applicableStereotype.getName(),
+                            profile.getName());
         }
 
         return items;
@@ -127,21 +145,25 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
     }
 
     /**
-     * Creates a single contribution item labeled with the combination of the specified qualified
-     * name of the stereotype and the profile containing the stereotype.
+     * Creates a single contribution item labeled with the combination of the
+     * specified qualified name of the stereotype and the profile containing the
+     * stereotype.
      * 
      * @param stereotypeName
      *            The stereotype's qualified name to be used as label.
      * @param profileName
-     *            The name of the profile which contains the stereotype specified by its qualified
-     *            name.
+     *            The name of the profile which contains the stereotype
+     *            specified by its qualified name.
      * @return The created contribution item.
      */
-    private IContributionItem createContributionItem(final String stereotypeName, final String profileName) {
+    private IContributionItem createContributionItem(
+            final String stereotypeName, final String profileName) {
 
-        final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(
-                serviceLocator, null, COMMAND_ID, CommandContributionItem.STYLE_PUSH);
-        contributionParameter.label = stereotypeName + " (from " + profileName + ")";
+        final CommandContributionItemParameter contributionParameter =
+                new CommandContributionItemParameter(serviceLocator, null,
+                        COMMAND_ID, CommandContributionItem.STYLE_PUSH);
+        contributionParameter.label =
+                stereotypeName + " (from " + profileName + ")";
         contributionParameter.visibleEnabled = true;
 
         // use a parameter to identify the selected stereotype in the handler

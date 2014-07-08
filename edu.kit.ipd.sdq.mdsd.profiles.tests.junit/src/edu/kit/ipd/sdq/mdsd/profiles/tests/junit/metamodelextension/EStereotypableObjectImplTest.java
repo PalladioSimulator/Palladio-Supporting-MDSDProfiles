@@ -71,7 +71,7 @@ public class EStereotypableObjectImplTest {
     /**
     *
     */
-    private final String projectName = "DummyProject";
+    private final String dummyProjectName = "DummyProject";
     /**
     *
     */
@@ -125,7 +125,7 @@ public class EStereotypableObjectImplTest {
         // create a dummy project that is used as container for xmi files
 
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        project = root.getProject(projectName);
+        project = root.getProject(dummyProjectName);
 
         if (!project.exists()) {
             project.create(null);
@@ -162,7 +162,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     // @Test
-    public void testEStereotypableObjectImpl() {
+    public final void testEStereotypableObjectImpl() {
         fail("Not yet implemented"); // TODO
     }
 
@@ -172,7 +172,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     // @Test
-    public void testSetProfileApplicationDecorator() {
+    public final void testSetProfileApplicationDecorator() {
         fail("Not yet implemented"); // TODO
     }
 
@@ -182,7 +182,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
-    public void testGetStereotypeApplications() {
+    public final void testGetStereotypeApplications() {
 
         // retrieve stereotypes for application
         Stereotype entityBeanStereotype =
@@ -216,7 +216,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
-    public void testGetStereotypeApplicationsStereotype() {
+    public final void testGetStereotypeApplicationsStereotype() {
 
         // retrieve stereotypes for application
         Stereotype entityBeanStereotype =
@@ -287,7 +287,7 @@ public class EStereotypableObjectImplTest {
      * parameter.
      */
     @Test
-    public void testGetStereotypeApplicationsStereotypeNull() {
+    public final void testGetStereotypeApplicationsStereotypeNull() {
 
         Stereotype stereotype = null;
 
@@ -303,7 +303,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
-    public void testGetStereotypeApplicationsString() {
+    public final void testGetStereotypeApplicationsString() {
 
         // retrieve stereotypes for application
         Stereotype entityBeanStereotype =
@@ -374,7 +374,7 @@ public class EStereotypableObjectImplTest {
      * parameter.
      */
     @Test
-    public void testGetStereotypeApplicationsStringNull() {
+    public final void testGetStereotypeApplicationsStringNull() {
 
         String qualifiedName = null;
 
@@ -390,7 +390,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     // @Test
-    public void testGetAppliedStereotypes() {
+    public final void testGetAppliedStereotypes() {
         fail("Not yet implemented"); // TODO
     }
 
@@ -400,7 +400,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     // @Test
-    public void testGetAppliedStereotype() {
+    public final void testGetAppliedStereotype() {
         fail("Not yet implemented"); // TODO
     }
 
@@ -410,7 +410,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     // @Test
-    public void testIsStereotypeApplicable() {
+    public final void testIsStereotypeApplicable() {
         fail("Not yet implemented"); // TODO
     }
 
@@ -420,7 +420,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     // @Test
-    public void testIsStereotypeApplied() {
+    public final void testIsStereotypeApplied() {
         fail("Not yet implemented"); // TODO
     }
 
@@ -430,7 +430,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
-    public void testApplyStereotypeOnce() {
+    public final void testApplyStereotypeOnce() {
 
         // retrieve a stereotype for application
         Stereotype stereotype =
@@ -458,7 +458,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
-    public void testApplyStereotypeTwice() {
+    public final void testApplyStereotypeTwice() {
 
         // retrieve a stereotype for application
         Stereotype stereotype =
@@ -484,7 +484,7 @@ public class EStereotypableObjectImplTest {
      * parameter.
      */
     @Test
-    public void testApplyStereotypeNull() {
+    public final void testApplyStereotypeNull() {
 
         StereotypeApplication stereotypeApplication =
                 testee.applyStereotype(null);
@@ -500,7 +500,7 @@ public class EStereotypableObjectImplTest {
      * It checks that an applied stereotype is removed successfully.
      */
     @Test
-    public void testRemoveStereotypeApplicationOnce() {
+    public final void testRemoveStereotypeApplicationOnce() {
 
         // retrieve stereotypes for application
         Stereotype entityBeanStereotype =
@@ -523,7 +523,7 @@ public class EStereotypableObjectImplTest {
      * already been removed is tried to be removed again.
      */
     @Test
-    public void testRemoveStereotypeApplicationTwice() {
+    public final void testRemoveStereotypeApplicationTwice() {
 
         // retrieve stereotypes for application
         Stereotype entityBeanStereotype =
@@ -549,7 +549,7 @@ public class EStereotypableObjectImplTest {
      * stereotypes of the same type are applied.
      */
     @Test
-    public void testRemoveStereotypeApplicationOneOutOfTwo() {
+    public final void testRemoveStereotypeApplicationOneOutOfTwo() {
 
         // retrieve stereotypes for application
         Stereotype entityBeanStereotype =
@@ -576,7 +576,7 @@ public class EStereotypableObjectImplTest {
      * parameter.
      */
     @Test
-    public void testRemoveStereotypeApplicationNull() {
+    public final void testRemoveStereotypeApplicationNull() {
 
         testee.removeStereotypeApplication(null);
 
@@ -592,7 +592,7 @@ public class EStereotypableObjectImplTest {
      * application which belongs to another object.
      */
     @Test
-    public void testRemoveStereotypeApplicationFromOtherObject() {
+    public final void testRemoveStereotypeApplicationFromOtherObject() {
 
         // set up a second EStereotypableObject
         EStereotypableObject otherTestee =
@@ -623,7 +623,7 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
-    public void testGetApplicableStereotypes() {
+    public final void testGetApplicableStereotypes() {
 
         EList<Stereotype> applicableStereotypes =
                 testee.getApplicableStereotypes();
@@ -639,7 +639,7 @@ public class EStereotypableObjectImplTest {
      * It checks that an available stereotype is found.
      */
     @Test
-    public void testGetApplicableStereotypeExisting() {
+    public final void testGetApplicableStereotypeExisting() {
 
         Stereotype applicableStereotype =
                 testee.getApplicableStereotype(sessionBeanQualifiedName);
@@ -656,12 +656,12 @@ public class EStereotypableObjectImplTest {
      * It checks that an unavailable stereotype is not found (returns null).
      */
     @Test
-    public void testGetApplicableStereotypeNotExisting() {
+    public final void testGetApplicableStereotypeNotExisting() {
 
-        final String QUALIFIED_NAME = "UnavailableStereotype";
+        final String qualifiedName = "UnavailableStereotype";
 
         Stereotype applicableStereotype =
-                testee.getApplicableStereotype(QUALIFIED_NAME);
+                testee.getApplicableStereotype(qualifiedName);
 
         assertNull(applicableStereotype);
     }
@@ -675,7 +675,7 @@ public class EStereotypableObjectImplTest {
      * parameter.
      */
     @Test
-    public void testGetApplicableStereotypeNull() {
+    public final void testGetApplicableStereotypeNull() {
 
         Stereotype stereotype = testee.getApplicableStereotype(null);
 
@@ -692,17 +692,16 @@ public class EStereotypableObjectImplTest {
      * file and profile application file.
      */
     @Test
-    public
-            void
-            testValidatePersistedReferencesOfEStereotypableObjectsAndProfileApplication() {
+    public final void
+            testPersistedRefsOfEStereotypableObjectsAndProfileApplication() {
 
-        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH =
+        final String resourcesProjectName = "EJBTestResources";
+        final String modelInstancesFilePath =
                 "/modelinstances/AContainsTwoBs.xmi";
 
         Resource modelInstancesResource =
-                getModelInstancesResource(RESOURCES_PROJECT_NAME,
-                        MODEL_INSTANCES_FILE_PATH);
+                getModelInstancesResource(resourcesProjectName,
+                        modelInstancesFilePath);
 
         // implicitly a look-up in existing profile application file takes place
         // when requesting
@@ -723,14 +722,14 @@ public class EStereotypableObjectImplTest {
      * reloading the tagged value.
      */
     @Test
-    public void testCheckTaggedValuePersistence() {
-        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH =
+    public final void testCheckTaggedValuePersistence() {
+        final String resourcesProjectName = "EJBTestResources";
+        final String modelInstancesFilePath =
                 "/modelinstances/AContainsTwoBs_TaggedValuePersistenceTest.xmi";
 
         Resource modelInstancesResource =
-                getModelInstancesResource(RESOURCES_PROJECT_NAME,
-                        MODEL_INSTANCES_FILE_PATH);
+                getModelInstancesResource(resourcesProjectName,
+                        modelInstancesFilePath);
 
         // setup for checking the precondition
         B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
@@ -758,8 +757,8 @@ public class EStereotypableObjectImplTest {
 
         // check the reloaded attribute value
         modelInstancesResource =
-                getModelInstancesResource(RESOURCES_PROJECT_NAME,
-                        MODEL_INSTANCES_FILE_PATH);
+                getModelInstancesResource(resourcesProjectName,
+                        modelInstancesFilePath);
 
         b1 = (B) modelInstancesResource.getEObject("//@bs.0");
         stereotypeApplications =
@@ -786,14 +785,14 @@ public class EStereotypableObjectImplTest {
      * This is done by reloading the reference.
      */
     @Test
-    public void testCheckStereotypeReferencePersistence() {
-        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH =
+    public final void testCheckStereotypeReferencePersistence() {
+        final String resourcesProjectName = "EJBTestResources";
+        final String modelInstanceFilePath =
                 "/modelinstances/AContainsTwoBs_ReferencePersistenceTest.xmi";
 
         Resource modelInstancesResource =
-                getModelInstancesResource(RESOURCES_PROJECT_NAME,
-                        MODEL_INSTANCES_FILE_PATH);
+                getModelInstancesResource(resourcesProjectName,
+                        modelInstanceFilePath);
 
         // setup for checking the precondition
         B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
@@ -848,8 +847,8 @@ public class EStereotypableObjectImplTest {
 
         // check the reloaded attribute value
         modelInstancesResource =
-                getModelInstancesResource(RESOURCES_PROJECT_NAME,
-                        MODEL_INSTANCES_FILE_PATH);
+                getModelInstancesResource(resourcesProjectName,
+                        modelInstanceFilePath);
 
         b1 = (B) modelInstancesResource.getEObject("//@bs.0");
         assertEquals("b1", b1.getName());
@@ -910,14 +909,14 @@ public class EStereotypableObjectImplTest {
      * EStereotypableObject (from the same model).
      */
     @Test
-    public void testNumberOfLoadedResourcesInResourceSet() {
-        final String RESOURCES_PROJECT_NAME = "EJBTestResources";
-        final String MODEL_INSTANCES_FILE_PATH =
+    public final void testNumberOfLoadedResourcesInResourceSet() {
+        final String resourcesProjectName = "EJBTestResources";
+        final String modelInstancesFilePath =
                 "/modelinstances/AContainsTwoBs.xmi";
 
         Resource modelInstancesResource =
-                getModelInstancesResource(RESOURCES_PROJECT_NAME,
-                        MODEL_INSTANCES_FILE_PATH);
+                getModelInstancesResource(resourcesProjectName,
+                        modelInstancesFilePath);
 
         final B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
         b1.getApplicableStereotypes();
@@ -930,6 +929,16 @@ public class EStereotypableObjectImplTest {
         assertEquals(numberOfResources, resourceSet.getResources().size());
     }
 
+    /**
+     * Returns the resource with the given path in the project with the given
+     * name.
+     * 
+     * @param projectName
+     *            the project name
+     * @param modelInstancesFilePath
+     *            the relative path to file in the project
+     * @return the resource
+     */
     private Resource getModelInstancesResource(final String projectName,
             final String modelInstancesFilePath) {
         final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
