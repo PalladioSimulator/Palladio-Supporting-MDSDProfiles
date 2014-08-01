@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
@@ -140,7 +141,9 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     private TableViewerColumn twc_taggedValue;
     public static final String STEREOTYPE = "Stereotype Feature";
     public static final String TAGGED_VALUE = "Tagged Value";
-    public static final String[] columnProperties = { STEREOTYPE, TAGGED_VALUE };
+    public static final String[] columnProperties = {
+            STEREOTYPE, TAGGED_VALUE
+    };
 
     String eStructuralFeatureName_appliedTo = "appliedTo";
     String eStructuralFeatureName_extension = "extension";
@@ -260,11 +263,16 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             logger.error("Resource change test!");
             if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
                 final IResource resource = event.getResource();
+                if (resource == null) {
+                    throw new RuntimeException("IResourceChangeEvent did not provide a resource");
+                }
+                
                 try {
-                    if (resource.getType() == IResource.PROJECT && ((IProject) resource).hasNature(JavaCore.NATURE_ID)) {
+                    if (resource.getType() == IResource.PROJECT
+                            && ((IProject) resource).hasNature(JavaCore.NATURE_ID)) {
                         resource.delete(true, null);
                     }
-                } catch (final Exception e) {
+                } catch (CoreException e) {
                     e.printStackTrace();
                 }
             }
