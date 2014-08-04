@@ -106,7 +106,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     public ProfilePropertiesView() {
     }
 
-    private static Logger logger = Logger.getLogger(ProfilePropertiesView.class);
+    private static final Logger LOGGER = Logger.getLogger(ProfilePropertiesView.class);
 
     public static final String ID = "edu.kit.ipd.sdq.mdsd.profiles.view.columnbased.ColumnBasedPropertiesView"; //$NON-NLS-1$
 
@@ -182,10 +182,10 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 }
                 if (treeSelection.getFirstElement() instanceof EStereotypableObject
                         && !((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
-                    logger.info("TreeSelection: " + treeSelection);
-                    logger.info(treeSelection.getFirstElement() instanceof EStereotypableObject);
+                    LOGGER.info("TreeSelection: " + treeSelection);
+                    LOGGER.info(treeSelection.getFirstElement() instanceof EStereotypableObject);
                     ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
-                    logger.info("eStereotyped: " + ProfilePropertiesView.this.eStereotyped);
+                    LOGGER.info("eStereotyped: " + ProfilePropertiesView.this.eStereotyped);
                     ProfileListMenu.createOrUpdateMenuForEachProfile(treeSelection);
                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
@@ -201,10 +201,10 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     // ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     // ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    logger.warn("The root element wasn't applied any stereotypes.");
+                    LOGGER.warn("The root element wasn't applied any stereotypes.");
                 } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    logger.error("The root element was not an EStereotypableObject.");
+                    LOGGER.error("The root element was not an EStereotypableObject.");
                 }
             }
         }
@@ -217,7 +217,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         public void partActivated(IWorkbenchPart part) {
             if (part instanceof IEditorPart) {
                 activePart = part;
-                logger.info("Active part: " + part.getTitle());
+                LOGGER.info("Active part: " + part.getTitle());
             }
         }
 
@@ -227,7 +227,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 activePart = null;
                 // ProfileApplicationFileRegistry.INSTANCE.clear();
                 treeViewer.setInput(Collections.emptyList());
-                logger.info("Closed part: " + part.getTitle());
+                LOGGER.info("Closed part: " + part.getTitle());
             }
         }
 
@@ -235,7 +235,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         public void partBroughtToTop(IWorkbenchPart part) {
             if (part instanceof IEditorPart) {
                 activePart = part;
-                logger.info("Top part: " + part.getTitle());
+                LOGGER.info("Top part: " + part.getTitle());
             }
         }
 
@@ -243,7 +243,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         public void partDeactivated(IWorkbenchPart part) {
             if (part == activePart) {
                 activePart = null;
-                logger.info("Deactivated part: " + part.getTitle());
+                LOGGER.info("Deactivated part: " + part.getTitle());
             }
         }
 
@@ -252,7 +252,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             if (part instanceof IEditorPart) {
                 activePart = part;
                 treeViewer.setInput(Collections.emptyList());
-                logger.info("Opened part: " + part.getTitle());
+                LOGGER.info("Opened part: " + part.getTitle());
             }
         }
     };
@@ -260,7 +260,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     private final IResourceChangeListener changeListener = new IResourceChangeListener() {
         @Override
         public void resourceChanged(final IResourceChangeEvent event) {
-            logger.error("Resource change test!");
+            LOGGER.error("Resource change test!");
             if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
                 final IResource resource = event.getResource();
                 if (resource == null) {
@@ -286,14 +286,14 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      * @param eStereotypableObject
      */
     private Collection<EStereotypableObject> callPerformObservation(final EStereotypableObject eStereotypableObject) {
-        logger.info("Observation beginns.");
+        LOGGER.info("Observation beginns.");
         // List of estereotyped objects
         Collection<EStereotypableObject> temp = this.loader.performObservation(eStereotypableObject);
         if (temp.isEmpty()) {
-            logger.warn("Couldn't perform observation.");
+            LOGGER.warn("Couldn't perform observation.");
             return null;
         } else {
-            logger.info("Observation and refreshments performed completely.");
+            LOGGER.info("Observation and refreshments performed completely.");
             return temp;
         }
     }
@@ -388,7 +388,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
             final IObservableValue treeObservables = ViewerProperties.singleSelection().observe(this.treeViewer);
             treeObservables.addValueChangeListener(new ChangedListener(this));
         } catch (final IllegalArgumentException e) {
-            logger.error("Selection from tree viewer not supported.");
+            LOGGER.error("Selection from tree viewer not supported.");
             e.printStackTrace();
         }
     }
@@ -441,7 +441,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                         try {
                             cell.setText(String.valueOf(obj));
                         } catch (final NullPointerException e) {
-                            logger.error(obj);
+                            LOGGER.error(obj);
                             e.printStackTrace();
                         }
                     } else {
@@ -544,7 +544,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 // recursive call
                 ProfilePropertiesView.this.treeViewer.refresh();
                 ProfilePropertiesView.this.tableViewer.refresh();
-                logger.info("UI refreshed.");
+                LOGGER.info("UI refreshed.");
             }
         });
     }

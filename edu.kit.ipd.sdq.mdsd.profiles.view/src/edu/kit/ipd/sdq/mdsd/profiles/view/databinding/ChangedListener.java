@@ -28,7 +28,7 @@ import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ProfilePropertiesView;
  */
 public class ChangedListener implements IValueChangeListener {
 
-    private static Logger logger = Logger.getLogger(ProfilePropertiesView.class);
+    private static final Logger LOGGER = Logger.getLogger(ProfilePropertiesView.class);
 
     private ProfilePropertiesView view = null;
 
@@ -43,12 +43,12 @@ public class ChangedListener implements IValueChangeListener {
     @Override
     public void handleValueChange(final ValueChangeEvent event) {
         if (event.diff.getNewValue() instanceof StereotypeApplication) {
-            logger.info("TreeViewer selecetion:" + event.diff.getNewValue());
+            LOGGER.info("TreeViewer selecetion:" + event.diff.getNewValue());
             final StereotypeApplication stereotypeApplication = (StereotypeApplication) event.diff.getNewValue();
-            logger.info("Selected StereotypeAplication: " + stereotypeApplication);
+            LOGGER.info("Selected StereotypeAplication: " + stereotypeApplication);
 
             final Stereotype stereotype = ((StereotypeApplication) event.diff.getNewValue()).getStereotype();
-            logger.info("Selected Stereotype: " + stereotype);
+            LOGGER.info("Selected Stereotype: " + stereotype);
             this.view.getMaster().setValue(stereotypeApplication);
 
             final List<IObservableValue> values = new ArrayList<IObservableValue>();

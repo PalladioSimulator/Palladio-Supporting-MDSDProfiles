@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
  */
 public class EProfileApplicationLoader {
 
-    private static Logger logger = Logger.getLogger(EProfileApplicationLoader.class);
+    private static final Logger LOGGER = Logger.getLogger(EProfileApplicationLoader.class);
 
     private final Collection<EStereotypableObject> eStereotypableObjects = new BasicEList<>();
     private Collection<ProfileApplicationDecorator> profileApplicationDecorators;
@@ -41,7 +41,7 @@ public class EProfileApplicationLoader {
                 this.eStereotypableObjects.add((EStereotypableObject) stereotypeApplication.getAppliedTo());
             }
         }
-        logger.info("EStereotyped Objects: " + this.eStereotypableObjects.toString());
+        LOGGER.info("EStereotyped Objects: " + this.eStereotypableObjects.toString());
         return this.eStereotypableObjects;
     }
 
@@ -52,9 +52,9 @@ public class EProfileApplicationLoader {
             EStereotypableObject eStereotypableObject) {
         try {
             this.profileApplicationDecorators = this.observer.findProfileApplicationDecorators(eStereotypableObject);
-            logger.info("Decorator(s): " + this.profileApplicationDecorators);
+            LOGGER.info("Decorator(s): " + this.profileApplicationDecorators);
         } catch (final Exception e) {
-            logger.error("Chosen Object was not stereotyped. Please select another one.");
+            LOGGER.error("Chosen Object was not stereotyped. Please select another one.");
             e.printStackTrace();
             throw new NullPointerException();
         }

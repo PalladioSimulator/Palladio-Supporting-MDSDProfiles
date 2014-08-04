@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
  */
 public class EStereotypedEditorObserver {
 
-    private static Logger logger = Logger.getLogger(EStereotypedEditorObserver.class);
+    private static final Logger LOGGER = Logger.getLogger(EStereotypedEditorObserver.class);
 
     protected ActiveEditorObserver INSTANCE;
 
@@ -49,7 +49,7 @@ public class EStereotypedEditorObserver {
         }
 
         if (this.decorators == null || this.decorators.isEmpty()) {
-            logger.error("Delegated observer couldn't find an decorators for the selection.");
+            LOGGER.error("Delegated observer couldn't find an decorators for the selection.");
             ProfileApplicationFileRegistry.INSTANCE.clear();
             final Collection<ProfileApplicationDecorator> newDecorators = ProfileApplicationFileRegistry.INSTANCE
                     .getAllExistingProfileApplicationDecorators(eStereotypableObject);

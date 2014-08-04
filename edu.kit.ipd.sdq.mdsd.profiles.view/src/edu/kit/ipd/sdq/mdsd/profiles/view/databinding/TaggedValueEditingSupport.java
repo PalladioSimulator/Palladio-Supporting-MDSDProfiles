@@ -31,13 +31,13 @@ import org.eclipse.swt.SWT;
 
 public class TaggedValueEditingSupport extends EditingSupport {
 
-    private static Logger logger = Logger.getLogger(TaggedValueEditingSupport.class);
+    private static final Logger LOGGER = Logger.getLogger(TaggedValueEditingSupport.class);
 
     Map<String, CellEditor> celleditors = new HashMap<String, CellEditor>();
-    private TableViewer viewer;
+    private final TableViewer viewer;
     private EditingDomain editingDomain;
 
-    private CellEditor textEditor;
+    private final CellEditor textEditor;
     private ComboBoxViewerCellEditor comboBoxEditor;
 
     // ArrayList<String> items = new ArrayList<>();
@@ -72,12 +72,12 @@ public class TaggedValueEditingSupport extends EditingSupport {
     protected CellEditor getCellEditor(Object element) {
         EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
         Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
-        Object dataType = (Object) attr.getEType();
+        Object dataType = attr.getEType();
 
         if (dataType instanceof EEnum) {
-            logger.info(((Object) attr.getEType()));
+            LOGGER.info((attr.getEType()));
 
-            EEnum eEnum = (EEnum) ((EAttribute) attr).getEType();
+            EEnum eEnum = (EEnum) attr.getEType();
             literals = eEnum.getELiterals();
             String[] elements = new String[literals.size()];
             int i = 0;
@@ -121,12 +121,12 @@ public class TaggedValueEditingSupport extends EditingSupport {
 
     @Override
     protected Object getValue(Object element) {
-        logger.info(element);
+        LOGGER.info(element);
         EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
         Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
-        logger.info(attr);
-        logger.info(obj);
-        logger.info(obj.getClass());
+        LOGGER.info(attr);
+        LOGGER.info(obj);
+        LOGGER.info(obj.getClass());
         return obj.toString();
     }
 

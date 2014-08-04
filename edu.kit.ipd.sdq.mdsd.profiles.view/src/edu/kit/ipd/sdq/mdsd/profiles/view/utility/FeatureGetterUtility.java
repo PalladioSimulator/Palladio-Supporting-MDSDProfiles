@@ -21,7 +21,7 @@ import org.modelversioning.emfprofileapplication.StereotypeApplication;
  */
 public class FeatureGetterUtility {
 
-    private static Logger logger = Logger.getLogger(FeatureGetterUtility.class);
+    private static final Logger LOGGER = Logger.getLogger(FeatureGetterUtility.class);
 
     // hide the default constructor
     private FeatureGetterUtility() {
@@ -34,7 +34,7 @@ public class FeatureGetterUtility {
      * @return List<EAttribute> EAttributes of Stereotype
      */
     public static List<EAttribute> getFeatureListOfStereotype(final Stereotype stereotype) {
-        logger.info("EAttributes of " + stereotype + ": " + stereotype.getEAllAttributes());
+        LOGGER.info("EAttributes of " + stereotype + ": " + stereotype.getEAllAttributes());
         return stereotype.getEAllAttributes();
     }
 
@@ -49,7 +49,7 @@ public class FeatureGetterUtility {
         if (stereotypeApplication == null) {
             return new ArrayList<EAttribute>();
         } else {
-            logger.info("EAttributes of " + stereotypeApplication + ": "
+            LOGGER.info("EAttributes of " + stereotypeApplication + ": "
                     + stereotypeApplication.eClass().getEAllAttributes());
             return stereotypeApplication.eClass().getEAllAttributes();
         }

@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
 
 public class ClearAction extends Action {
 
-    private static Logger logger = Logger.getLogger(RemoveStereotypeAction.class);
+    private static final Logger LOGGER = Logger.getLogger(RemoveStereotypeAction.class);
     private final TreeViewer treeViewer;
     private final TableViewer tableViewer;
 
@@ -32,6 +32,6 @@ public class ClearAction extends Action {
         ProfileApplicationFileRegistry.INSTANCE.clear();
         this.treeViewer.refresh();
         this.tableViewer.refresh();
-        logger.info("View cleared.");
+        LOGGER.info("View cleared.");
     }
 }
