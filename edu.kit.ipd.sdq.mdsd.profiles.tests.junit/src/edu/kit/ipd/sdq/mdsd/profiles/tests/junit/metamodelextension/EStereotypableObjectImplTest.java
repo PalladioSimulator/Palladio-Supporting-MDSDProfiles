@@ -11,6 +11,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.PatternLayout;
@@ -42,7 +44,7 @@ import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
 
 /**
- * @author Matthias Eisenmann
+ * @author Matthias Eisenmann, Emre Taspolatoglu
  * 
  */
 public class EStereotypableObjectImplTest {
@@ -161,9 +163,17 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#EStereotypableObjectImpl()}
      * .
      */
-    // @Test
+    @Test
     public final void testEStereotypableObjectImpl() {
-        fail("Not yet implemented"); // TODO
+    	 Boolean testeeEStereotypeableObject;
+    	 
+    	 if (testee instanceof EStereotypableObject) {
+    		 testeeEStereotypeableObject = true;
+    	 } else {
+    		 testeeEStereotypeableObject = false;
+    	 }
+    	 
+    	 assertTrue(testeeEStereotypeableObject);
     }
 
     /**
@@ -208,6 +218,56 @@ public class EStereotypableObjectImplTest {
         stereotypeApplications = testee.getStereotypeApplications();
         assertEquals(2, stereotypeApplications.size());
         assertSame(sessionBeanApplication, stereotypeApplications.get(1));
+    }
+    
+    @Test
+    public void testGetStereotypeApplicationsChangedResource() {
+    	// 1) apply stereotype
+        Stereotype entityBeanStereotype = testee.getApplicableStereotype(entityBeanQualifiedName);
+    	StereotypeApplication entityBeanApplication = testee.applyStereotype(entityBeanStereotype);
+    	
+    	// 2) new resource, put model "testee" in resource
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	
+    	// 3) check whether testee has a stereotype applied after unloading
+    	resource.unload();
+    	try {
+			resource.load(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+//    	resource.getContents().remove(0);
+    	assertEquals("Wrong number of stereotypes.", 1, testee.getStereotypeApplications().size());
+    	assertEquals("Wrong applied object.", entityBeanApplication, testee.getStereotypeApplications().get(0));
+    }
+    
+    @Test
+    public void testGetStereotypeApplicationsAfterResourceSetCleaned() {
+    	// 1) apply stereotype
+        Stereotype entityBeanStereotype = testee.getApplicableStereotype(entityBeanQualifiedName);
+    	StereotypeApplication entityBeanApplication = testee.applyStereotype(entityBeanStereotype);
+    	
+    	// 2) new resource, put model "testee" in resource
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	
+    	// 3) check whether testee has a stereotype applied after re-initializing the ResourceSet and Resource
+        resourceSet.getResources().remove(resource);
+        resource = null;
+        resourceSet = null;
+        
+        resourceSet = new ResourceSetImpl();
+
+        // Register the appropriate resource factory to handle all file extensions.
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+        // Register the package to ensure it is available during loading.
+        resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
+        
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+        resource.getContents().add(testee);
+        
+    	assertEquals("Wrong number of stereotypes.", 1, testee.getStereotypeApplications().size());
+    	assertEquals("Wrong applied object.", entityBeanApplication, testee.getStereotypeApplications().get(0));
     }
 
     /**
@@ -389,21 +449,299 @@ public class EStereotypableObjectImplTest {
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getAppliedStereotypes()}
      * .
      */
-    // @Test
+    @Test
     public final void testGetAppliedStereotypes() {
-        fail("Not yet implemented"); // TODO
+    	
+        // retrieve stereotypes for application
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        Stereotype sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
+
+        // check that there are no stereotype applications at the beginning
+        EList<StereotypeApplication> stereotypeApplications =
+                testee.getStereotypeApplications();
+        assertEquals(0, stereotypeApplications.size());
+        EList<Stereotype> appliedStereotypes =
+                testee.getAppliedStereotypes();
+        assertEquals(0, appliedStereotypes.size());
+        
+        // first stereotype application
+        StereotypeApplication entityBeanApplication =
+                testee.applyStereotype(entityBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(1, stereotypeApplications.size());
+        assertSame(entityBeanApplication, stereotypeApplications.get(0));
+
+        // second stereotype application
+        StereotypeApplication sessionBeanApplication =
+                testee.applyStereotype(sessionBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(2, stereotypeApplications.size());
+        assertSame(sessionBeanApplication, stereotypeApplications.get(1));
+        
+        // now get the two applied stereotypes
+        appliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals(2, appliedStereotypes.size());
+        assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+        assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
+        
+    }
+    
+    /**
+     * Test method for
+     * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getAppliedStereotypes()}
+     * .
+     */
+    @Test
+    public final void testGetAppliedStereotypesChangedResource() {
+    	    		
+        // check that there are no stereotype applications at the beginning
+        EList<StereotypeApplication> stereotypeApplications =
+                testee.getStereotypeApplications();
+        assertEquals(0, stereotypeApplications.size());
+        EList<Stereotype> appliedStereotypes =
+                testee.getAppliedStereotypes();
+        assertEquals(0, appliedStereotypes.size());
+        
+       	// 1) apply stereotype
+    	
+        // retrieve stereotypes for application
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        Stereotype sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
+        
+        // first stereotype application
+        StereotypeApplication entityBeanApplication =
+                testee.applyStereotype(entityBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(1, stereotypeApplications.size());
+        assertSame(entityBeanApplication, stereotypeApplications.get(0));
+
+        // second stereotype application
+        StereotypeApplication sessionBeanApplication =
+                testee.applyStereotype(sessionBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(2, stereotypeApplications.size());
+        assertSame(sessionBeanApplication, stereotypeApplications.get(1));
+        
+        // now get the two applied stereotypes
+        appliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals(2, appliedStereotypes.size());
+        assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+        assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
+        
+    	// 2) new resource, put model "testee" in resource
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+
+    	// 3) check whether testee has a stereotype applied after unloading
+    	resource.unload();
+    	try {
+			resource.load(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+        appliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals(2, appliedStereotypes.size());
+        assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+        assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
+    
+    }
+    
+    /**
+     * Test method for
+     * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getAppliedStereotypes()}
+     * .
+     */
+    @Test
+    public final void testGetAppliedStereotypesAfterResourceSetCleaned() {
+    	    		
+        // check that there are no stereotype applications at the beginning
+        EList<StereotypeApplication> stereotypeApplications =
+                testee.getStereotypeApplications();
+        assertEquals(0, stereotypeApplications.size());
+        EList<Stereotype> appliedStereotypes =
+                testee.getAppliedStereotypes();
+        assertEquals(0, appliedStereotypes.size());
+        
+       	// 1) apply stereotypes
+    	
+        // retrieve stereotypes for application
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        Stereotype sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
+        
+        // first stereotype application
+        StereotypeApplication entityBeanApplication =
+                testee.applyStereotype(entityBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(1, stereotypeApplications.size());
+        assertSame(entityBeanApplication, stereotypeApplications.get(0));
+
+        // second stereotype application
+        StereotypeApplication sessionBeanApplication =
+                testee.applyStereotype(sessionBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(2, stereotypeApplications.size());
+        assertSame(sessionBeanApplication, stereotypeApplications.get(1));
+        
+        // now get the two applied stereotypes
+        appliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals(2, appliedStereotypes.size());
+        assertTrue("Testee in old resource has no stereotypes.", !(testee.getAppliedStereotypes().isEmpty()));
+        assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+        assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
+        
+    	// 2) new resource, put model "testee" in resource
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+
+    	// 3) check whether testee has a stereotype applied after unloading
+        resourceSet.getResources().remove(resource);
+        resource = null;
+        resourceSet = null;
+        
+        EList<Stereotype> anotherAppliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals("Stereotypes are not the same.", appliedStereotypes, anotherAppliedStereotypes);
+
+        resourceSet = new ResourceSetImpl();
+
+        // Register the appropriate resource factory to handle all file extensions.
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+        // Register the package to ensure it is available during loading.
+        resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
+        
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+        resource.getContents().add(testee);
+        
+        anotherAppliedStereotypes = testee.getAppliedStereotypes();
+        assertNotNull("Testee null.", testee);
+
+        assertTrue("Testee is stereotypable", testee instanceof EStereotypableObject);
+        assertTrue("Testee in new resource has no stereotypes.", !(testee.getAppliedStereotypes().isEmpty()));
+        assertEquals("Stereotypes are not the same, just now.", appliedStereotypes, anotherAppliedStereotypes);
+        
+        appliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals(2, appliedStereotypes.size());
+        assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+        assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
+    
     }
 
+    /**
+     * Test method for
+     * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getAppliedStereotypes()}
+     * .
+     */
+    @Test
+    public final void testGetAppliedStereotypesAfterResourceCleaned() {
+    	    		
+        // check that there are no stereotype applications at the beginning
+        EList<StereotypeApplication> stereotypeApplications =
+                testee.getStereotypeApplications();
+        assertEquals(0, stereotypeApplications.size());
+        EList<Stereotype> appliedStereotypes =
+                testee.getAppliedStereotypes();
+        assertEquals(0, appliedStereotypes.size());
+        
+       	// 1) apply stereotypes
+    	
+        // retrieve stereotypes for application
+        Stereotype entityBeanStereotype =
+                testee.getApplicableStereotype(entityBeanQualifiedName);
+        Stereotype sessionBeanStereotype =
+                testee.getApplicableStereotype(sessionBeanQualifiedName);
+        
+        // first stereotype application
+        StereotypeApplication entityBeanApplication =
+                testee.applyStereotype(entityBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(1, stereotypeApplications.size());
+        assertSame(entityBeanApplication, stereotypeApplications.get(0));
+
+        // second stereotype application
+        StereotypeApplication sessionBeanApplication =
+                testee.applyStereotype(sessionBeanStereotype);
+        stereotypeApplications = testee.getStereotypeApplications();
+        assertEquals(2, stereotypeApplications.size());
+        assertSame(sessionBeanApplication, stereotypeApplications.get(1));
+        
+        // now get the two applied stereotypes
+        appliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals(2, appliedStereotypes.size());
+        assertTrue("Testee in old resource has no stereotypes.", !(testee.getAppliedStereotypes().isEmpty()));
+        assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+        assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
+        
+    	// 2) new resource, put model "testee" in resource
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+
+    	// 3) check whether testee has a stereotype applied after unloading
+        resourceSet.getResources().remove(resource);
+        resource = null;
+//        resourceSet = null;
+        
+        EList<Stereotype> anotherAppliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals("Stereotypes are not the same.", appliedStereotypes, anotherAppliedStereotypes);
+
+//        resourceSet = new ResourceSetImpl();
+
+        // Register the appropriate resource factory to handle all file extensions.
+//        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+        // Register the package to ensure it is available during loading.
+//        resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
+        
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+        resource.getContents().add(testee);
+        
+        anotherAppliedStereotypes = testee.getAppliedStereotypes();
+        assertNotNull("Testee null.", testee);
+
+        assertTrue("Testee is stereotypable", testee instanceof EStereotypableObject);
+        assertTrue("Testee in new resource has no stereotypes.", !(testee.getAppliedStereotypes().isEmpty()));
+        assertEquals("Stereotypes are not the same, just now.", appliedStereotypes, anotherAppliedStereotypes);
+        
+        appliedStereotypes = testee.getAppliedStereotypes();
+        assertEquals(2, appliedStereotypes.size());
+        assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+        assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
+    
+    }
+    
     /**
      * Test method for
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getAppliedStereotype(java.lang.String)}
      * .
      */
-    // @Test
+     @Test
     public final void testGetAppliedStereotype() {
-        fail("Not yet implemented"); // TODO
-    }
+         // retrieve stereotypes for application
+         Stereotype entityBeanStereotype =
+                 testee.getApplicableStereotype(entityBeanQualifiedName);
 
+         // check that there are no stereotype applications at the beginning
+         EList<StereotypeApplication> stereotypeApplications =
+                 testee.getStereotypeApplications();
+         assertEquals(0, stereotypeApplications.size());
+         EList<Stereotype> appliedStereotypes =
+                 testee.getAppliedStereotypes();
+         assertEquals(0, appliedStereotypes.size());
+         
+         // one stereotype application
+         StereotypeApplication entityBeanApplication =
+                 testee.applyStereotype(entityBeanStereotype);
+         stereotypeApplications = testee.getStereotypeApplications();
+         assertEquals(1, stereotypeApplications.size());
+         assertSame(entityBeanApplication, stereotypeApplications.get(0));
+         
+         // now get the applied stereotype
+         appliedStereotypes = testee.getAppliedStereotypes();
+         assertEquals(1, appliedStereotypes.size());
+         assertSame("Wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
+     }
+     
     /**
      * Test method for
      * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#isStereotypeApplicable(org.modelversioning.emfprofile.Stereotype)}
@@ -714,6 +1052,68 @@ public class EStereotypableObjectImplTest {
         final B b2 = (B) modelInstancesResource.getEObject("//@bs.1");
         assertEquals("b2", b2.getName());
         assertEquals(2, b2.getStereotypeApplications().size());
+    }
+    
+    /**
+     * Test method for
+     * {@link edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl.EStereotypableObjectImpl#getStereotypeApplications()}
+     * .
+     * 
+     * It checks that the references of EStereotypableObject and applied-to in
+     * StereotypeApplication is correct after loading persisted model instances
+     * file and profile application file.
+     */
+    @Test
+    public final void
+            testPersistedRefsOfEStereotypableObjectsAndProfileApplicationAfterResourceSetChanged() {
+
+        final String resourcesProjectName = "EJBTestResources";
+        final String modelInstancesFilePath =
+                "/modelinstances/AContainsTwoBs.xmi";
+
+        Resource modelInstancesResource =
+                getModelInstancesResource(resourcesProjectName,
+                        modelInstancesFilePath);
+        
+       	// 1) apply stereotypes
+    	
+        // implicitly a look-up in existing profile application file takes place
+        // when requesting
+        // stereotype applications
+
+        B b1 = (B) modelInstancesResource.getEObject("//@bs.0");
+        assertEquals("b1", b1.getName());
+        assertEquals(1, b1.getStereotypeApplications().size());
+
+        B b2 = (B) modelInstancesResource.getEObject("//@bs.1");
+        assertEquals("b2", b2.getName());
+        assertEquals(2, b2.getStereotypeApplications().size());
+        
+    	// 2) new resource, put model "testee" in resource
+//        modelInstancesResource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+
+    	// 3) check whether there are stereotypes applied after changing ResourceSet and Resource
+        resourceSet.getResources().remove(resource);
+        modelInstancesResource = null;
+        resourceSet = null;
+
+        resourceSet = new ResourceSetImpl();
+
+        // Register the appropriate resource factory to handle all file extensions.
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+        // Register the package to ensure it is available during loading.
+        resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
+        
+        modelInstancesResource = getModelInstancesResource(resourcesProjectName, modelInstancesFilePath);
+        
+        b1 = (B) modelInstancesResource.getEObject("//@bs.0");
+        assertEquals("b1", b1.getName());
+        assertEquals(1, b1.getStereotypeApplications().size());
+
+        b2 = (B) modelInstancesResource.getEObject("//@bs.1");
+        assertEquals("b2", b2.getName());
+        assertEquals(2, b2.getStereotypeApplications().size());
+        
     }
 
     /**
