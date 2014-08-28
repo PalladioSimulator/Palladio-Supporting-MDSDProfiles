@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
@@ -52,6 +53,57 @@ public class FeatureGetterUtility {
             LOGGER.info("EAttributes of " + stereotypeApplication + ": "
                     + stereotypeApplication.eClass().getEAllAttributes());
             return stereotypeApplication.eClass().getEAllAttributes();
+        }
+    }
+    
+    /**
+     * Returns the list of EAttributes for the given Stereotype Application.
+     * 
+     * @param stereotypeApplication
+     * @return List<EAttribute> EAttributes of Stereotype
+     */
+    public static List<EReference> getReferenceListOfStereotypeApplication(
+            final StereotypeApplication stereotypeApplication) {
+        if (stereotypeApplication == null) {
+            return new ArrayList<EReference>();
+        } else {
+            LOGGER.info("EReferences of " + stereotypeApplication + ": "
+                    + stereotypeApplication.eClass().getEAllReferences());
+            return stereotypeApplication.eClass().getEAllReferences();
+        }
+    }
+    
+    /**
+     * Returns the list of EAttributes for the given Stereotype Application.
+     * 
+     * @param stereotypeApplication
+     * @return List<EAttribute> EAttributes of Stereotype
+     */
+    public static List<EReference> getContainmentListOfStereotypeApplication(
+            final StereotypeApplication stereotypeApplication) {
+        if (stereotypeApplication == null) {
+            return new ArrayList<EReference>();
+        } else {
+            LOGGER.info("EContainments of " + stereotypeApplication + ": "
+                    + stereotypeApplication.eClass().getEAllContainments());
+            return stereotypeApplication.eClass().getEAllContainments();
+        }
+    }
+    
+    /**
+     * Returns the list of EAttributes for the given Stereotype Application.
+     * 
+     * @param stereotypeApplication
+     * @return List<EAttribute> EAttributes of Stereotype
+     */
+    public static List<EStructuralFeature> getStructuralFeatureListOfStereotypeApplication(
+            final StereotypeApplication stereotypeApplication) {
+        if (stereotypeApplication == null) {
+            return new ArrayList<EStructuralFeature>();
+        } else {
+            LOGGER.info("EStructuralFeatures of " + stereotypeApplication + ": "
+                    + stereotypeApplication.eClass().getEAllStructuralFeatures());
+            return stereotypeApplication.eClass().getEAllStructuralFeatures();
         }
     }
 

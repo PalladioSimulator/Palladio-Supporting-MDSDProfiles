@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.application.registry.ProfileApplicationDecorator;
 import org.modelversioning.emfprofile.application.registry.internal.ProfileApplicationDecoratorImpl;
@@ -56,15 +57,14 @@ public final class ProfileApplicationFileRegistryImpl implements
     /**
      * Mapping of model resource to profile and corresponding decorator.
      */
-    private final Map<String, Map<Profile, ProfileApplicationDecorator>> modelToDecoratorMap =
-            new HashMap<String, Map<Profile, ProfileApplicationDecorator>>();
+    private final Map<Resource, Map<Profile, ProfileApplicationDecorator>> modelToDecoratorMap = new HashMap<Resource, Map<Profile, ProfileApplicationDecorator>>();
 
     /**
      * Keeps track of whether a decorator of a profile application file has
      * already been created.
      */
-    private final Map<IFile, ProfileApplicationDecorator> fileToDecoratorMap =
-            new HashMap<IFile, ProfileApplicationDecorator>();
+    private final Map<Resource, Map<IFile, ProfileApplicationDecorator>> resource2file2DecoratorMap =
+            new HashMap<Resource, Map<IFile, ProfileApplicationDecorator>>();
 
     /**
      * Hide default constructor
@@ -115,13 +115,12 @@ public final class ProfileApplicationFileRegistryImpl implements
     public Collection<ProfileApplicationDecorator>
             getAllExistingProfileApplicationDecorators(
                     final EStereotypableObject eStereotypableObject) {
-        String modelURI = eStereotypableObject.eResource().getURI().toString();
 
-        initializeProfileToDecoratorMap(modelURI);
+        initializeProfileToDecoratorMap(eStereotypableObject.eResource());
 
         setUpProfileApplicationDecoratorsForExistingFiles(eStereotypableObject);
 
-        return modelToDecoratorMap.get(modelURI).values();
+        return modelToDecoratorMap.get(eStereotypableObject.eResource()).values();
     }
 
     @Override
@@ -144,10 +143,8 @@ public final class ProfileApplicationFileRegistryImpl implements
         addRegistryAsObserverToAllProfileProjectBuilders();
 
         // first try to find the decorators in the map
-
-        String modelURI = eStereotypableObject.eResource().getURI().toString();
-        Map<Profile, ProfileApplicationDecorator> profileToDecoratorMap =
-                modelToDecoratorMap.get(modelURI);
+        Map<Profile, ProfileApplicationDecorator> profileToDecoratorMap = modelToDecoratorMap.get(eStereotypableObject
+                .eResource());
 
         if (profileToDecoratorMap != null
                 && profileFromRegistryResourceSet != null
@@ -157,13 +154,13 @@ public final class ProfileApplicationFileRegistryImpl implements
             return profileToDecoratorMap.get(profileFromRegistryResourceSet);
         }
 
-        initializeProfileToDecoratorMap(modelURI);
+        initializeProfileToDecoratorMap(eStereotypableObject.eResource());
 
         setUpProfileApplicationDecoratorsForExistingFiles(eStereotypableObject);
 
         if (LOGGER.isDebugEnabled()) {
             if (!modelToDecoratorMap.get(
-                    eStereotypableObject.eResource().getURI().toString())
+                    eStereotypableObject.eResource())
                     .containsKey(profileFromRegistryResourceSet)) {
                 LOGGER.debug("no decorator for profile '"
                         + profileFromRegistryResourceSet.getName() + "'");
@@ -171,7 +168,7 @@ public final class ProfileApplicationFileRegistryImpl implements
         }
 
         return modelToDecoratorMap.get(
-                eStereotypableObject.eResource().getURI().toString()).get(
+                eStereotypableObject.eResource()).get(
                 profileFromRegistryResourceSet);
     }
 
@@ -263,10 +260,11 @@ public final class ProfileApplicationFileRegistryImpl implements
 
         ProfileApplicationDecorator profileApplicationDecorator = null;
 
-        try {
+        Resource eResource = eStereotypableObject.eResource();
+		try {
             profileApplicationDecorator =
                     new ProfileApplicationDecoratorImpl(profileApplicationFile,
-                            eStereotypableObject.eResource().getResourceSet());
+                            eResource.getResourceSet());
         } catch (CoreException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -327,20 +325,16 @@ public final class ProfileApplicationFileRegistryImpl implements
             if (!profileApplicationDecorator.getStereotypeApplications(
                     eStereotypableObject).isEmpty()) {
 
-                fileToDecoratorMap.put(profileApplicationFile,
+                resource2file2DecoratorMap.get(eResource).put(profileApplicationFile,
                         profileApplicationDecorator);
-
-                String modelURI =
-                        eStereotypableObject.eResource().getURI().toString();
-
-                modelToDecoratorMap.get(modelURI).put(profile,
+                        
+                modelToDecoratorMap.get(eResource).put(profile,
                         profileApplicationDecorator);
 
                 LOGGER.debug("created decorator for existing file '"
                         + profileApplicationFile.getFullPath() + "'");
 
             } else {
-
                 LOGGER.debug("discarded created decorator '"
                         + profileApplicationDecorator.getName()
                         + "': no stereotype application(s) for EStereotypableObject '"
@@ -349,7 +343,7 @@ public final class ProfileApplicationFileRegistryImpl implements
                 profileApplicationDecorator = null;
 
                 final Iterator<Resource> iterator =
-                        eStereotypableObject.eResource().getResourceSet()
+                        eResource.getResourceSet()
                                 .getResources().iterator();
 
                 while (iterator.hasNext()) {
@@ -386,7 +380,8 @@ public final class ProfileApplicationFileRegistryImpl implements
         addRegistryAsObserverToAllProfileProjectBuilders();
 
         for (final IFile profileApplicationFile : this.profileApplicationFiles) {
-            if (!fileToDecoratorMap.containsKey(profileApplicationFile)) {
+        	Map<IFile, ProfileApplicationDecorator> file2DecoratorMap = resource2file2DecoratorMap.get(eStereotypableObject.eResource());
+            if (!file2DecoratorMap.containsKey(profileApplicationFile)) {
                 setUpProfileApplicationDecoratorForExistingFile(
                         profileApplicationFile, eStereotypableObject);
             }
@@ -419,11 +414,12 @@ public final class ProfileApplicationFileRegistryImpl implements
 
         ProfileApplicationDecorator profileApplicationDecorator = null;
 
-        try {
+        Resource eResource = eStereotypableObject.eResource();
+		try {
             profileApplicationDecorator =
                     new ProfileApplicationDecoratorImpl(
                             newProfileApplicationFile, profiles,
-                            eStereotypableObject.eResource().getResourceSet());
+                            eResource.getResourceSet());
         } catch (CoreException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -436,13 +432,10 @@ public final class ProfileApplicationFileRegistryImpl implements
             LOGGER.debug("created decorator for new file '"
                     + newProfileApplicationFile.getFullPath() + "'");
 
-            fileToDecoratorMap.put(newProfileApplicationFile,
+            resource2file2DecoratorMap.get(eResource).put(newProfileApplicationFile,
                     profileApplicationDecorator);
 
-            String modelURI =
-                    eStereotypableObject.eResource().getURI().toString();
-
-            modelToDecoratorMap.get(modelURI).put(profile,
+            modelToDecoratorMap.get(eResource).put(profile,
                     profileApplicationDecorator);
 
         } else {
@@ -465,19 +458,22 @@ public final class ProfileApplicationFileRegistryImpl implements
     /**
      * Initializes the profile-to-decorator map for the specified resource.
      * 
-     * @param modelURI
-     *            The String representation of the URI of the model resource for
-     *            which to initialize the map.
+     * @param resource
+     *            The resource for which to initialize the map.
      */
-    private void initializeProfileToDecoratorMap(final String modelURI) {
+    private void initializeProfileToDecoratorMap(final Resource resource) {
 
-        Map<Profile, ProfileApplicationDecorator> profileToDecoratorMap =
-                modelToDecoratorMap.get(modelURI);
+        Map<Profile, ProfileApplicationDecorator> profileToDecoratorMap = modelToDecoratorMap.get(resource);
 
         if (profileToDecoratorMap == null) {
-            profileToDecoratorMap =
-                    new HashMap<Profile, ProfileApplicationDecorator>();
-            modelToDecoratorMap.put(modelURI, profileToDecoratorMap);
+            profileToDecoratorMap = new HashMap<Profile, ProfileApplicationDecorator>();
+            modelToDecoratorMap.put(resource, profileToDecoratorMap);
+        }
+        
+        Map<IFile, ProfileApplicationDecorator> file2DecoratorMap = resource2file2DecoratorMap.get(resource);
+        if (file2DecoratorMap == null) {
+        	file2DecoratorMap = new HashMap<IFile, ProfileApplicationDecorator>();
+    		resource2file2DecoratorMap.put(resource, file2DecoratorMap);
         }
     }
 
@@ -624,7 +620,7 @@ public final class ProfileApplicationFileRegistryImpl implements
      */
     @Override
     public void clear() {
-        fileToDecoratorMap.clear();
+        resource2file2DecoratorMap.clear();
         modelToDecoratorMap.clear();
         profileApplicationFiles.clear();
 

@@ -227,7 +227,7 @@ public class EStereotypableObjectImplTest {
     	StereotypeApplication entityBeanApplication = testee.applyStereotype(entityBeanStereotype);
     	
     	// 2) new resource, put model "testee" in resource
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
     	
     	// 3) check whether testee has a stereotype applied after unloading
     	resource.unload();
@@ -249,7 +249,7 @@ public class EStereotypableObjectImplTest {
     	StereotypeApplication entityBeanApplication = testee.applyStereotype(entityBeanStereotype);
     	
     	// 2) new resource, put model "testee" in resource
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
     	
     	// 3) check whether testee has a stereotype applied after re-initializing the ResourceSet and Resource
         resourceSet.getResources().remove(resource);
@@ -263,7 +263,7 @@ public class EStereotypableObjectImplTest {
         // Register the package to ensure it is available during loading.
         resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
         
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
         resource.getContents().add(testee);
         
     	assertEquals("Wrong number of stereotypes.", 1, testee.getStereotypeApplications().size());
@@ -533,7 +533,7 @@ public class EStereotypableObjectImplTest {
         assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
         
     	// 2) new resource, put model "testee" in resource
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
 
     	// 3) check whether testee has a stereotype applied after unloading
     	resource.unload();
@@ -596,7 +596,7 @@ public class EStereotypableObjectImplTest {
         assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
         
     	// 2) new resource, put model "testee" in resource
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
 
     	// 3) check whether testee has a stereotype applied after unloading
         resourceSet.getResources().remove(resource);
@@ -613,7 +613,7 @@ public class EStereotypableObjectImplTest {
         // Register the package to ensure it is available during loading.
         resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
         
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
         resource.getContents().add(testee);
         
         anotherAppliedStereotypes = testee.getAppliedStereotypes();
@@ -675,8 +675,10 @@ public class EStereotypableObjectImplTest {
         assertSame("First one wrong!", entityBeanApplication.getStereotype(), appliedStereotypes.get(0));
         assertSame("Second one wrong!", sessionBeanApplication.getStereotype(), appliedStereotypes.get(1));
         
+        testee.saveContainingProfileApplication();
+        
     	// 2) new resource, put model "testee" in resource
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
 
     	// 3) check whether testee has a stereotype applied after unloading
         resourceSet.getResources().remove(resource);
@@ -693,7 +695,7 @@ public class EStereotypableObjectImplTest {
         // Register the package to ensure it is available during loading.
 //        resourceSet.getPackageRegistry().put(simplemodelPackage.eNS_URI, simplemodelPackage.eINSTANCE);
         
-    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName.replace(".xmi", "2.xmi"), true));
+    	resource = resourceSet.createResource(URI.createPlatformResourceURI(project.getFullPath() + "/" + modelFileName, true));
         resource.getContents().add(testee);
         
         anotherAppliedStereotypes = testee.getAppliedStereotypes();
@@ -1106,13 +1108,15 @@ public class EStereotypableObjectImplTest {
         
         modelInstancesResource = getModelInstancesResource(resourcesProjectName, modelInstancesFilePath);
         
-        b1 = (B) modelInstancesResource.getEObject("//@bs.0");
-        assertEquals("b1", b1.getName());
-        assertEquals(1, b1.getStereotypeApplications().size());
+        B newb1 = (B) modelInstancesResource.getEObject("//@bs.0");
+//        assertTrue(b1.equals(newb1));
+        assertEquals("b1", newb1.getName());
+        assertEquals(1, newb1.getStereotypeApplications().size());
 
-        b2 = (B) modelInstancesResource.getEObject("//@bs.1");
-        assertEquals("b2", b2.getName());
-        assertEquals(2, b2.getStereotypeApplications().size());
+        B newb2 = (B) modelInstancesResource.getEObject("//@bs.1");
+//        assertTrue(b2.equals(newb2));
+        assertEquals("b2", newb2.getName());
+        assertEquals(2, newb2.getStereotypeApplications().size());
         
     }
 

@@ -28,7 +28,10 @@ import org.eclipse.emf.common.notify.impl.BasicNotifierImpl.EObservableAdapterLi
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.databinding.edit.IEMFEditObservable;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
@@ -155,7 +158,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     private final IObservableValue master = new WritableValue();
 
     private List<IObservableValue> values;
-    protected EAttribute attr;
+    protected EStructuralFeature attr;
 
     private EStereotypableObject eStereotyped;
 
@@ -190,7 +193,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
                 } else if (treeSelection.getFirstElement() instanceof EStereotypableObject
                         && ((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
                     ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
@@ -198,8 +200,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     // work on the "load twice"-problem
                     // And the first selection from a resource must than be a EStereotypableObject
                     // WITH APLIED STEREOTYPES
-                    // ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
-                    // ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
+                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     LOGGER.warn("The root element wasn't applied any stereotypes.");
                 } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
@@ -210,6 +212,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         }
     };
 
+    // extrahiere die Listeners
     private final IPartListener partListener = new IPartListener() {
         private IWorkbenchPart activePart;
 
@@ -414,7 +417,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 @Override
                 public void update(final ViewerCell cell) {
                     if (cell.getElement() instanceof IEMFEditObservable) {
-                        ProfilePropertiesView.this.attr = (EAttribute) ((IEMFEditObservable) cell.getElement())
+                        ProfilePropertiesView.this.attr = (EStructuralFeature) ((IEMFEditObservable) cell.getElement())
                                 .getStructuralFeature();
                         cell.setText(ProfilePropertiesView.this.attr.getName());
                     } else {
@@ -434,12 +437,20 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 @Override
                 public void update(final ViewerCell cell) {
                     if (cell.getElement() instanceof IEMFEditObservable) {
-                        ProfilePropertiesView.this.attr = (EAttribute) ((IEMFEditObservable) cell.getElement())
+                        ProfilePropertiesView.this.attr = (EStructuralFeature) ((IEMFEditObservable) cell.getElement())
                                 .getStructuralFeature();
                         final Object obj = ((EObject) ((IEMFEditObservable) cell.getElement()).getObserved())
                                 .eGet(ProfilePropertiesView.this.attr);
                         try {
-                            cell.setText(String.valueOf(obj));
+                        	if (obj != null) {
+                        		cell.setText(String.valueOf(obj));
+//                        		EClass eClass = (EClass) obj;
+//                        		eClass.eContainer().eResource().getAllContents();
+//                        		LOGGER.info("All contents: " + eClass.eContainer().eResource().getAllContents());
+							} else {
+								cell.setText("NULL - CAN'T TOUCH THIS!"); //Temporary workaround for freshly applied stereotypes,
+													  					  //that have initially null-values
+							}
                         } catch (final NullPointerException e) {
                             LOGGER.error(obj);
                             e.printStackTrace();
@@ -453,8 +464,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
             this.twc_taggedValue.setEditingSupport(new TaggedValueEditingSupport(this.tableViewer, this
                     .getEditingDomain()));
-            // twc_taggedValue.setEditingSupport(new TaggedValueEditingSupport(tableViewer,
-            // getEditingDomain(), attr));
 
         }
     }

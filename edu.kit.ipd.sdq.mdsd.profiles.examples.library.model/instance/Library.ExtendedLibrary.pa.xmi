@@ -24,5 +24,15 @@
     <appliedTo href="platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.library.model/instance/Library.xmi#//@books.2"/>
     <extension href="platform:/plugin/edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile/profile.emfprofile_diagram#_Qk7eoPfmEeKZavaxa4N3Jw"/>
   </stereotypeApplications>
+  <stereotypeApplications xsi:type="myprofile:ReferenceStereotype" name="TestClass">
+    <appliedTo href="platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.library.model/instance/Library.xmi#//@books.0"/>
+    <extension href="platform:/plugin/edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile/profile.emfprofile_diagram#_S54o0C2-EeSdmtRdojvQGg"/>
+    <anotherTestClass xsi:type="myprofile:AnotherTestClassOne"/>
+  </stereotypeApplications>
+  <stereotypeApplications xsi:type="myprofile:ReferenceStereotype" name="AnotherTestClass">
+    <appliedTo href="platform:/resource/edu.kit.ipd.sdq.mdsd.profiles.examples.library.model/instance/Library.xmi#//@books.3"/>
+    <extension href="platform:/plugin/edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile/profile.emfprofile_diagram#_S54o0C2-EeSdmtRdojvQGg"/>
+    <anotherTestClass xsi:type="myprofile:AnotherTestClassTwo"/>
+  </stereotypeApplications>
   <importedProfiles nsURI="http://www.modelversioning.org/emfprofile/library/1.0" location="platform:/plugin/edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile/profile.emfprofile_diagram"/>
 </emfprofileapplication:ProfileApplication>

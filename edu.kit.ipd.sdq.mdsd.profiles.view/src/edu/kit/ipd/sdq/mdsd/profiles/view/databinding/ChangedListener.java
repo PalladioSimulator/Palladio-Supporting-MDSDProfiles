@@ -12,6 +12,7 @@ import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofile.application.registry.ProfileApplicationDecorator;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
@@ -20,8 +21,8 @@ import edu.kit.ipd.sdq.mdsd.profiles.view.utility.FeatureGetterUtility;
 import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ProfilePropertiesView;
 
 /**
- * ChangedListener, der auf �nderungen der Selektion im TreeViewer reagiert und entsprechend dem
- * View das selektierte StereotypeApplication-Objekt �bergibt.
+ * ChangedListener, der auf Änderungen der Selektion im TreeViewer reagiert und entsprechend dem
+ * View das selektierte StereotypeApplication-Objekt übergibt.
  * 
  * @author kuester
  * 
@@ -52,8 +53,9 @@ public class ChangedListener implements IValueChangeListener {
             this.view.getMaster().setValue(stereotypeApplication);
 
             final List<IObservableValue> values = new ArrayList<IObservableValue>();
-            for (final EAttribute attribute : FeatureGetterUtility
-                    .getFeatureListOfStereotypeApplication((stereotypeApplication))) {
+            for (final EStructuralFeature attribute : FeatureGetterUtility
+                    .getStructuralFeatureListOfStereotypeApplication((stereotypeApplication))) {
+                LOGGER.info("The structural featrues:" + attribute);
                 this.value = EMFEditProperties.value(this.view.getEditingDomain(), attribute).observeDetail(
                         this.view.getMaster());
                 values.add(this.value);
@@ -62,7 +64,6 @@ public class ChangedListener implements IValueChangeListener {
             final IObservableList observableList = new WritableList();
             observableList.addAll(values);
             this.view.getTableViewer().setInput(observableList);
-
         } else if (event.diff.getNewValue() instanceof ProfileApplicationDecorator) {
             this.view.getTableViewer().setItemCount(0);
             throw new ClassCastException();

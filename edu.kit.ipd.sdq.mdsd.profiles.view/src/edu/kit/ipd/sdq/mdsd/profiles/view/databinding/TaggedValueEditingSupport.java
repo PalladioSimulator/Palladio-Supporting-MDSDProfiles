@@ -2,19 +2,24 @@ package edu.kit.ipd.sdq.mdsd.profiles.view.databinding;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.Enumerator;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.databinding.edit.IEMFEditObservable;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -40,11 +45,12 @@ public class TaggedValueEditingSupport extends EditingSupport {
     private final CellEditor textEditor;
     private ComboBoxViewerCellEditor comboBoxEditor;
 
-    // ArrayList<String> items = new ArrayList<>();
-    // String[] elements = new String[] {};
-
     private List<EEnumLiteral> literals;
     private EStructuralFeature feature;
+    private List<EAttribute> references;
+	private List<EObject> classes;
+
+	private TreeIterator<EObject> objects;
 
     public TaggedValueEditingSupport(TableViewer tableViewer, EditingDomain editingDomain) {
         super(tableViewer);
@@ -70,7 +76,10 @@ public class TaggedValueEditingSupport extends EditingSupport {
     @SuppressWarnings("deprecation")
     @Override
     protected CellEditor getCellEditor(Object element) {
-        EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
+//        EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
+//        Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
+//        Object dataType = attr.getEType();
+        EStructuralFeature attr = (EStructuralFeature) ((IEMFEditObservable) element).getStructuralFeature();
         Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
         Object dataType = attr.getEType();
 
@@ -95,6 +104,28 @@ public class TaggedValueEditingSupport extends EditingSupport {
             } while (j <= 0);
             return comboBoxEditor;
 
+        } else if (dataType instanceof EClass) {
+            LOGGER.info((attr.getEType()));
+
+//            EClass eClass = (EClass) attr.getEType();
+//            objects = eClass.eResource().getAllContents();
+//            LOGGER.error(objects);
+//            String[] elements = new String[((Map<String, CellEditor>) objects).size()];
+//            int i = 0;
+//            for (Iterator iter = ((List<EEnumLiteral>) objects).iterator(); iter.hasNext(); ) {
+//                elements[i++] = (String) iter.next();
+//            }
+
+            comboBoxEditor = new ComboBoxViewerCellEditor(viewer.getTable(), SWT.DROP_DOWN | SWT.READ_ONLY);
+            comboBoxEditor.setLabelProvider(new LabelProvider());
+            comboBoxEditor.setContenProvider(new ArrayContentProvider());
+            int j = 0;
+            do {
+//                comboBoxEditor.setInput(elements);
+                j++;
+            } while (j <= 0);
+            return comboBoxEditor;
+
         } else if (dataType instanceof EDataType) {
             EDataType eDataType = (EDataType) dataType;
 
@@ -114,26 +145,32 @@ public class TaggedValueEditingSupport extends EditingSupport {
             return comboBoxEditor;
 
         } else {
-            return new TextCellEditor(viewer.getTable());
-
+        	return new TextCellEditor(viewer.getTable());
         }
     }
 
     @Override
     protected Object getValue(Object element) {
-        LOGGER.info(element);
-        EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
+//        LOGGER.info(element);
+//        EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
+//        Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
+//        LOGGER.info(attr);
+//        LOGGER.info(obj);
+//        LOGGER.info(obj.getClass());
+//        return obj.toString();
+        LOGGER.info("Element " + element);
+        EStructuralFeature attr = (EStructuralFeature) ((IEMFEditObservable) element).getStructuralFeature();
         Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
-        LOGGER.info(attr);
-        LOGGER.info(obj);
-        LOGGER.info(obj.getClass());
+        LOGGER.info("Attr " + attr);
+        LOGGER.info("Obj " + obj);
+        LOGGER.info("Obj.getClass() " + obj.getClass());
         return obj.toString();
     }
 
     @Override
     protected void setValue(Object element, Object value) {
         try {
-            EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
+            EStructuralFeature attr = (EStructuralFeature) ((IEMFEditObservable) element).getStructuralFeature();
             Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
             editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(attr.eContainer());
             Command cmd = null;
