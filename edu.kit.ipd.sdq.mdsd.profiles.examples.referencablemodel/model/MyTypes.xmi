@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<www.myType.org:MyTypes
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:www.myType.org="www.myType.org"
+    xsi:schemaLocation="www.myType.org myType.ecore">
+  <types typeName="myValue"/>
+  <types typeID="1"
+      typeName="mySecondValue"/>
+</www.myType.org:MyTypes>

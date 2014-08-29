@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<myType:MyTypes xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:myType="http://myType/1.0">
+  <types typeName="myType"/>
+  <types typeID="1" typeName="anotherType"/>
+</myType:MyTypes>
