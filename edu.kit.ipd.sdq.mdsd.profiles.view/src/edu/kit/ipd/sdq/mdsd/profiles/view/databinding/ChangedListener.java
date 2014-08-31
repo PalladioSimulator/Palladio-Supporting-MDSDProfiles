@@ -21,10 +21,9 @@ import edu.kit.ipd.sdq.mdsd.profiles.view.utility.FeatureGetterUtility;
 import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ProfilePropertiesView;
 
 /**
- * ChangedListener, der auf Änderungen der Selektion im TreeViewer reagiert und entsprechend dem
- * View das selektierte StereotypeApplication-Objekt übergibt.
+ * ChangedListener reacts on the selection changes from the TreeViewer and forwards the StereotypeApplication objects to the Table Viewer.
  * 
- * @author kuester
+ * @author Martin Küster, Emre Taspolatoglu
  * 
  */
 public class ChangedListener implements IValueChangeListener {
@@ -44,7 +43,7 @@ public class ChangedListener implements IValueChangeListener {
     @Override
     public void handleValueChange(final ValueChangeEvent event) {
         if (event.diff.getNewValue() instanceof StereotypeApplication) {
-            LOGGER.info("TreeViewer selecetion:" + event.diff.getNewValue());
+            LOGGER.info("TreeViewer Selecetion:" + event.diff.getNewValue());
             final StereotypeApplication stereotypeApplication = (StereotypeApplication) event.diff.getNewValue();
             LOGGER.info("Selected StereotypeAplication: " + stereotypeApplication);
 
@@ -55,7 +54,7 @@ public class ChangedListener implements IValueChangeListener {
             final List<IObservableValue> values = new ArrayList<IObservableValue>();
             for (final EStructuralFeature attribute : FeatureGetterUtility
                     .getStructuralFeatureListOfStereotypeApplication((stereotypeApplication))) {
-                LOGGER.info("The structural featrues:" + attribute);
+                LOGGER.info("The structural features:" + attribute);
                 this.value = EMFEditProperties.value(this.view.getEditingDomain(), attribute).observeDetail(
                         this.view.getMaster());
                 values.add(this.value);
@@ -67,9 +66,6 @@ public class ChangedListener implements IValueChangeListener {
         } else if (event.diff.getNewValue() instanceof ProfileApplicationDecorator) {
             this.view.getTableViewer().setItemCount(0);
             throw new ClassCastException();
-            // final ProfileApplicationDecorator pad = (ProfileApplicationDecorator)
-            // event.diff.getNewValue();
-            // this.view.getMaster().setValue(pad.getProfileApplications());
         }
     }
 

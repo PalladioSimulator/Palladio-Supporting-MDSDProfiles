@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.mdsd.profiles.view.databinding;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.databinding.edit.IEMFEditObservable;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -20,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -73,12 +76,9 @@ public class TaggedValueEditingSupport extends EditingSupport {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "unchecked" })
     @Override
     protected CellEditor getCellEditor(Object element) {
-//        EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
-//        Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
-//        Object dataType = attr.getEType();
         EStructuralFeature attr = (EStructuralFeature) ((IEMFEditObservable) element).getStructuralFeature();
         Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
         Object dataType = attr.getEType();
@@ -106,22 +106,26 @@ public class TaggedValueEditingSupport extends EditingSupport {
 
         } else if (dataType instanceof EClass) {
             LOGGER.info((attr.getEType()));
-
-//            EClass eClass = (EClass) attr.getEType();
-//            objects = eClass.eResource().getAllContents();
-//            LOGGER.error(objects);
-//            String[] elements = new String[((Map<String, CellEditor>) objects).size()];
-//            int i = 0;
-//            for (Iterator iter = ((List<EEnumLiteral>) objects).iterator(); iter.hasNext(); ) {
-//                elements[i++] = (String) iter.next();
-//            }
+            
+            EObject object = (EObject) obj;
+            EObject container = ((EObject) object).eContainer();
+    		List<String> elements = new ArrayList<String>();
+            if (container == null) {
+            	elements.add(object.toString());
+            } else {
+            	List<Object> resource = (List<Object>) ((EObject) container).eGet(((EObject) object).eContainmentFeature());
+            	
+            	for (Object eObject: resource){
+            		elements.add(eObject.toString());
+            	} 
+            }
 
             comboBoxEditor = new ComboBoxViewerCellEditor(viewer.getTable(), SWT.DROP_DOWN | SWT.READ_ONLY);
             comboBoxEditor.setLabelProvider(new LabelProvider());
             comboBoxEditor.setContenProvider(new ArrayContentProvider());
             int j = 0;
             do {
-//                comboBoxEditor.setInput(elements);
+                comboBoxEditor.setInput(elements);
                 j++;
             } while (j <= 0);
             return comboBoxEditor;
@@ -151,31 +155,49 @@ public class TaggedValueEditingSupport extends EditingSupport {
 
     @Override
     protected Object getValue(Object element) {
-//        LOGGER.info(element);
-//        EAttribute attr = (EAttribute) ((IEMFEditObservable) element).getStructuralFeature();
-//        Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
-//        LOGGER.info(attr);
-//        LOGGER.info(obj);
-//        LOGGER.info(obj.getClass());
-//        return obj.toString();
         LOGGER.info("Element " + element);
         EStructuralFeature attr = (EStructuralFeature) ((IEMFEditObservable) element).getStructuralFeature();
         Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
         LOGGER.info("Attr " + attr);
         LOGGER.info("Obj " + obj);
-        LOGGER.info("Obj.getClass() " + obj.getClass());
         return obj.toString();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void setValue(Object element, Object value) {
         try {
             EStructuralFeature attr = (EStructuralFeature) ((IEMFEditObservable) element).getStructuralFeature();
             Object obj = ((EObject) ((IEMFEditObservable) element).getObserved()).eGet(attr);
             editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(attr.eContainer());
             Command cmd = null;
+        
+            if (attr.getEType() instanceof EClass) {
+            	EObject containerObject = ((EObject) obj).eContainer();
+            	Object newObject = ((Object) value);
+            	Object oldObject = ((Object) obj);
+            	Object newValue = null;
+            	
+            	try {
+					List<Object> allObjects = (List<Object>) containerObject.eGet(((EObject) obj).eContainmentFeature());
+					for (Iterator<Object> iter = allObjects.iterator(); iter.hasNext(); ) {
+						Object temp = iter.next();
+						if (temp.toString().equals(newObject)) {
+							newValue = temp;
+						}
+					}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+            	
+            	if (oldObject != null && oldObject != newValue) {
+                	cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr, newValue);
+                	if (cmd.canExecute()) {
+						editingDomain.getCommandStack().execute(cmd);
+					}
+            	}
 
-            if (obj instanceof String) {
+        	} else if (obj instanceof String) {
                 cmd = SetCommand.create(editingDomain, ((IEMFEditObservable) element).getObserved(), attr, value);
                 if (!obj.equals(value) && cmd.canExecute()) {
                     editingDomain.getCommandStack().execute(cmd);
@@ -262,26 +284,26 @@ public class TaggedValueEditingSupport extends EditingSupport {
         }
     }
 
-    /**
-     * A common method for all enums since they can't have another base class
-     * 
-     * @param <T>
-     *            Enum type
-     * @param c
-     *            enum type. All enums must be all caps.
-     * @param string
-     *            case insensitive
-     * @return corresponding enum, or null
-     */
-    public static <T extends Enum<T>> T getEnumFromString(Class<T> c, String string) {
-        if (c != null && string != null) {
-            try {
-                return Enum.valueOf(c, string.trim().toUpperCase());
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
+//    /**
+//     * A common method for all enums since they can't have another base class
+//     * 
+//     * @param <T>
+//     *            Enum type
+//     * @param c
+//     *            enum type. All enums must be all caps.
+//     * @param string
+//     *            case insensitive
+//     * @return corresponding enum, or null
+//     */
+//    public static <T extends Enum<T>> T getEnumFromString(Class<T> c, String string) {
+//        if (c != null && string != null) {
+//            try {
+//                return Enum.valueOf(c, string.trim().toUpperCase());
+//            } catch (IllegalArgumentException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return null;
+//    }
 
 }

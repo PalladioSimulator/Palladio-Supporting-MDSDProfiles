@@ -200,8 +200,8 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     // work on the "load twice"-problem
                     // And the first selection from a resource must than be a EStereotypableObject
                     // WITH APLIED STEREOTYPES
-                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
-                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+//                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
+//                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     LOGGER.warn("The root element wasn't applied any stereotypes.");
                 } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
@@ -444,12 +444,9 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                         try {
                         	if (obj != null) {
                         		cell.setText(String.valueOf(obj));
-//                        		EClass eClass = (EClass) obj;
-//                        		eClass.eContainer().eResource().getAllContents();
-//                        		LOGGER.info("All contents: " + eClass.eContainer().eResource().getAllContents());
 							} else {
-								cell.setText("NULL - CAN'T TOUCH THIS!"); //Temporary workaround for freshly applied stereotypes,
-													  					  //that have initially null-values
+								//Temporary workaround for freshly applied stereotypes, that have initially null-values
+								cell.setText("NULL - DON'T TOUCH IT, PLEASE FIRST USE PROPERTIES VIEW TO SET THE INITIAL VALUE"); 
 							}
                         } catch (final NullPointerException e) {
                             LOGGER.error(obj);

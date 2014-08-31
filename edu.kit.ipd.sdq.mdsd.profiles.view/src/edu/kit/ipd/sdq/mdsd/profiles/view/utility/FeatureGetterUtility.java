@@ -57,10 +57,10 @@ public class FeatureGetterUtility {
     }
     
     /**
-     * Returns the list of EAttributes for the given Stereotype Application.
+     * Returns the list of EReferences for the given Stereotype Application.
      * 
      * @param stereotypeApplication
-     * @return List<EAttribute> EAttributes of Stereotype
+     * @return List<EReference> EReferences of Stereotype
      */
     public static List<EReference> getReferenceListOfStereotypeApplication(
             final StereotypeApplication stereotypeApplication) {
@@ -74,10 +74,10 @@ public class FeatureGetterUtility {
     }
     
     /**
-     * Returns the list of EAttributes for the given Stereotype Application.
+     * Returns the list of Containment References for the given Stereotype Application.
      * 
      * @param stereotypeApplication
-     * @return List<EAttribute> EAttributes of Stereotype
+     * @return List<EReference> EReferences of Stereotype
      */
     public static List<EReference> getContainmentListOfStereotypeApplication(
             final StereotypeApplication stereotypeApplication) {
@@ -91,19 +91,24 @@ public class FeatureGetterUtility {
     }
     
     /**
-     * Returns the list of EAttributes for the given Stereotype Application.
+     * Returns the list of EStructuralFeatures for the given Stereotype Application.
      * 
      * @param stereotypeApplication
-     * @return List<EAttribute> EAttributes of Stereotype
+     * @return List<EStructuralFeature> EStructuralFeatures of Stereotype
      */
     public static List<EStructuralFeature> getStructuralFeatureListOfStereotypeApplication(
             final StereotypeApplication stereotypeApplication) {
+    	List<EStructuralFeature> listStructuralFeatures = new ArrayList<EStructuralFeature>();
         if (stereotypeApplication == null) {
             return new ArrayList<EStructuralFeature>();
         } else {
             LOGGER.info("EStructuralFeatures of " + stereotypeApplication + ": "
                     + stereotypeApplication.eClass().getEAllStructuralFeatures());
-            return stereotypeApplication.eClass().getEAllStructuralFeatures();
+            listStructuralFeatures.addAll(stereotypeApplication.eClass().getEAllStructuralFeatures());
+            listStructuralFeatures.remove(stereotypeApplication.eClass().getEStructuralFeature("appliedTo"));
+            listStructuralFeatures.remove(stereotypeApplication.eClass().getEStructuralFeature("extension"));
+            listStructuralFeatures.remove(stereotypeApplication.eClass().getEStructuralFeature("profileApplication"));
+            return listStructuralFeatures;
         }
     }
 
@@ -117,13 +122,6 @@ public class FeatureGetterUtility {
     public static EList<EAttribute> getFeatureListOfSTFromSA(final StereotypeApplication stereotypeApplication) {
         return stereotypeApplication.getStereotype().eClass().getEAllAttributes();
     }
-
-    // public static EList<EStructuralFeature> testMethod() {
-    // EObject stereotypeApplication = EMFProfileApplicationPackage.Literals.STEREOTYPE_APPLICATION;
-    // EList<EStructuralFeature> eAllStructuralFeatures =
-    // stereotypeApplication.eClass().getEAllStructuralFeatures();
-    // return eAllStructuralFeatures;
-    // }
 
     /**
      * TODO
@@ -149,86 +147,5 @@ public class FeatureGetterUtility {
         }
         return null;
     }
-
-    // public static EStructuralFeature getFeatureForStereotype() {
-    //
-    // EObject stereotype = EMFProfilePackage.Literals.STEREOTYPE;
-    // EList<EStructuralFeature> eAllStructuralFeatures =
-    // stereotype.eClass().getEAllStructuralFeatures();
-    //
-    // if (!eAllStructuralFeatures.isEmpty()) {
-    // try {
-    // for (EStructuralFeature feature : eAllStructuralFeatures) {
-    // if (feature instanceof EAttribute) {
-    // return feature;
-    // }
-    // }
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // return null;
-    // }
-    //
-    // public static EStructuralFeature getFeatureByStereotypeSelection(Stereotype stereotype) {
-    //
-    // Stereotype st = stereotype;
-    // EList<EStructuralFeature> eAllStructuralFeatures = st.eClass().getEAllStructuralFeatures();
-    //
-    // if (!eAllStructuralFeatures.isEmpty()) {
-    // try {
-    // for (EStructuralFeature feature : eAllStructuralFeatures) {
-    // if (feature instanceof EAttribute) {
-    // return feature;
-    // }
-    // }
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // return null;
-    // }
-    //
-    // public static EStructuralFeature
-    // getFeatureByStereotypeApplicationSelection(StereotypeApplication stereotypeApplication) {
-    //
-    // StereotypeApplication sa = stereotypeApplication;
-    // EList<EStructuralFeature> eAllStructuralFeatures = sa.eClass().getEAllStructuralFeatures();
-    //
-    // if (!eAllStructuralFeatures.isEmpty()) {
-    // try {
-    // for (EStructuralFeature feature : eAllStructuralFeatures) {
-    // if (feature instanceof EAttribute) {
-    // return feature;
-    // }
-    // }
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // return null;
-    // }
-    //
-    // public static EStructuralFeature
-    // getFeatureOverStereotypeApplicationtoStereotype(StereotypeApplication stereotypeApplication)
-    // {
-    //
-    // StereotypeApplication sa = stereotypeApplication;
-    // EList<EStructuralFeature> eAllStructuralFeatures =
-    // sa.getStereotype().eClass().getEAllStructuralFeatures();
-    //
-    // if (!eAllStructuralFeatures.isEmpty()) {
-    // try {
-    // for (EStructuralFeature feature : eAllStructuralFeatures) {
-    // if (feature instanceof EAttribute) {
-    // return feature;
-    // }
-    // }
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // return null;
-    // }
 
 }
