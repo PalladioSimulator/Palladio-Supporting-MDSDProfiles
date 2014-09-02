@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
@@ -243,6 +244,8 @@ public class EStereotypableObjectImplTest {
     }
     
     @Test
+    // ignore test cases that cannot be reproduced in the UI
+    @Ignore
     public void testGetStereotypeApplicationsAfterResourceSetCleaned() {
     	// 1) apply stereotype
         Stereotype entityBeanStereotype = testee.getApplicableStereotype(entityBeanQualifiedName);
@@ -556,6 +559,8 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
+    // ignore test cases that cannot be reproduced in the UI
+    @Ignore
     public final void testGetAppliedStereotypesAfterResourceSetCleaned() {
     	    		
         // check that there are no stereotype applications at the beginning
@@ -636,6 +641,8 @@ public class EStereotypableObjectImplTest {
      * .
      */
     @Test
+    // ignore test cases that cannot be reproduced in the UI
+    @Ignore
     public final void testGetAppliedStereotypesAfterResourceCleaned() {
     	    		
         // check that there are no stereotype applications at the beginning
