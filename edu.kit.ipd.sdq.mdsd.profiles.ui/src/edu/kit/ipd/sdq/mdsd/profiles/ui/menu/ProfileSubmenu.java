@@ -19,6 +19,7 @@ import org.apache.log4j.PatternLayout;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.gmf.runtime.notation.Shape;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -101,7 +102,10 @@ public class ProfileSubmenu extends CompoundContributionItem {
 
         if (firstElement == null
                 || !(firstElement instanceof EStereotypableObject)) {
-            LOGGER.debug("firstElement is null or not instance of EStereotypableObject");
+        	if (firstElement instanceof Shape) {
+        		LOGGER.debug("vc " + ((Shape) firstElement).getVisibleChildren());
+        	}
+            LOGGER.debug("firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
             return new IContributionItem[] {};
         }
         final EStereotypableObject eStereotypableObject =

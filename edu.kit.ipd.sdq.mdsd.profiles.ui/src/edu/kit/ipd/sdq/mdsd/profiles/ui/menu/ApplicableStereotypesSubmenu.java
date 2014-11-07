@@ -11,6 +11,11 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.editparts.AbstractEditPart;
+import org.eclipse.gmf.runtime.notation.Shape;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -108,8 +113,25 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem
 
         if (firstElement == null
                 || !(firstElement instanceof EStereotypableObject)) {
-            LOGGER.debug("firstElement is null or not instance of EStereotypableObject");
-            return new IContributionItem[] {};
+        	if (firstElement instanceof EditPart) {
+        	    	EditPart editPart = (EditPart) firstElement;
+        	    	Object model = editPart.getModel();
+        	    	if (model instanceof View) {
+        	    		EObject element = ((View) editPart.getModel()).getElement();
+        	    		if (element instanceof EStereotypableObject) {
+        	        		firstElement = element;
+        	    		} else {
+        	                LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
+        	                return new IContributionItem[] {};
+        	    		}
+        	    	} else {
+    	                LOGGER.debug("model '" + model + "' of firstElement ' " + firstElement + "' is not an instance of View");
+    	                return new IContributionItem[] {};
+        	    	}
+        	} else {
+                LOGGER.debug("firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
+                return new IContributionItem[] {};
+        	}
         }
 
         final EStereotypableObject eStereotypableObject =
@@ -117,6 +139,8 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem
 
         final EList<Stereotype> applicableStereotypes =
                 eStereotypableObject.getApplicableStereotypes();
+        
+        LOGGER.debug("applicableStereotypes " + applicableStereotypes);
 
         IContributionItem[] items =
                 new IContributionItem[applicableStereotypes.size()];

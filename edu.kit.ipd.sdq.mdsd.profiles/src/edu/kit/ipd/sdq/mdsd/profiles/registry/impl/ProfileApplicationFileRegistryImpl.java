@@ -163,7 +163,7 @@ public final class ProfileApplicationFileRegistryImpl implements
                     eStereotypableObject.eResource())
                     .containsKey(profileFromRegistryResourceSet)) {
                 LOGGER.debug("no decorator for profile '"
-                        + profileFromRegistryResourceSet.getName() + "'");
+                        + profileFromRegistryResourceSet.getName() + "' and resource '" + eStereotypableObject.eResource() + "'");
             }
         }
 
