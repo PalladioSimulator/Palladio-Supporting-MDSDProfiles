@@ -8,10 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -28,20 +25,17 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.observer.IObserver;
 /**
  * @author Matthias Eisenmann
  */
-public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
-        IObservable<IFile> {
+public class ProfileProjectBuilder extends IncrementalProjectBuilder implements IObservable<IFile> {
 
     /**
      * The logger for this class.
      */
-    private static final Logger LOGGER = Logger
-            .getLogger(ProfileProjectBuilder.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ProfileProjectBuilder.class.getName());
 
     /**
      * The identifier of this builder.
      */
-    public static final String BUILDER_ID = "edu.kit.ipd.sdq.mdsd.profiles"
-            + ".builder.profileprojectbuilder";
+    public static final String BUILDER_ID = "edu.kit.ipd.sdq.mdsd.profiles" + ".builder.profileprojectbuilder";
     /**
      * The file extension for all profile application files.
      */
@@ -50,16 +44,14 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
     /**
      * A list of alls observers for profile application files.
      */
-    private final List<IObserver<IFile>> observers =
-            new ArrayList<IObserver<IFile>>();
+    private final List<IObserver<IFile>> observers = new ArrayList<IObserver<IFile>>();
 
     // FIXME: find a better solution for accessing profile project builder in
     // ProfileApplicationFileRegistry
     /**
      * All builders.
      */
-    private static final Collection<ProfileProjectBuilder> BUILDERS =
-            new ArrayList<ProfileProjectBuilder>();
+    private static final Collection<ProfileProjectBuilder> BUILDERS = new ArrayList<ProfileProjectBuilder>();
 
     /**
      * Constructor that adds the new builder to the static list of all builders.
@@ -73,14 +65,13 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
      * 
      * @return all builders
      */
-    public static Collection<ProfileProjectBuilder>
-            getAllProfileProjectBuilders() {
+    public static Collection<ProfileProjectBuilder> getAllProfileProjectBuilders() {
         return BUILDERS;
     }
 
     /**
-     * A delta-based visitor that notifies observers in case of an addition of a
-     * profile application file.
+     * A delta-based visitor that notifies observers in case of an addition of a profile application
+     * file.
      * 
      * @author Matthias Eisenmann
      * 
@@ -101,11 +92,8 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
                 // handle added resource
                 if (isProfileApplicationFile(resource)) {
                     if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("project="
-                                + ProfileProjectBuilder.this.getProject()
-                                        .getName()
-                                + " | method=ProfileProjectResourceDeltaVisitor"
-                                + ".visit | kind=added | resource="
+                        LOGGER.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
+                                + " | method=ProfileProjectResourceDeltaVisitor" + ".visit | kind=added | resource="
                                 + resource.getFullPath());
                     }
                     notifyObservers((IFile) resource);
@@ -114,29 +102,23 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
             case IResourceDelta.REMOVED:
                 // handle removed resource
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("project="
-                            + ProfileProjectBuilder.this.getProject().getName()
-                            + " | method=ProfileProjectResourceDeltaVisitor"
-                            + ".visit | kind=removed | resource="
+                    LOGGER.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
+                            + " | method=ProfileProjectResourceDeltaVisitor" + ".visit | kind=removed | resource="
                             + resource.getFullPath());
                 }
                 break;
             case IResourceDelta.CHANGED:
                 // handle changed resource
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("project="
-                            + ProfileProjectBuilder.this.getProject().getName()
-                            + " | method=ProfileProjectResourceDeltaVisitor"
-                            + ".visit | kind=changed | resource="
+                    LOGGER.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
+                            + " | method=ProfileProjectResourceDeltaVisitor" + ".visit | kind=changed | resource="
                             + resource.getFullPath());
                 }
                 break;
             default:
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("project="
-                            + ProfileProjectBuilder.this.getProject().getName()
-                            + " | method=ProfileProjectResourceDeltaVisitor"
-                            + ".visit | kind=UNKNOWN! | resource="
+                    LOGGER.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
+                            + " | method=ProfileProjectResourceDeltaVisitor" + ".visit | kind=UNKNOWN! | resource="
                             + resource.getFullPath());
                 }
                 break;
@@ -147,8 +129,8 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
     }
 
     /**
-     * A visitor for a given resource that notifies observers of the resource is
-     * a profile application file. profile application file
+     * A visitor for a given resource that notifies observers of the resource is a profile
+     * application file. profile application file
      * 
      * @author Matthias Eisenmann
      * 
@@ -157,10 +139,8 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
         @Override
         public boolean visit(final IResource resource) {
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("project="
-                        + ProfileProjectBuilder.this.getProject().getName()
-                        + " | method=ProfileProjectResourceVisitor"
-                        + ".visit | resource=" + resource.getFullPath());
+                LOGGER.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
+                        + " | method=ProfileProjectResourceVisitor" + ".visit | resource=" + resource.getFullPath());
             }
 
             if (isProfileApplicationFile(resource)) {
@@ -175,8 +155,7 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
      * {@inheritDoc}
      */
     @Override
-    protected final IProject[] build(final int kind,
-            final Map<String, String> args, final IProgressMonitor monitor)
+    protected final IProject[] build(final int kind, final Map<String, String> args, final IProgressMonitor monitor)
             throws CoreException {
 
         if (kind == FULL_BUILD) {
@@ -197,11 +176,17 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
      */
     private static void configureLogger() {
 
-        PatternLayout layout =
-                new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
-        ConsoleAppender appender = new ConsoleAppender(layout);
-        BasicConfigurator.resetConfiguration();
-        BasicConfigurator.configure(appender);
+        /*
+         * FIXME (from Lehrig) I commented-out this global (!!!) reset of the logger configuration.
+         * It actually destroyed every PCM-based workflow; especially simulation durations increased
+         * heavily since everything was logged. Please provide a logger configuration that is
+         * consistent with other projects.
+         */
+        // PatternLayout layout =
+        // new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
+        // ConsoleAppender appender = new ConsoleAppender(layout);
+        // BasicConfigurator.resetConfiguration();
+        // BasicConfigurator.configure(appender);
 
         // TODO: use logger configuration file
         // PropertyConfigurator.configureAndWatch("log4j.properties", 60 *
@@ -212,9 +197,8 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
      * {@inheritDoc} <br/>
      * <br/>
      * 
-     * At the builder's startup all profile application files which are
-     * contained in the project for which the builder is configured for are
-     * requested.
+     * At the builder's startup all profile application files which are contained in the project for
+     * which the builder is configured for are requested.
      */
     @Override
     protected final void startupOnInitialize() {
@@ -224,12 +208,10 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
         configureLogger();
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("project=" + this.getProject().getName()
-                    + " | method=startupOnInitialize");
+            LOGGER.debug("project=" + this.getProject().getName() + " | method=startupOnInitialize");
         }
 
-        Collection<IFile> files =
-                findProfileApplicationFiles(this.getProject());
+        Collection<IFile> files = findProfileApplicationFiles(this.getProject());
 
         for (IFile file : files) {
             notifyObservers(file);
@@ -240,8 +222,7 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
     protected final void clean(final IProgressMonitor monitor) {
         // add builder clean logic here
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("project=" + this.getProject().getName()
-                    + " | method=clean");
+            LOGGER.debug("project=" + this.getProject().getName() + " | method=clean");
         }
     }
 
@@ -254,15 +235,13 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
      */
     protected final void fullBuild(final IProgressMonitor monitor) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("project=" + this.getProject().getName()
-                    + " | method=fullBuild");
+            LOGGER.debug("project=" + this.getProject().getName() + " | method=fullBuild");
         }
 
         try {
             getProject().accept(new ProfileProjectResourceVisitor());
         } catch (CoreException e) {
-            LOGGER.error("project=" + this.getProject().getName()
-                    + " | full build failed", e);
+            LOGGER.error("project=" + this.getProject().getName() + " | full build failed", e);
         }
     }
 
@@ -276,11 +255,10 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
      * @throws CoreException
      *             if the visitor fails on the delta
      */
-    protected final void incrementalBuild(final IResourceDelta delta,
-            final IProgressMonitor monitor) throws CoreException {
+    protected final void incrementalBuild(final IResourceDelta delta, final IProgressMonitor monitor)
+            throws CoreException {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("project=" + this.getProject().getName()
-                    + " | method=incrementalBuild");
+            LOGGER.debug("project=" + this.getProject().getName() + " | method=incrementalBuild");
         }
         // the visitor does the work.
         delta.accept(new ProfileProjectResourceDeltaVisitor());
@@ -293,8 +271,7 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
      *            the project to be searched
      * @return a collection of all profile application files
      */
-    public static Collection<IFile> findProfileApplicationFiles(
-            final IProject project) {
+    public static Collection<IFile> findProfileApplicationFiles(final IProject project) {
         final Collection<IFile> files = new ArrayList<IFile>();
 
         if (project != null) {
@@ -302,8 +279,7 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
             // visitor for finding all files contained in the project
             final IResourceVisitor resourceVisitor = new IResourceVisitor() {
                 @Override
-                public boolean visit(final IResource resource)
-                        throws CoreException {
+                public boolean visit(final IResource resource) throws CoreException {
                     if (isProfileApplicationFile(resource)) {
                         files.add((IFile) resource);
                     }
@@ -323,18 +299,16 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
     }
 
     /**
-     * Determines whether the specified resource is a profile application file.
-     * It's assumed that all file resources with file extension "pa.xmi" are
-     * profile application files. The file content is not considered.
+     * Determines whether the specified resource is a profile application file. It's assumed that
+     * all file resources with file extension "pa.xmi" are profile application files. The file
+     * content is not considered.
      * 
      * @param resource
      *            The resource in question.
-     * @return True if resource is a file with extension "pa.xmi", otherwise
-     *         false.
+     * @return True if resource is a file with extension "pa.xmi", otherwise false.
      */
     public static boolean isProfileApplicationFile(final IResource resource) {
-        return (resource instanceof IFile && resource.getName().endsWith(
-                PROFILE_APPLICATION_FILE_EXTENSION));
+        return (resource instanceof IFile && resource.getName().endsWith(PROFILE_APPLICATION_FILE_EXTENSION));
     }
 
     @Override
@@ -342,8 +316,7 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements
         if (!observers.contains(observer)) {
             observers.add(observer);
 
-            Collection<IFile> files =
-                    findProfileApplicationFiles(this.getProject());
+            Collection<IFile> files = findProfileApplicationFiles(this.getProject());
 
             for (IFile file : files) {
                 notifyObservers(file);

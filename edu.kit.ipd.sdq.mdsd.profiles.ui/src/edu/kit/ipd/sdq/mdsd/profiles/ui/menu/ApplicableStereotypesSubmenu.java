@@ -6,15 +6,10 @@ package edu.kit.ipd.sdq.mdsd.profiles.ui.menu;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.editparts.AbstractEditPart;
-import org.eclipse.gmf.runtime.notation.Shape;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,38 +30,39 @@ import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
  * 
  */
 
-public class ApplicableStereotypesSubmenu extends CompoundContributionItem
-        implements IWorkbenchContribution {
+public class ApplicableStereotypesSubmenu extends CompoundContributionItem implements IWorkbenchContribution {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ApplicableStereotypesSubmenu.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ApplicableStereotypesSubmenu.class.getName());
 
     static {
+        /*
+         * FIXME (from Lehrig) I commented-out this global (!!!) reset of the logger configuration.
+         * It actually destroyed every PCM-based workflow; especially simulation durations increased
+         * heavily since everything was logged. Please provide a logger configuration that is
+         * consistent with other projects.
+         */
         // TODO: remove logger configuration
-        PatternLayout layout =
-                new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
-        ConsoleAppender appender = new ConsoleAppender(layout);
-        BasicConfigurator.resetConfiguration();
-        BasicConfigurator.configure(appender);
+        // PatternLayout layout =
+        // new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
+        // ConsoleAppender appender = new ConsoleAppender(layout);
+        // BasicConfigurator.resetConfiguration();
+        // BasicConfigurator.configure(appender);
     }
 
     /**
      * This command id is also used in plugin.xml.
      */
-    private static final String COMMAND_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand";
+    private static final String COMMAND_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand";
 
     /**
      * This stereotype command parameter id is also used in plugin.xml.
      */
-    private static final String STEREOTYPE_COMMAND_PARAMETER_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
+    private static final String STEREOTYPE_COMMAND_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
 
     /**
      * This profile command parameter id is also used in plugin.xml.
      */
-    private static final String PROFILE_COMMAND_PARAMETER_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
+    private static final String PROFILE_COMMAND_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
 
     private IServiceLocator serviceLocator;
 
@@ -91,68 +87,61 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.eclipse.ui.actions.CompoundContributionItem#getContributionItems()
+     * @see org.eclipse.ui.actions.CompoundContributionItem#getContributionItems()
      */
     @Override
     protected IContributionItem[] getContributionItems() {
 
-        ISelection selection =
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getSelectionService().getSelection();
+        ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
+                .getSelection();
 
         if (selection == null || !(selection instanceof IStructuredSelection)) {
             LOGGER.debug("selection is null or not instance of IStructuredSelection");
             return new IContributionItem[] {};
         }
 
-        IStructuredSelection structuredSelection =
-                (IStructuredSelection) selection;
+        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
         Object firstElement = structuredSelection.getFirstElement();
 
-        if (firstElement == null
-                || !(firstElement instanceof EStereotypableObject)) {
-        	if (firstElement instanceof EditPart) {
-        	    	EditPart editPart = (EditPart) firstElement;
-        	    	Object model = editPart.getModel();
-        	    	if (model instanceof View) {
-        	    		EObject element = ((View) editPart.getModel()).getElement();
-        	    		if (element instanceof EStereotypableObject) {
-        	        		firstElement = element;
-        	    		} else {
-        	                LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
-        	                return new IContributionItem[] {};
-        	    		}
-        	    	} else {
-    	                LOGGER.debug("model '" + model + "' of firstElement ' " + firstElement + "' is not an instance of View");
-    	                return new IContributionItem[] {};
-        	    	}
-        	} else {
+        if (firstElement == null || !(firstElement instanceof EStereotypableObject)) {
+            if (firstElement instanceof EditPart) {
+                EditPart editPart = (EditPart) firstElement;
+                Object model = editPart.getModel();
+                if (model instanceof View) {
+                    EObject element = ((View) editPart.getModel()).getElement();
+                    if (element instanceof EStereotypableObject) {
+                        firstElement = element;
+                    } else {
+                        LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement
+                                + "' is null or not an instance of EStereotypableObject");
+                        return new IContributionItem[] {};
+                    }
+                } else {
+                    LOGGER.debug("model '" + model + "' of firstElement ' " + firstElement
+                            + "' is not an instance of View");
+                    return new IContributionItem[] {};
+                }
+            } else {
                 LOGGER.debug("firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
                 return new IContributionItem[] {};
-        	}
+            }
         }
 
-        final EStereotypableObject eStereotypableObject =
-                (EStereotypableObject) firstElement;
+        final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
 
-        final EList<Stereotype> applicableStereotypes =
-                eStereotypableObject.getApplicableStereotypes();
-        
+        final EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes();
+
         LOGGER.debug("applicableStereotypes " + applicableStereotypes);
 
-        IContributionItem[] items =
-                new IContributionItem[applicableStereotypes.size()];
+        IContributionItem[] items = new IContributionItem[applicableStereotypes.size()];
 
         for (int i = 0; i < items.length; i++) {
             Stereotype applicableStereotype = applicableStereotypes.get(i);
 
             Profile profile = applicableStereotype.getProfile();
 
-            items[i] =
-                    createContributionItem(applicableStereotype.getName(),
-                            profile.getName());
+            items[i] = createContributionItem(applicableStereotype.getName(), profile.getName());
         }
 
         return items;
@@ -169,25 +158,21 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem
     }
 
     /**
-     * Creates a single contribution item labeled with the combination of the
-     * specified qualified name of the stereotype and the profile containing the
-     * stereotype.
+     * Creates a single contribution item labeled with the combination of the specified qualified
+     * name of the stereotype and the profile containing the stereotype.
      * 
      * @param stereotypeName
      *            The stereotype's qualified name to be used as label.
      * @param profileName
-     *            The name of the profile which contains the stereotype
-     *            specified by its qualified name.
+     *            The name of the profile which contains the stereotype specified by its qualified
+     *            name.
      * @return The created contribution item.
      */
-    private IContributionItem createContributionItem(
-            final String stereotypeName, final String profileName) {
+    private IContributionItem createContributionItem(final String stereotypeName, final String profileName) {
 
-        final CommandContributionItemParameter contributionParameter =
-                new CommandContributionItemParameter(serviceLocator, null,
-                        COMMAND_ID, CommandContributionItem.STYLE_PUSH);
-        contributionParameter.label =
-                stereotypeName + " (from " + profileName + ")";
+        final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(
+                serviceLocator, null, COMMAND_ID, CommandContributionItem.STYLE_PUSH);
+        contributionParameter.label = stereotypeName + " (from " + profileName + ")";
         contributionParameter.visibleEnabled = true;
 
         // use a parameter to identify the selected stereotype in the handler

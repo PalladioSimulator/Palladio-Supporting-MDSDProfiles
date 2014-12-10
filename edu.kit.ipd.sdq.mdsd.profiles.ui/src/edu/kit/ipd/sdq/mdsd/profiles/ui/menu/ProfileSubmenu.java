@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
@@ -42,16 +39,22 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.datastructures.Pair;
 
 public class ProfileSubmenu extends CompoundContributionItem {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ApplicableStereotypesSubmenu.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ApplicableStereotypesSubmenu.class.getName());
 
     static {
+        /*
+         * FIXME (from Lehrig) I commented-out this global (!!!) reset of the logger configuration.
+         * It actually destroyed every PCM-based workflow; especially simulation durations increased
+         * heavily since everything was logged. Please provide a logger configuration that is
+         * consistent with other projects.
+         */
+
         // TODO: remove logger configuration
-        PatternLayout layout =
-                new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
-        ConsoleAppender appender = new ConsoleAppender(layout);
-        BasicConfigurator.resetConfiguration();
-        BasicConfigurator.configure(appender);
+        // PatternLayout layout =
+        // new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
+        // ConsoleAppender appender = new ConsoleAppender(layout);
+        // BasicConfigurator.resetConfiguration();
+        // BasicConfigurator.configure(appender);
     }
 
     private Profile profile;
@@ -80,105 +83,84 @@ public class ProfileSubmenu extends CompoundContributionItem {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.eclipse.ui.actions.CompoundContributionItem#getContributionItems()
+     * @see org.eclipse.ui.actions.CompoundContributionItem#getContributionItems()
      */
     @Override
     protected IContributionItem[] getContributionItems() {
 
-        ISelection selection =
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getSelectionService().getSelection();
+        ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
+                .getSelection();
 
         if (selection == null || !(selection instanceof IStructuredSelection)) {
             LOGGER.debug("selection is null or not instance of IStructuredSelection");
             return new IContributionItem[] {};
         }
 
-        IStructuredSelection structuredSelection =
-                (IStructuredSelection) selection;
+        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
         Object firstElement = structuredSelection.getFirstElement();
 
-        if (firstElement == null
-                || !(firstElement instanceof EStereotypableObject)) {
-        	if (firstElement instanceof Shape) {
-        		LOGGER.debug("vc " + ((Shape) firstElement).getVisibleChildren());
-        	}
+        if (firstElement == null || !(firstElement instanceof EStereotypableObject)) {
+            if (firstElement instanceof Shape) {
+                LOGGER.debug("vc " + ((Shape) firstElement).getVisibleChildren());
+            }
             LOGGER.debug("firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
             return new IContributionItem[] {};
         }
-        final EStereotypableObject eStereotypableObject =
-                (EStereotypableObject) firstElement;
+        final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
         return getContributionItemsForSelectedElement(eStereotypableObject);
     }
 
     /**
-     * Returns an array of contribution items for the selected stereotypable
-     * eObject.
+     * Returns an array of contribution items for the selected stereotypable eObject.
      * 
      * @param eStereotypableObject
      *            the selected stereotypableeObject
      * @return the array
      */
-    private IContributionItem[] getContributionItemsForSelectedElement(
-            final EStereotypableObject eStereotypableObject) {
+    private IContributionItem[] getContributionItemsForSelectedElement(final EStereotypableObject eStereotypableObject) {
 
-        final EList<Stereotype> applicableStereotypes =
-                eStereotypableObject.getApplicableStereotypes(this.profile);
+        final EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes(this.profile);
 
-        EList<Stereotype> appliedStereotypes =
-                eStereotypableObject.getAppliedStereotypes();
+        EList<Stereotype> appliedStereotypes = eStereotypableObject.getAppliedStereotypes();
 
         removeAppliedStereotypesOfOtherProfiles(appliedStereotypes);
 
         // a contribution for every applicable stereotype of the current profile
         // and each stereotype of the current profile that is already applied
-        int contributionCount =
-                applicableStereotypes.size() + appliedStereotypes.size();
+        int contributionCount = applicableStereotypes.size() + appliedStereotypes.size();
 
-        IConfigurationElement[] configElements =
-                Platform.getExtensionRegistry().getConfigurationElementsFor(
-                        Constants.CUSTOMCOMMANDLABEL_EXT_PT_ID);
+        IConfigurationElement[] configElements = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                Constants.CUSTOMCOMMANDLABEL_EXT_PT_ID);
 
-        Map<String, IConfigurationElement> stereotypeName2ConfigElemMap =
-                mapStereotypeNames2ConfigElements(configElements);
+        Map<String, IConfigurationElement> stereotypeName2ConfigElemMap = mapStereotypeNames2ConfigElements(configElements);
 
-        Map<Stereotype, Pair<Boolean, Boolean>> stereotype2ApplicableAppliedMap =
-                mapStereotypes2CommandTypes(applicableStereotypes,
-                        appliedStereotypes, contributionCount);
+        Map<Stereotype, Pair<Boolean, Boolean>> stereotype2ApplicableAppliedMap = mapStereotypes2CommandTypes(
+                applicableStereotypes, appliedStereotypes, contributionCount);
 
-        Set<Stereotype> commandableStereotypes =
-                stereotype2ApplicableAppliedMap.keySet();
-        List<Stereotype> lexicographicalStereotypeList =
-                new LinkedList<Stereotype>(commandableStereotypes);
-        Comparator<Stereotype> comparator =
-                ComparatorHelper.getStereotypeComparator();
+        Set<Stereotype> commandableStereotypes = stereotype2ApplicableAppliedMap.keySet();
+        List<Stereotype> lexicographicalStereotypeList = new LinkedList<Stereotype>(commandableStereotypes);
+        Comparator<Stereotype> comparator = ComparatorHelper.getStereotypeComparator();
         Collections.sort(lexicographicalStereotypeList, comparator);
 
-        return getContributionsForAppliedAndApplicableStereos(
-                contributionCount, stereotypeName2ConfigElemMap,
+        return getContributionsForAppliedAndApplicableStereos(contributionCount, stereotypeName2ConfigElemMap,
                 stereotype2ApplicableAppliedMap, commandableStereotypes);
     }
 
     /**
-     * Removes all stereotypes that pertain to another profile from the given
-     * list of applied stereotypes.
+     * Removes all stereotypes that pertain to another profile from the given list of applied
+     * stereotypes.
      * 
      * @param appliedStereotypes
      *            the list of applied stereotypes to be cleaned
      */
-    private void removeAppliedStereotypesOfOtherProfiles(
-            final EList<Stereotype> appliedStereotypes) {
-        Iterator<Stereotype> appliedStereotypesIterator =
-                appliedStereotypes.iterator();
+    private void removeAppliedStereotypesOfOtherProfiles(final EList<Stereotype> appliedStereotypes) {
+        Iterator<Stereotype> appliedStereotypesIterator = appliedStereotypes.iterator();
         while (appliedStereotypesIterator.hasNext()) {
             Stereotype appliedStereotype = appliedStereotypesIterator.next();
-            String appliedProfileNsURI =
-                    appliedStereotype.getProfile().getNsURI();
+            String appliedProfileNsURI = appliedStereotype.getProfile().getNsURI();
             String currentProfileNsURI = this.profile.getNsURI();
-            if (appliedProfileNsURI == null
-                    || !appliedProfileNsURI.equals(currentProfileNsURI)) {
+            if (appliedProfileNsURI == null || !appliedProfileNsURI.equals(currentProfileNsURI)) {
                 appliedStereotypesIterator.remove();
             }
         }
@@ -191,25 +173,21 @@ public class ProfileSubmenu extends CompoundContributionItem {
      *            the configuration elements
      * @return the mapping
      */
-    private Map<String, IConfigurationElement>
-            mapStereotypeNames2ConfigElements(
-                    final IConfigurationElement[] configElements) {
-        Map<String, IConfigurationElement> stereotypeName2ConfigElemMap =
-                new HashMap<String, IConfigurationElement>(
-                        configElements.length);
+    private Map<String, IConfigurationElement> mapStereotypeNames2ConfigElements(
+            final IConfigurationElement[] configElements) {
+        Map<String, IConfigurationElement> stereotypeName2ConfigElemMap = new HashMap<String, IConfigurationElement>(
+                configElements.length);
 
         for (IConfigurationElement configElem : configElements) {
-            String stereotypeName =
-                    configElem
-                            .getAttribute(Constants.STEREOTYPE_NAME_ATTRIBUTE);
+            String stereotypeName = configElem.getAttribute(Constants.STEREOTYPE_NAME_ATTRIBUTE);
             stereotypeName2ConfigElemMap.put(stereotypeName, configElem);
         }
         return stereotypeName2ConfigElemMap;
     }
 
     /**
-     * Creates a mapping from stereotypes to a pair of booleans representing
-     * whether the stereotype is a) applicable b) applied.
+     * Creates a mapping from stereotypes to a pair of booleans representing whether the stereotype
+     * is a) applicable b) applied.
      * 
      * @param applicableStereotypes
      *            a list of applicable stereotypes
@@ -219,27 +197,21 @@ public class ProfileSubmenu extends CompoundContributionItem {
      *            the
      * @return the mapping
      */
-    private Map<Stereotype, Pair<Boolean, Boolean>>
-            mapStereotypes2CommandTypes(
-                    final EList<Stereotype> applicableStereotypes,
-                    final EList<Stereotype> appliedStereotypes,
-                    final int contributionCount) {
-        Map<Stereotype, Pair<Boolean, Boolean>> stereotype2ApplicableAppliedMap =
-                new HashMap<Stereotype, Pair<Boolean, Boolean>>(
-                        contributionCount);
+    private Map<Stereotype, Pair<Boolean, Boolean>> mapStereotypes2CommandTypes(
+            final EList<Stereotype> applicableStereotypes, final EList<Stereotype> appliedStereotypes,
+            final int contributionCount) {
+        Map<Stereotype, Pair<Boolean, Boolean>> stereotype2ApplicableAppliedMap = new HashMap<Stereotype, Pair<Boolean, Boolean>>(
+                contributionCount);
 
         for (Stereotype applicableStereotype : applicableStereotypes) {
-            stereotype2ApplicableAppliedMap.put(applicableStereotype,
-                    new Pair<Boolean, Boolean>(true, false));
+            stereotype2ApplicableAppliedMap.put(applicableStereotype, new Pair<Boolean, Boolean>(true, false));
         }
 
         for (Stereotype appliedStereotype : appliedStereotypes) {
-            Pair<Boolean, Boolean> applicableApplied =
-                    stereotype2ApplicableAppliedMap.get(appliedStereotype);
+            Pair<Boolean, Boolean> applicableApplied = stereotype2ApplicableAppliedMap.get(appliedStereotype);
             boolean applicable = (applicableApplied != null);
             applicableApplied = new Pair<Boolean, Boolean>(applicable, true);
-            stereotype2ApplicableAppliedMap.put(appliedStereotype,
-                    applicableApplied);
+            stereotype2ApplicableAppliedMap.put(appliedStereotype, applicableApplied);
         }
         return stereotype2ApplicableAppliedMap;
     }
@@ -257,38 +229,30 @@ public class ProfileSubmenu extends CompoundContributionItem {
      *            the set of stereotypes
      * @return the array of contribution items
      */
-    private
-            IContributionItem[]
-            getContributionsForAppliedAndApplicableStereos(
-                    final int contributionCount,
-                    final Map<String, IConfigurationElement> stereotypeName2ConfigElemMap,
-                    final Map<Stereotype, Pair<Boolean, Boolean>> stereotype2ApplicableAppliedMap,
-                    final Set<Stereotype> commandableStereotypes) {
-        IContributionItem[] contributionItems =
-                new IContributionItem[contributionCount];
+    private IContributionItem[] getContributionsForAppliedAndApplicableStereos(final int contributionCount,
+            final Map<String, IConfigurationElement> stereotypeName2ConfigElemMap,
+            final Map<Stereotype, Pair<Boolean, Boolean>> stereotype2ApplicableAppliedMap,
+            final Set<Stereotype> commandableStereotypes) {
+        IContributionItem[] contributionItems = new IContributionItem[contributionCount];
         int contributionIndex = 0;
 
         for (Stereotype currentStereotype : commandableStereotypes) {
             String currentStereotypeName = currentStereotype.getName();
-            Pair<Boolean, Boolean> applicableApplied =
-                    stereotype2ApplicableAppliedMap.get(currentStereotype);
+            Pair<Boolean, Boolean> applicableApplied = stereotype2ApplicableAppliedMap.get(currentStereotype);
             boolean applicable = applicableApplied.getFirst();
             boolean applied = applicableApplied.getSecond();
 
-            IConfigurationElement configElement =
-                    stereotypeName2ConfigElemMap.get(currentStereotypeName);
+            IConfigurationElement configElement = stereotypeName2ConfigElemMap.get(currentStereotypeName);
             String profileName = profile.getName();
             if (applicable) {
-                IContributionItem contributionItem =
-                        getContributionItem(currentStereotypeName,
-                                configElement, profileName, false);
+                IContributionItem contributionItem = getContributionItem(currentStereotypeName, configElement,
+                        profileName, false);
                 contributionItems[contributionIndex] = contributionItem;
                 contributionIndex++;
             }
             if (applied) {
-                IContributionItem contributionItem =
-                        getContributionItem(currentStereotypeName,
-                                configElement, profileName, true);
+                IContributionItem contributionItem = getContributionItem(currentStereotypeName, configElement,
+                        profileName, true);
                 contributionItems[contributionIndex] = contributionItem;
                 contributionIndex++;
             }
@@ -297,39 +261,32 @@ public class ProfileSubmenu extends CompoundContributionItem {
     }
 
     /**
-     * Creates a single contribution item labeled with the combination of the
-     * specified qualified name of the stereotype and the profile containing the
-     * stereotype.
+     * Creates a single contribution item labeled with the combination of the specified qualified
+     * name of the stereotype and the profile containing the stereotype.
      * 
      * @param stereotypeName
      *            The stereotype's qualified name to be used as label.
      * @param configElement
      *            the configuration element
      * @param profileName
-     *            The name of the profile which contains the stereotype
-     *            specified by its qualified name.
+     *            The name of the profile which contains the stereotype specified by its qualified
+     *            name.
      * @param isUnapply
      *            whether it is an unapply stereotype contribution
      * @return The created contribution item.
      */
     private IContributionItem getContributionItem(final String stereotypeName,
-            final IConfigurationElement configElement,
-            final String profileName, final boolean isUnapply) {
-        String label =
-                isUnapply ? Constants.getDefaultUnapplyLabel(stereotypeName)
-                        : Constants.getDefaultApplyLabel(stereotypeName);
+            final IConfigurationElement configElement, final String profileName, final boolean isUnapply) {
+        String label = isUnapply ? Constants.getDefaultUnapplyLabel(stereotypeName) : Constants
+                .getDefaultApplyLabel(stereotypeName);
         if (configElement != null) {
-            String labelAttribute =
-                    isUnapply ? Constants.UNAPPLY_LABEL_ATTR
-                            : Constants.APPLY_LABEL_ATTR;
+            String labelAttribute = isUnapply ? Constants.UNAPPLY_LABEL_ATTR : Constants.APPLY_LABEL_ATTR;
             String customLabel = configElement.getAttribute(labelAttribute);
             if (customLabel != null && !customLabel.equals("")) {
                 label = customLabel;
             }
         }
-        IContributionItem contributionItem =
-                createContributionItem(label, stereotypeName, profileName,
-                        isUnapply);
+        IContributionItem contributionItem = createContributionItem(label, stereotypeName, profileName, isUnapply);
         return contributionItem;
     }
 
@@ -339,45 +296,37 @@ public class ProfileSubmenu extends CompoundContributionItem {
     }
 
     /**
-     * Creates a single contribution item labeled with the combination of the
-     * specified qualified name of the stereotype and the profile containing the
-     * stereotype.
+     * Creates a single contribution item labeled with the combination of the specified qualified
+     * name of the stereotype and the profile containing the stereotype.
      * 
      * @param label
      *            the label
      * @param stereotypeName
      *            The stereotype's qualified name to be used as label.
      * @param profileName
-     *            The name of the profile which contains the stereotype
-     *            specified by its qualified name.
+     *            The name of the profile which contains the stereotype specified by its qualified
+     *            name.
      * @param isUnapply
      *            whether it is an unapply stereotype contribution
      * @return The created contribution item.
      */
-    private IContributionItem createContributionItem(final String label,
-            final String stereotypeName, final String profileName,
-            final boolean isUnapply) {
+    private IContributionItem createContributionItem(final String label, final String stereotypeName,
+            final String profileName, final boolean isUnapply) {
 
-        IServiceLocator serviceLocator =
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        String commandID =
-                isUnapply ? Constants.UNAPPLY_COMMAND_ID
-                        : Constants.APPLY_COMMAND_ID;
-        final CommandContributionItemParameter contributionParameter =
-                new CommandContributionItemParameter(serviceLocator, null,
-                        commandID, CommandContributionItem.STYLE_PUSH);
+        IServiceLocator serviceLocator = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        String commandID = isUnapply ? Constants.UNAPPLY_COMMAND_ID : Constants.APPLY_COMMAND_ID;
+        final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(
+                serviceLocator, null, commandID, CommandContributionItem.STYLE_PUSH);
         contributionParameter.label = label;
         contributionParameter.visibleEnabled = true;
 
         // use a parameter to identify the selected stereotype in the handler
         final Map<String, String> parameterMap = new HashMap<String, String>();
-        String stereoParamID =
-                isUnapply ? Constants.UNAPPLY_STEREOTYPE_PARAMETER_ID
-                        : Constants.APPLY_STEREOTYPE_PARAMETER_ID;
+        String stereoParamID = isUnapply ? Constants.UNAPPLY_STEREOTYPE_PARAMETER_ID
+                : Constants.APPLY_STEREOTYPE_PARAMETER_ID;
         parameterMap.put(stereoParamID, stereotypeName);
-        String profileParamID =
-                isUnapply ? Constants.UNAPPLY_PROFILE_PARAMETER_ID
-                        : Constants.APPLY_PROFILE_PARAMETER_ID;
+        String profileParamID = isUnapply ? Constants.UNAPPLY_PROFILE_PARAMETER_ID
+                : Constants.APPLY_PROFILE_PARAMETER_ID;
         parameterMap.put(profileParamID, profileName);
         contributionParameter.parameters = parameterMap;
 

@@ -10,10 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -22,7 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.application.registry.ProfileApplicationDecorator;
 import org.modelversioning.emfprofile.application.registry.internal.ProfileApplicationDecoratorImpl;
@@ -39,20 +35,16 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.helper.Helper;
  * @author Matthias Eisenmann, Max Kramer
  * 
  */
-public final class ProfileApplicationFileRegistryImpl implements
-        ProfileApplicationFileRegistry {
+public final class ProfileApplicationFileRegistryImpl implements ProfileApplicationFileRegistry {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ProfileApplicationFileRegistryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ProfileApplicationFileRegistryImpl.class.getName());
 
-    public static final ProfileApplicationFileRegistry INSTANCE =
-            new ProfileApplicationFileRegistryImpl();
+    public static final ProfileApplicationFileRegistry INSTANCE = new ProfileApplicationFileRegistryImpl();
 
     /**
      * Contains all considered profile application files.
      */
-    private final Collection<IFile> profileApplicationFiles =
-            new ArrayList<IFile>();
+    private final Collection<IFile> profileApplicationFiles = new ArrayList<IFile>();
 
     /**
      * Mapping of model resource to profile and corresponding decorator.
@@ -60,11 +52,9 @@ public final class ProfileApplicationFileRegistryImpl implements
     private final Map<Resource, Map<Profile, ProfileApplicationDecorator>> modelToDecoratorMap = new HashMap<Resource, Map<Profile, ProfileApplicationDecorator>>();
 
     /**
-     * Keeps track of whether a decorator of a profile application file has
-     * already been created.
+     * Keeps track of whether a decorator of a profile application file has already been created.
      */
-    private final Map<Resource, Map<IFile, ProfileApplicationDecorator>> resource2file2DecoratorMap =
-            new HashMap<Resource, Map<IFile, ProfileApplicationDecorator>>();
+    private final Map<Resource, Map<IFile, ProfileApplicationDecorator>> resource2file2DecoratorMap = new HashMap<Resource, Map<IFile, ProfileApplicationDecorator>>();
 
     /**
      * Hide default constructor
@@ -72,11 +62,17 @@ public final class ProfileApplicationFileRegistryImpl implements
     private ProfileApplicationFileRegistryImpl() {
 
         // TODO: remove logger configuration
-        PatternLayout layout =
-                new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
-        ConsoleAppender appender = new ConsoleAppender(layout);
-        BasicConfigurator.resetConfiguration();
-        BasicConfigurator.configure(appender);
+        /*
+         * FIXME (from Lehrig) I commented-out this global (!!!) reset of the logger configuration.
+         * It actually destroyed every PCM-based workflow; especially simulation durations increased
+         * heavily since everything was logged. Please provide a logger configuration that is
+         * consistent with other projects.
+         */
+        // PatternLayout layout =
+        // new PatternLayout("%d{HH:mm:ss,SSS} [%t] %-5p %c - %m%n");
+        // ConsoleAppender appender = new ConsoleAppender(layout);
+        // BasicConfigurator.resetConfiguration();
+        // BasicConfigurator.configure(appender);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("creating profile application file registry ...");
@@ -87,12 +83,8 @@ public final class ProfileApplicationFileRegistryImpl implements
 
         for (final IProject project : projects) {
             try { // TODO: consider closed projects?
-                if (project.isOpen()
-                        && project
-                                .isNatureEnabled(ProfileProjectNature.NATURE_ID)) {
-                    Collection<IFile> files =
-                            ProfileProjectBuilder
-                                    .findProfileApplicationFiles(project);
+                if (project.isOpen() && project.isNatureEnabled(ProfileProjectNature.NATURE_ID)) {
+                    Collection<IFile> files = ProfileProjectBuilder.findProfileApplicationFiles(project);
 
                     for (final IFile file : files) {
                         addProfileApplicationFile(file);
@@ -112,9 +104,8 @@ public final class ProfileApplicationFileRegistryImpl implements
     }
 
     @Override
-    public Collection<ProfileApplicationDecorator>
-            getAllExistingProfileApplicationDecorators(
-                    final EStereotypableObject eStereotypableObject) {
+    public Collection<ProfileApplicationDecorator> getAllExistingProfileApplicationDecorators(
+            final EStereotypableObject eStereotypableObject) {
 
         initializeProfileToDecoratorMap(eStereotypableObject.eResource());
 
@@ -125,11 +116,9 @@ public final class ProfileApplicationFileRegistryImpl implements
 
     @Override
     public ProfileApplicationDecorator getExistingProfileApplicationDecorator(
-            final EStereotypableObject eStereotypableObject,
-            final Profile profile) {
+            final EStereotypableObject eStereotypableObject, final Profile profile) {
 
-        if (eStereotypableObject == null
-                || eStereotypableObject.eResource() == null) {
+        if (eStereotypableObject == null || eStereotypableObject.eResource() == null) {
             LOGGER.error("EStereotypableObject or its resource is null");
             // TODO check whether it is better to throw an Exception when the
             // method is used wrongly
@@ -137,8 +126,7 @@ public final class ProfileApplicationFileRegistryImpl implements
         }
 
         // use profile from profile registry resource set
-        final Profile profileFromRegistryResourceSet =
-                Helper.getProfile(profile.getName());
+        final Profile profileFromRegistryResourceSet = Helper.getProfile(profile.getName());
 
         addRegistryAsObserverToAllProfileProjectBuilders();
 
@@ -146,10 +134,8 @@ public final class ProfileApplicationFileRegistryImpl implements
         Map<Profile, ProfileApplicationDecorator> profileToDecoratorMap = modelToDecoratorMap.get(eStereotypableObject
                 .eResource());
 
-        if (profileToDecoratorMap != null
-                && profileFromRegistryResourceSet != null
-                && profileToDecoratorMap
-                        .containsKey(profileFromRegistryResourceSet)) {
+        if (profileToDecoratorMap != null && profileFromRegistryResourceSet != null
+                && profileToDecoratorMap.containsKey(profileFromRegistryResourceSet)) {
 
             return profileToDecoratorMap.get(profileFromRegistryResourceSet);
         }
@@ -159,31 +145,24 @@ public final class ProfileApplicationFileRegistryImpl implements
         setUpProfileApplicationDecoratorsForExistingFiles(eStereotypableObject);
 
         if (LOGGER.isDebugEnabled()) {
-            if (!modelToDecoratorMap.get(
-                    eStereotypableObject.eResource())
-                    .containsKey(profileFromRegistryResourceSet)) {
-                LOGGER.debug("no decorator for profile '"
-                        + profileFromRegistryResourceSet.getName() + "' and resource '" + eStereotypableObject.eResource() + "'");
+            if (!modelToDecoratorMap.get(eStereotypableObject.eResource()).containsKey(profileFromRegistryResourceSet)) {
+                LOGGER.debug("no decorator for profile '" + profileFromRegistryResourceSet.getName()
+                        + "' and resource '" + eStereotypableObject.eResource() + "'");
             }
         }
 
-        return modelToDecoratorMap.get(
-                eStereotypableObject.eResource()).get(
-                profileFromRegistryResourceSet);
+        return modelToDecoratorMap.get(eStereotypableObject.eResource()).get(profileFromRegistryResourceSet);
     }
 
     @Override
     public ProfileApplicationDecorator getOrCreateProfileApplicationDecorator(
-            final EStereotypableObject eStereotypableObject,
-            final Profile profile) {
+            final EStereotypableObject eStereotypableObject, final Profile profile) {
 
         // use profile from profile registry resource set
-        final Profile profileFromRegistryResourceSet =
-                Helper.getProfile(profile.getName());
+        final Profile profileFromRegistryResourceSet = Helper.getProfile(profile.getName());
 
-        ProfileApplicationDecorator existingPAD =
-                getExistingProfileApplicationDecorator(eStereotypableObject,
-                        profileFromRegistryResourceSet);
+        ProfileApplicationDecorator existingPAD = getExistingProfileApplicationDecorator(eStereotypableObject,
+                profileFromRegistryResourceSet);
 
         if (existingPAD == null) {
 
@@ -195,32 +174,24 @@ public final class ProfileApplicationFileRegistryImpl implements
             // application files in the project.
             final IProject project = findProject(eStereotypableObject);
 
-            if (!Helper.hasProfileProjectNature(project,
-                    ProfileProjectNature.NATURE_ID)) {
+            if (!Helper.hasProfileProjectNature(project, ProfileProjectNature.NATURE_ID)) {
                 Helper.addNature(project, ProfileProjectNature.NATURE_ID);
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("profile project nature added to project "
-                            + project.getName());
+                    LOGGER.debug("profile project nature added to project " + project.getName());
                 }
             } else {
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("profile project nature exists for project "
-                            + project.getName());
+                    LOGGER.debug("profile project nature exists for project " + project.getName());
                 }
             }
 
-            final IFile newProfileApplicationFile =
-                    createProfileApplicationFile(eStereotypableObject,
-                            profileFromRegistryResourceSet.getName());
+            final IFile newProfileApplicationFile = createProfileApplicationFile(eStereotypableObject,
+                    profileFromRegistryResourceSet.getName());
 
-            LOGGER.debug("created profile application file '"
-                    + newProfileApplicationFile.getFullPath() + "'");
+            LOGGER.debug("created profile application file '" + newProfileApplicationFile.getFullPath() + "'");
 
-            existingPAD =
-                    setUpProfileApplicationDecoratorForNewFile(
-                            eStereotypableObject,
-                            profileFromRegistryResourceSet,
-                            newProfileApplicationFile);
+            existingPAD = setUpProfileApplicationDecoratorForNewFile(eStereotypableObject,
+                    profileFromRegistryResourceSet, newProfileApplicationFile);
         }
 
         return existingPAD;
@@ -238,14 +209,12 @@ public final class ProfileApplicationFileRegistryImpl implements
             LOGGER.debug("method=addProfileApplicationFile | profileApplicationFile="
                     + profileApplicationFile.getFullPath());
         } else {
-            LOGGER.debug("file '" + profileApplicationFile.getFullPath()
-                    + "' already registered");
+            LOGGER.debug("file '" + profileApplicationFile.getFullPath() + "' already registered");
         }
     }
 
     /**
-     * Sets up the profile application decorator for the given profile
-     * application file.
+     * Sets up the profile application decorator for the given profile application file.
      * 
      * @param profileApplicationFile
      *            the pa file
@@ -253,18 +222,15 @@ public final class ProfileApplicationFileRegistryImpl implements
      *            the decorated object
      * @return the decorator
      */
-    private ProfileApplicationDecorator
-            setUpProfileApplicationDecoratorForExistingFile(
-                    final IFile profileApplicationFile,
-                    final EStereotypableObject eStereotypableObject) {
+    private ProfileApplicationDecorator setUpProfileApplicationDecoratorForExistingFile(
+            final IFile profileApplicationFile, final EStereotypableObject eStereotypableObject) {
 
         ProfileApplicationDecorator profileApplicationDecorator = null;
 
         Resource eResource = eStereotypableObject.eResource();
-		try {
-            profileApplicationDecorator =
-                    new ProfileApplicationDecoratorImpl(profileApplicationFile,
-                            eResource.getResourceSet());
+        try {
+            profileApplicationDecorator = new ProfileApplicationDecoratorImpl(profileApplicationFile,
+                    eResource.getResourceSet());
         } catch (CoreException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -285,76 +251,56 @@ public final class ProfileApplicationFileRegistryImpl implements
             /*
              * Determination of the profile:
              * 
-             * In EMF Profiles it's possible that a profile application has
-             * multiple imported profiles. But according to our policy we have
-             * exactly one imported profile per profile application file. So we
-             * can take the first profile (which is expected to be the only
-             * one).
+             * In EMF Profiles it's possible that a profile application has multiple imported
+             * profiles. But according to our policy we have exactly one imported profile per
+             * profile application file. So we can take the first profile (which is expected to be
+             * the only one).
              * 
-             * Use the profile contained in the profile registry's resource set.
-             * Otherwise mismatches can occur when profile is used as key in the
-             * map (different profile instances in different resource sets),
-             * since the profile diagram is reloaded into the model's resource
-             * set by EMF Profiles (develop branch).
+             * Use the profile contained in the profile registry's resource set. Otherwise
+             * mismatches can occur when profile is used as key in the map (different profile
+             * instances in different resource sets), since the profile diagram is reloaded into the
+             * model's resource set by EMF Profiles (develop branch).
              */
 
             if (profileApplicationDecorator.getProfileApplications().size() != 1) {
                 LOGGER.error("expected exactly one profile application for decorator '"
-                        + profileApplicationDecorator.getName()
-                        + "', actually "
-                        + profileApplicationDecorator.getProfileApplications()
-                                .size() + " profile applications found");
+                        + profileApplicationDecorator.getName() + "', actually "
+                        + profileApplicationDecorator.getProfileApplications().size() + " profile applications found");
             }
 
-            final ProfileApplication profileApplication =
-                    profileApplicationDecorator.getProfileApplications().get(0);
+            final ProfileApplication profileApplication = profileApplicationDecorator.getProfileApplications().get(0);
 
             if (profileApplication.getImportedProfiles().size() != 1) {
                 LOGGER.error("expected exacactly one imported profile for decorator '"
-                        + profileApplicationDecorator.getName()
-                        + "', actually "
-                        + profileApplication.getImportedProfiles().size()
-                        + " imported profiles found");
+                        + profileApplicationDecorator.getName() + "', actually "
+                        + profileApplication.getImportedProfiles().size() + " imported profiles found");
             }
 
-            final Profile profile =
-                    ProfileImportResolver.resolve(profileApplication
-                            .getImportedProfiles().get(0), Helper
-                            .getProfileRegistryResourceSet());
+            final Profile profile = ProfileImportResolver.resolve(profileApplication.getImportedProfiles().get(0),
+                    Helper.getProfileRegistryResourceSet());
 
-            if (!profileApplicationDecorator.getStereotypeApplications(
-                    eStereotypableObject).isEmpty()) {
+            if (!profileApplicationDecorator.getStereotypeApplications(eStereotypableObject).isEmpty()) {
 
-                resource2file2DecoratorMap.get(eResource).put(profileApplicationFile,
-                        profileApplicationDecorator);
-                        
-                modelToDecoratorMap.get(eResource).put(profile,
-                        profileApplicationDecorator);
+                resource2file2DecoratorMap.get(eResource).put(profileApplicationFile, profileApplicationDecorator);
 
-                LOGGER.debug("created decorator for existing file '"
-                        + profileApplicationFile.getFullPath() + "'");
+                modelToDecoratorMap.get(eResource).put(profile, profileApplicationDecorator);
+
+                LOGGER.debug("created decorator for existing file '" + profileApplicationFile.getFullPath() + "'");
 
             } else {
-                LOGGER.debug("discarded created decorator '"
-                        + profileApplicationDecorator.getName()
-                        + "': no stereotype application(s) for EStereotypableObject '"
-                        + eStereotypableObject + "'");
+                LOGGER.debug("discarded created decorator '" + profileApplicationDecorator.getName()
+                        + "': no stereotype application(s) for EStereotypableObject '" + eStereotypableObject + "'");
 
                 profileApplicationDecorator = null;
 
-                final Iterator<Resource> iterator =
-                        eResource.getResourceSet()
-                                .getResources().iterator();
+                final Iterator<Resource> iterator = eResource.getResourceSet().getResources().iterator();
 
                 while (iterator.hasNext()) {
                     final Resource resource = iterator.next();
                     URI uri = resource.getURI();
                     if (uri.isPlatformResource()) {
                         String platformString = uri.toPlatformString(false);
-                        if (platformString != null
-                                && platformString
-                                        .endsWith(profileApplicationFile
-                                                .getName())) {
+                        if (platformString != null && platformString.endsWith(profileApplicationFile.getName())) {
                             iterator.remove();
                         }
                     }
@@ -375,22 +321,21 @@ public final class ProfileApplicationFileRegistryImpl implements
      * @param eStereotypableObject
      *            the decorated object
      */
-    private void setUpProfileApplicationDecoratorsForExistingFiles(
-            final EStereotypableObject eStereotypableObject) {
+    private void setUpProfileApplicationDecoratorsForExistingFiles(final EStereotypableObject eStereotypableObject) {
         addRegistryAsObserverToAllProfileProjectBuilders();
 
         for (final IFile profileApplicationFile : this.profileApplicationFiles) {
-        	Map<IFile, ProfileApplicationDecorator> file2DecoratorMap = resource2file2DecoratorMap.get(eStereotypableObject.eResource());
+            Map<IFile, ProfileApplicationDecorator> file2DecoratorMap = resource2file2DecoratorMap
+                    .get(eStereotypableObject.eResource());
             if (!file2DecoratorMap.containsKey(profileApplicationFile)) {
-                setUpProfileApplicationDecoratorForExistingFile(
-                        profileApplicationFile, eStereotypableObject);
+                setUpProfileApplicationDecoratorForExistingFile(profileApplicationFile, eStereotypableObject);
             }
         }
     }
 
     /**
-     * Sets up the profile application decorator for the given decorated object,
-     * profile and new profile application file.
+     * Sets up the profile application decorator for the given decorated object, profile and new
+     * profile application file.
      * 
      * @param eStereotypableObject
      *            the decorated object
@@ -400,11 +345,9 @@ public final class ProfileApplicationFileRegistryImpl implements
      *            the new pa file
      * @return the decorator
      */
-    private
-            ProfileApplicationDecorator
-            setUpProfileApplicationDecoratorForNewFile(
-                    final EStereotypableObject eStereotypableObject,
-                    final Profile profile, final IFile newProfileApplicationFile) {
+    private ProfileApplicationDecorator setUpProfileApplicationDecoratorForNewFile(
+            final EStereotypableObject eStereotypableObject, final Profile profile,
+            final IFile newProfileApplicationFile) {
 
         // add only one profile to the collection of profiles so that the
         // decorator is
@@ -415,11 +358,9 @@ public final class ProfileApplicationFileRegistryImpl implements
         ProfileApplicationDecorator profileApplicationDecorator = null;
 
         Resource eResource = eStereotypableObject.eResource();
-		try {
-            profileApplicationDecorator =
-                    new ProfileApplicationDecoratorImpl(
-                            newProfileApplicationFile, profiles,
-                            eResource.getResourceSet());
+        try {
+            profileApplicationDecorator = new ProfileApplicationDecoratorImpl(newProfileApplicationFile, profiles,
+                    eResource.getResourceSet());
         } catch (CoreException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -429,26 +370,21 @@ public final class ProfileApplicationFileRegistryImpl implements
         }
 
         if (profileApplicationDecorator != null) {
-            LOGGER.debug("created decorator for new file '"
-                    + newProfileApplicationFile.getFullPath() + "'");
+            LOGGER.debug("created decorator for new file '" + newProfileApplicationFile.getFullPath() + "'");
 
-            resource2file2DecoratorMap.get(eResource).put(newProfileApplicationFile,
-                    profileApplicationDecorator);
+            resource2file2DecoratorMap.get(eResource).put(newProfileApplicationFile, profileApplicationDecorator);
 
-            modelToDecoratorMap.get(eResource).put(profile,
-                    profileApplicationDecorator);
+            modelToDecoratorMap.get(eResource).put(profile, profileApplicationDecorator);
 
         } else {
-            LOGGER.error("unable to create decorator for new file '"
-                    + newProfileApplicationFile.getFullPath() + "'");
+            LOGGER.error("unable to create decorator for new file '" + newProfileApplicationFile.getFullPath() + "'");
 
             try {
-                LOGGER.debug("deleting profile application file '"
-                        + newProfileApplicationFile.getFullPath() + "' ...");
+                LOGGER.debug("deleting profile application file '" + newProfileApplicationFile.getFullPath() + "' ...");
                 newProfileApplicationFile.delete(true, null);
             } catch (CoreException e) {
-                LOGGER.error("failed to delete profile application file '"
-                        + newProfileApplicationFile.getFullPath() + "'");
+                LOGGER.error("failed to delete profile application file '" + newProfileApplicationFile.getFullPath()
+                        + "'");
             }
         }
 
@@ -469,11 +405,11 @@ public final class ProfileApplicationFileRegistryImpl implements
             profileToDecoratorMap = new HashMap<Profile, ProfileApplicationDecorator>();
             modelToDecoratorMap.put(resource, profileToDecoratorMap);
         }
-        
+
         Map<IFile, ProfileApplicationDecorator> file2DecoratorMap = resource2file2DecoratorMap.get(resource);
         if (file2DecoratorMap == null) {
-        	file2DecoratorMap = new HashMap<IFile, ProfileApplicationDecorator>();
-    		resource2file2DecoratorMap.put(resource, file2DecoratorMap);
+            file2DecoratorMap = new HashMap<IFile, ProfileApplicationDecorator>();
+            resource2file2DecoratorMap.put(resource, file2DecoratorMap);
         }
     }
 
@@ -482,36 +418,30 @@ public final class ProfileApplicationFileRegistryImpl implements
      */
     private void addRegistryAsObserverToAllProfileProjectBuilders() {
 
-        final Collection<ProfileProjectBuilder> profileProjectBuilders =
-                ProfileProjectBuilder.getAllProfileProjectBuilders();
+        final Collection<ProfileProjectBuilder> profileProjectBuilders = ProfileProjectBuilder
+                .getAllProfileProjectBuilders();
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(profileProjectBuilders.size()
-                    + " active profile project builder(s)");
+            LOGGER.debug(profileProjectBuilders.size() + " active profile project builder(s)");
         }
 
         for (final ProfileProjectBuilder builder : profileProjectBuilders) {
             if (builder.addObserver(this)) {
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("registry attached to builder of project '"
-                            + builder.getProject().getName() + "'");
+                    LOGGER.debug("registry attached to builder of project '" + builder.getProject().getName() + "'");
                 }
             }
         }
     }
 
     /**
-     * Determines the project in which the specified EStereotypableObject is
-     * located.
+     * Determines the project in which the specified EStereotypableObject is located.
      * 
      * @param eStereotypableObject
-     *            The {@link EStereotypableObject} for which to find the
-     *            project.
-     * @return The project that contains the specified
-     *         {@link EStereotypableObject}.
+     *            The {@link EStereotypableObject} for which to find the project.
+     * @return The project that contains the specified {@link EStereotypableObject}.
      */
-    private IProject
-            findProject(final EStereotypableObject eStereotypableObject) {
+    private IProject findProject(final EStereotypableObject eStereotypableObject) {
 
         final URI uri = eStereotypableObject.eResource().getURI();
 
@@ -538,16 +468,11 @@ public final class ProfileApplicationFileRegistryImpl implements
      *            the profile
      * @return the pa file
      */
-    private IFile createProfileApplicationFile(
-            final EStereotypableObject eStereotypableObject,
-            final String profileName) {
+    private IFile createProfileApplicationFile(final EStereotypableObject eStereotypableObject, final String profileName) {
 
-        final String fileName =
-                createProfileApplicationFileName(eStereotypableObject,
-                        profileName);
+        final String fileName = createProfileApplicationFileName(eStereotypableObject, profileName);
 
-        final URI profileApplicationFileUri =
-                createProfileApplicationFileURI(eStereotypableObject, fileName);
+        final URI profileApplicationFileUri = createProfileApplicationFileURI(eStereotypableObject, fileName);
 
         final IPath path = Helper.createPath(profileApplicationFileUri);
 
@@ -557,12 +482,11 @@ public final class ProfileApplicationFileRegistryImpl implements
     }
 
     /**
-     * Creates the name of profile application file in which stereotype
-     * applications for the specified object shall be saved.
+     * Creates the name of profile application file in which stereotype applications for the
+     * specified object shall be saved.
      * 
-     * The file name consists of the source model name, the name of the profile
-     * that contains the stereotype to be applied, and the characteristic
-     * extension 'pa.xmi'.
+     * The file name consists of the source model name, the name of the profile that contains the
+     * stereotype to be applied, and the characteristic extension 'pa.xmi'.
      * 
      * Pattern: &lt;model&gt;.&lt;profile&gt;.pa.xmi
      * 
@@ -572,8 +496,7 @@ public final class ProfileApplicationFileRegistryImpl implements
      *            the name of the profile to be applied
      * @return the file name
      */
-    private String createProfileApplicationFileName(
-            final EStereotypableObject eStereotypableObject,
+    private String createProfileApplicationFileName(final EStereotypableObject eStereotypableObject,
             final String profileName) {
         URI modelURI = eStereotypableObject.eResource().getURI();
 
@@ -587,8 +510,7 @@ public final class ProfileApplicationFileRegistryImpl implements
     }
 
     /**
-     * Creates the URI for the profile application file for the given object and
-     * file name.
+     * Creates the URI for the profile application file for the given object and file name.
      * 
      * @param eStereotypableObject
      *            the decorated object
@@ -596,16 +518,13 @@ public final class ProfileApplicationFileRegistryImpl implements
      *            the pa file name
      * @return the URI
      */
-    private URI createProfileApplicationFileURI(
-            final EStereotypableObject eStereotypableObject,
-            final String fileName) {
+    private URI createProfileApplicationFileURI(final EStereotypableObject eStereotypableObject, final String fileName) {
         // create IPath for profile application file by determining the EMF URI
         // of the resource of
         // specified EStereotypableObject
         URI modelURI = eStereotypableObject.eResource().getURI();
 
-        return URI.createPlatformResourceURI(modelURI.trimSegments(1)
-                .toPlatformString(false) + "/" + fileName, true);
+        return URI.createPlatformResourceURI(modelURI.trimSegments(1).toPlatformString(false) + "/" + fileName, true);
     }
 
     @Override
@@ -624,8 +543,8 @@ public final class ProfileApplicationFileRegistryImpl implements
         modelToDecoratorMap.clear();
         profileApplicationFiles.clear();
 
-        final Collection<ProfileProjectBuilder> profileProjectBuilders =
-                ProfileProjectBuilder.getAllProfileProjectBuilders();
+        final Collection<ProfileProjectBuilder> profileProjectBuilders = ProfileProjectBuilder
+                .getAllProfileProjectBuilders();
 
         for (ProfileProjectBuilder builder : profileProjectBuilders) {
             builder.removeObserver(this);
