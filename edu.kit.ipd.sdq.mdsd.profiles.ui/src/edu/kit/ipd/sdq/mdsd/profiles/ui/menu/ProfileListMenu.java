@@ -15,7 +15,7 @@ import org.modelversioning.emfprofile.registry.IProfileProvider;
 import org.modelversioning.emfprofile.registry.IProfileRegistry;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
-import edu.kit.ipd.sdq.mdsd.profiles.ui.Constants;
+import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 
 /**
  * @author Max Kramer
@@ -45,7 +45,7 @@ public class ProfileListMenu extends CompoundContributionItem {
 
                 AbstractContributionFactory viewMenuAddition =
                         new AbstractContributionFactory(
-                                Constants.MENU_LOCATION, null) {
+                                ProfilesUIConstants.MENU_LOCATION, null) {
                             @Override
                             public void createContributionItems(
                                     final IServiceLocator serviceLocator,
@@ -61,10 +61,10 @@ public class ProfileListMenu extends CompoundContributionItem {
                                     MenuManager submenu =
                                             new MenuManager(
                                                     profileDescription,
-                                                    Constants.PROFILE_LIST_MENU_ID);
+                                                    ProfilesUIConstants.PROFILE_LIST_MENU_ID);
                                     IContributionItem dynamicItem =
                                             new CompoundContributionItem(
-                                                    Constants.DYNAMIC_LIST_ID) {
+                                                    ProfilesUIConstants.DYNAMIC_LIST_ID) {
                                                 @Override
                                                 protected IContributionItem[]
                                                         getContributionItems() {

@@ -29,7 +29,7 @@ import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
-import edu.kit.ipd.sdq.mdsd.profiles.ui.Constants;
+import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 import edu.kit.ipd.sdq.mdsd.profiles.util.datastructures.Pair;
 
 /**
@@ -131,7 +131,7 @@ public class ProfileSubmenu extends CompoundContributionItem {
         int contributionCount = applicableStereotypes.size() + appliedStereotypes.size();
 
         IConfigurationElement[] configElements = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                Constants.CUSTOMCOMMANDLABEL_EXT_PT_ID);
+                ProfilesUIConstants.CUSTOMCOMMANDLABEL_EXT_PT_ID);
 
         Map<String, IConfigurationElement> stereotypeName2ConfigElemMap = mapStereotypeNames2ConfigElements(configElements);
 
@@ -179,7 +179,7 @@ public class ProfileSubmenu extends CompoundContributionItem {
                 configElements.length);
 
         for (IConfigurationElement configElem : configElements) {
-            String stereotypeName = configElem.getAttribute(Constants.STEREOTYPE_NAME_ATTRIBUTE);
+            String stereotypeName = configElem.getAttribute(ProfilesUIConstants.STEREOTYPE_NAME_ATTRIBUTE);
             stereotypeName2ConfigElemMap.put(stereotypeName, configElem);
         }
         return stereotypeName2ConfigElemMap;
@@ -277,10 +277,10 @@ public class ProfileSubmenu extends CompoundContributionItem {
      */
     private IContributionItem getContributionItem(final String stereotypeName,
             final IConfigurationElement configElement, final String profileName, final boolean isUnapply) {
-        String label = isUnapply ? Constants.getDefaultUnapplyLabel(stereotypeName) : Constants
+        String label = isUnapply ? ProfilesUIConstants.getDefaultUnapplyLabel(stereotypeName) : ProfilesUIConstants
                 .getDefaultApplyLabel(stereotypeName);
         if (configElement != null) {
-            String labelAttribute = isUnapply ? Constants.UNAPPLY_LABEL_ATTR : Constants.APPLY_LABEL_ATTR;
+            String labelAttribute = isUnapply ? ProfilesUIConstants.UNAPPLY_LABEL_ATTR : ProfilesUIConstants.APPLY_LABEL_ATTR;
             String customLabel = configElement.getAttribute(labelAttribute);
             if (customLabel != null && !customLabel.equals("")) {
                 label = customLabel;
@@ -314,7 +314,7 @@ public class ProfileSubmenu extends CompoundContributionItem {
             final String profileName, final boolean isUnapply) {
 
         IServiceLocator serviceLocator = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        String commandID = isUnapply ? Constants.UNAPPLY_COMMAND_ID : Constants.APPLY_COMMAND_ID;
+        String commandID = isUnapply ? ProfilesUIConstants.UNAPPLY_COMMAND_ID : ProfilesUIConstants.APPLY_COMMAND_ID;
         final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(
                 serviceLocator, null, commandID, CommandContributionItem.STYLE_PUSH);
         contributionParameter.label = label;
@@ -322,11 +322,11 @@ public class ProfileSubmenu extends CompoundContributionItem {
 
         // use a parameter to identify the selected stereotype in the handler
         final Map<String, String> parameterMap = new HashMap<String, String>();
-        String stereoParamID = isUnapply ? Constants.UNAPPLY_STEREOTYPE_PARAMETER_ID
-                : Constants.APPLY_STEREOTYPE_PARAMETER_ID;
+        String stereoParamID = isUnapply ? ProfilesUIConstants.UNAPPLY_STEREOTYPE_PARAMETER_ID
+                : ProfilesUIConstants.APPLY_STEREOTYPE_PARAMETER_ID;
         parameterMap.put(stereoParamID, stereotypeName);
-        String profileParamID = isUnapply ? Constants.UNAPPLY_PROFILE_PARAMETER_ID
-                : Constants.APPLY_PROFILE_PARAMETER_ID;
+        String profileParamID = isUnapply ? ProfilesUIConstants.UNAPPLY_PROFILE_PARAMETER_ID
+                : ProfilesUIConstants.APPLY_PROFILE_PARAMETER_ID;
         parameterMap.put(profileParamID, profileName);
         contributionParameter.parameters = parameterMap;
 

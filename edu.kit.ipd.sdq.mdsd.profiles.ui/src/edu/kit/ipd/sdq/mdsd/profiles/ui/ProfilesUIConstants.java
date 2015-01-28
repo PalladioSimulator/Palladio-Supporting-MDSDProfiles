@@ -7,11 +7,11 @@ package edu.kit.ipd.sdq.mdsd.profiles.ui;
  * @author Matthias Eisenmann
  * 
  */
-public final class Constants {
+public final class ProfilesUIConstants {
     /**
      * Utility classes should not have a public or default constructor.
      */
-    private Constants() {
+    private ProfilesUIConstants() {
         // empty
     }
 

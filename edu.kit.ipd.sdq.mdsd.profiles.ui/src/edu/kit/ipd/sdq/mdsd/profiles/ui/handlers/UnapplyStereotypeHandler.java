@@ -7,7 +7,7 @@ import org.eclipse.emf.common.command.Command;
 import org.modelversioning.emfprofile.Stereotype;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
-import edu.kit.ipd.sdq.mdsd.profiles.ui.Constants;
+import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.commands.UnapplyStereotypeCommand;
 
 /**
@@ -17,17 +17,17 @@ import edu.kit.ipd.sdq.mdsd.profiles.ui.commands.UnapplyStereotypeCommand;
 public class UnapplyStereotypeHandler extends AbstractStereotypeHandler {
     @Override
     protected String getStereotypeParameterID() {
-        return Constants.UNAPPLY_STEREO_PARAM_ID;
+        return ProfilesUIConstants.UNAPPLY_STEREO_PARAM_ID;
     }
 
     @Override
     protected String getProfileParameterID() {
-        return Constants.UNAPPLY_PROFILE_PARAM_ID;
+        return ProfilesUIConstants.UNAPPLY_PROFILE_PARAM_ID;
     }
 
     @Override
     protected String getActionName() {
-        return Constants.UNAPPLY_ACTION_NAME;
+        return ProfilesUIConstants.UNAPPLY_ACTION_NAME;
     }
 
     @Override
