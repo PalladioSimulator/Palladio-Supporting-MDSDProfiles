@@ -40,7 +40,10 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.celleditor.AdapterFactoryTreeEditor;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
@@ -183,19 +186,36 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 if (treeSelection instanceof IAdaptable) {
                     // do nothing
                 }
-                if (treeSelection.getFirstElement() instanceof EStereotypableObject
-                        && !((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
+                Object firstElement = treeSelection.getFirstElement();
+                // THIS CODE MIGHT HELP IN SUPPORTING GRAPHICAL EDITORS IN SIRIUS (AGAIN)
+//                if (firstElement instanceof EditPart) {
+//        	    	EditPart editPart = (EditPart) firstElement;
+//        	    	Object model = editPart.getModel();
+//        	    	if (model instanceof View) {
+//        	    		EObject element = ((View) editPart.getModel()).getElement();
+//        	    		if (element instanceof EStereotypableObject) {
+//        	        		firstElement = element;
+//        	        		LOGGER.debug("oh yeah");
+//        	    		} else {
+//        	                LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
+//        	    		}
+//        	    	} else {
+//    	                LOGGER.debug("model '" + model + "' of firstElement ' " + firstElement + "' is not an instance of View");
+//        	    	}
+//                }
+                if (firstElement instanceof EStereotypableObject
+                        && !((EStereotypableObject) firstElement).getAppliedStereotypes().isEmpty()) {
                     LOGGER.info("TreeSelection: " + treeSelection);
-                    LOGGER.info(treeSelection.getFirstElement() instanceof EStereotypableObject);
-                    ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
+                    LOGGER.info(firstElement instanceof EStereotypableObject);
+                    ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) firstElement;
                     LOGGER.info("eStereotyped: " + ProfilePropertiesView.this.eStereotyped);
                     ProfileListMenu.createOrUpdateMenuForEachProfile(treeSelection);
                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                } else if (treeSelection.getFirstElement() instanceof EStereotypableObject
-                        && ((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
-                    ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
+                } else if (firstElement instanceof EStereotypableObject
+                        && ((EStereotypableObject) firstElement).getAppliedStereotypes().isEmpty()) {
+                    ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) firstElement;
                     // The following two lines of code is temporary and have to out-commented if to
                     // work on the "load twice"-problem
                     // And the first selection from a resource must than be a EStereotypableObject
@@ -204,7 +224,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 //                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     LOGGER.warn("The root element wasn't applied any stereotypes.");
-                } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
+            } else if (!(firstElement instanceof EStereotypableObject)) {
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     LOGGER.error("The root element was not an EStereotypableObject.");
                 }
