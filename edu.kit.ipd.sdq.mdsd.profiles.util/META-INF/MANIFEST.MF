@@ -4,7 +4,8 @@ Bundle-Name: Util
 Bundle-SymbolicName: edu.kit.ipd.sdq.mdsd.profiles.util
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: edu.kit.ipd.sdq.mdsd.profiles.util.datastructures,
+Export-Package: edu.kit.ipd.sdq.mdsd.profiles.util.bridges,
+ edu.kit.ipd.sdq.mdsd.profiles.util.datastructures,
  edu.kit.ipd.sdq.mdsd.profiles.util.helper,
  edu.kit.ipd.sdq.mdsd.profiles.util.observer
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.8.1",

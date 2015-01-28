@@ -5,11 +5,17 @@ package edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.modelversioning.emfprofile.Profile;
@@ -22,6 +28,8 @@ import org.modelversioning.emfprofileapplication.StereotypeApplication;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
+import edu.kit.ipd.sdq.mdsd.profiles.util.bridges.EcoreBridge;
+import edu.kit.ipd.sdq.mdsd.profiles.util.helper.FeatureGetterUtility;
 
 /**
  * @author Matthias Eisenmann
@@ -230,13 +238,47 @@ public class EStereotypableObjectImpl extends EObjectImpl implements
                 final StereotypeApplication stereotypeApplication =
                         profileApplicationDecorator.applyStereotype(
                                 stereotypeApplicability, this);
-                
+                setDefaultTaggedValues(stereotypeApplication);
                 return stereotypeApplication;
             }
         }
 
         return null;
     }
+
+    /**
+     * Sets the values for all String attributes to the empty String "" or to the empty list
+     * and all multi-valued references to the empty list.
+     * 
+     * FIXME Max If tagged values that were never set shall be distinguishable then this has to happen temporarily in the Profiles view
+     * 
+     * @param stereotypeApplication
+     */
+	private void setDefaultTaggedValues(
+			final StereotypeApplication stereotypeApplication) {
+		List<EStructuralFeature> taggedStructuralFeatures = FeatureGetterUtility.getTaggedStructuralFeatures(stereotypeApplication);
+		for (EStructuralFeature taggedFeature : taggedStructuralFeatures) {
+			Object value = null;
+			if (taggedFeature instanceof EAttribute) {
+				EAttribute attribute = (EAttribute) taggedFeature;
+				if (EcoreBridge.isStringAttribute(attribute)) {
+					if (attribute.isMany()) {
+						value = new BasicEList<String>();
+					} else {
+						value = "";
+					}
+				}
+			} else {
+				if (taggedFeature.isMany()) {
+					value = new BasicEList<>();
+				}
+			}
+			if (value != null) {
+				stereotypeApplication.eSet(taggedFeature, value);
+				LOGGER.debug("initially set the feature '" + taggedFeature.getName() + "' to the default value '" + value + "'");
+			}
+		}
+	}
 
     /**
      * {@inheritDoc}

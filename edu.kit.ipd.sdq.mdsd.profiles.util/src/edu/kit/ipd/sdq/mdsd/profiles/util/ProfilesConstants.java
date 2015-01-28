@@ -15,5 +15,5 @@ public final class ProfilesConstants {
 	
 	public static final String APPLIED_TO_FEATURE_NAME = "appliedTo";
 	public static final String EXTENSION_FEATURE_NAME = "extension";
-	public static final String PROFILE_APPLICATION_TO_FEATURE_NAME = "ProfileApplication";
+	public static final String PROFILE_APPLICATION_TO_FEATURE_NAME = "profileApplication";
 }
