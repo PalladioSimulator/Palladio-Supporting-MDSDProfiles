@@ -29,7 +29,7 @@ import edu.kit.ipd.sdq.mdsd.profiles.builder.ProfileProjectBuilder;
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.nature.ProfileProjectNature;
 import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
-import edu.kit.ipd.sdq.mdsd.profiles.util.helper.Helper;
+import edu.kit.ipd.sdq.mdsd.profiles.util.helper.ProfileHelper;
 
 /**
  * @author Matthias Eisenmann, Max Kramer
@@ -126,7 +126,7 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
         }
 
         // use profile from profile registry resource set
-        final Profile profileFromRegistryResourceSet = Helper.getProfile(profile.getName());
+        final Profile profileFromRegistryResourceSet = ProfileHelper.getProfile(profile.getName());
 
         addRegistryAsObserverToAllProfileProjectBuilders();
 
@@ -159,7 +159,7 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
             final EStereotypableObject eStereotypableObject, final Profile profile) {
 
         // use profile from profile registry resource set
-        final Profile profileFromRegistryResourceSet = Helper.getProfile(profile.getName());
+        final Profile profileFromRegistryResourceSet = ProfileHelper.getProfile(profile.getName());
 
         ProfileApplicationDecorator existingPAD = getExistingProfileApplicationDecorator(eStereotypableObject,
                 profileFromRegistryResourceSet);
@@ -174,8 +174,8 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
             // application files in the project.
             final IProject project = findProject(eStereotypableObject);
 
-            if (!Helper.hasProfileProjectNature(project, ProfileProjectNature.NATURE_ID)) {
-                Helper.addNature(project, ProfileProjectNature.NATURE_ID);
+            if (!ProfileHelper.hasProfileProjectNature(project, ProfileProjectNature.NATURE_ID)) {
+                ProfileHelper.addNature(project, ProfileProjectNature.NATURE_ID);
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("profile project nature added to project " + project.getName());
                 }
@@ -277,7 +277,7 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
             }
 
             final Profile profile = ProfileImportResolver.resolve(profileApplication.getImportedProfiles().get(0),
-                    Helper.getProfileRegistryResourceSet());
+                    ProfileHelper.getProfileRegistryResourceSet());
 
             if (!profileApplicationDecorator.getStereotypeApplications(eStereotypableObject).isEmpty()) {
 
@@ -452,7 +452,7 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
 
         final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 
-        final IPath path = Helper.createPath(uri);
+        final IPath path = ProfileHelper.createPath(uri);
 
         final IFile file = root.getFile(path);
 
@@ -474,7 +474,7 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
 
         final URI profileApplicationFileUri = createProfileApplicationFileURI(eStereotypableObject, fileName);
 
-        final IPath path = Helper.createPath(profileApplicationFileUri);
+        final IPath path = ProfileHelper.createPath(profileApplicationFileUri);
 
         final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 

@@ -230,6 +230,7 @@ public class EStereotypableObjectImpl extends EObjectImpl implements
                 final StereotypeApplication stereotypeApplication =
                         profileApplicationDecorator.applyStereotype(
                                 stereotypeApplicability, this);
+                
                 return stereotypeApplication;
             }
         }

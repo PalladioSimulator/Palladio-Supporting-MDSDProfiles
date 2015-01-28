@@ -19,7 +19,7 @@ import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
-import edu.kit.ipd.sdq.mdsd.profiles.util.helper.Helper;
+import edu.kit.ipd.sdq.mdsd.profiles.util.helper.ProfileHelper;
 
 /**
  * @author Max Kramer
@@ -117,7 +117,7 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
             final EStereotypableObject eStereotypableObject =
                     (EStereotypableObject) firstElement;
 
-            final Profile profile = Helper.getProfile(selectedProfile);
+            final Profile profile = ProfileHelper.getProfile(selectedProfile);
 
             if (profile != null) {
                 final Stereotype applicableStereotype =

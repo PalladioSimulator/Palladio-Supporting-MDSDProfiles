@@ -19,12 +19,12 @@ import org.modelversioning.emfprofile.registry.IProfileRegistry;
  * @author Matthias Eisenmann
  * 
  */
-public final class Helper {
+public final class ProfileHelper {
 
     /**
      * Utility classes should not have a public or default constructor.
      */
-    private Helper() {
+    private ProfileHelper() {
         // empty
     }
 

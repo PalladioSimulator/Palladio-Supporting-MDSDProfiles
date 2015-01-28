@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.mdsd.profiles.view.utility;
+package edu.kit.ipd.sdq.mdsd.profiles.util.helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,8 @@ import org.modelversioning.emfprofileapplication.StereotypeApplication;
  * Utility to deliver the list of EAttributes, which will be used for data binding between the model
  * and UI.
  * 
+ * TODO Emre: Remove or use unused methods.
+ * 
  * @author emretaspolat
  * 
  */
@@ -24,7 +26,9 @@ public class FeatureGetterUtility {
 
     private static final Logger LOGGER = Logger.getLogger(FeatureGetterUtility.class);
 
-    // hide the default constructor
+    /**
+     * Utility classes should not have a public or default constructor.
+     */
     private FeatureGetterUtility() {
     };
 

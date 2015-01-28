@@ -17,7 +17,7 @@ import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofile.application.registry.ProfileApplicationDecorator;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 
-import edu.kit.ipd.sdq.mdsd.profiles.view.utility.FeatureGetterUtility;
+import edu.kit.ipd.sdq.mdsd.profiles.util.helper.FeatureGetterUtility;
 import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ProfilePropertiesView;
 
 /**

@@ -18,6 +18,8 @@ import org.junit.Test;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 
+import edu.kit.ipd.sdq.mdsd.profiles.util.helper.FeatureGetterUtility;
+
 /**
  * @author emretaspolat
  * 
