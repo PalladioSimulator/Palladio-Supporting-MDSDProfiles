@@ -44,14 +44,14 @@ public class EFeatureSorterUtilityTest {
     @Test
     public void testGetFeatureListOfStereotype() {
         assertNotNull("Stereotyp war null", stereotype);
-        assertNotNull("Liste von EAttributes war null!", FeatureGetterUtility.getFeatureListOfStereotype(stereotype));
+        assertNotNull("Liste von EAttributes war null!", FeatureGetterUtility.getAttributeListOfStereotype(stereotype));
     }
 
     @Test
     public void testGetFeatureListOfStereotypeApplication() {
         assertNotNull("Stereotyp war null", stereotype);
         assertNotNull("Liste von EAttributes war null!",
-                FeatureGetterUtility.getFeatureListOfStereotypeApplication(stereotypeApplication));
+                FeatureGetterUtility.getAttributeListOfStereotypeApplication(stereotypeApplication));
     }
 
 }

@@ -34,7 +34,7 @@ public class FeatureGetterUtility {
      * @param stereotype
      * @return List<EAttribute> EAttributes of Stereotype
      */
-    public static List<EAttribute> getFeatureListOfStereotype(final Stereotype stereotype) {
+    public static List<EAttribute> getAttributeListOfStereotype(final Stereotype stereotype) {
         LOGGER.info("EAttributes of " + stereotype + ": " + stereotype.getEAllAttributes());
         return stereotype.getEAllAttributes();
     }
@@ -45,7 +45,7 @@ public class FeatureGetterUtility {
      * @param stereotypeApplication
      * @return List<EAttribute> EAttributes of Stereotype
      */
-    public static List<EAttribute> getFeatureListOfStereotypeApplication(
+    public static List<EAttribute> getAttributeListOfStereotypeApplication(
             final StereotypeApplication stereotypeApplication) {
         if (stereotypeApplication == null) {
             return new ArrayList<EAttribute>();
@@ -91,12 +91,13 @@ public class FeatureGetterUtility {
     }
     
     /**
-     * Returns the list of EStructuralFeatures for the given Stereotype Application.
+     * Returns the list of EStructuralFeatures that were defined in the Stereotype of the given Stereotype Application. 
+     * Excludes all generic features that are defined for all stereotypes.
      * 
      * @param stereotypeApplication
      * @return List<EStructuralFeature> EStructuralFeatures of Stereotype
      */
-    public static List<EStructuralFeature> getStructuralFeatureListOfStereotypeApplication(
+    public static List<EStructuralFeature> getTaggedStructuralFeatures(
             final StereotypeApplication stereotypeApplication) {
     	List<EStructuralFeature> listStructuralFeatures = new ArrayList<EStructuralFeature>();
         if (stereotypeApplication == null) {
@@ -113,18 +114,7 @@ public class FeatureGetterUtility {
     }
 
     /**
-     * Returns the list of EAttributes for the given Stereotype Application by getting first to the
-     * applied Stereotype.
-     * 
-     * @param stereotypeApplication
-     * @return List<EAttribute> EAttributes of Stereotype of Stereotype Application
-     */
-    public static EList<EAttribute> getFeatureListOfSTFromSA(final StereotypeApplication stereotypeApplication) {
-        return stereotypeApplication.getStereotype().eClass().getEAllAttributes();
-    }
-
-    /**
-     * TODO
+     * FIXME Emre: this utility method is never used
      * 
      * @return
      */

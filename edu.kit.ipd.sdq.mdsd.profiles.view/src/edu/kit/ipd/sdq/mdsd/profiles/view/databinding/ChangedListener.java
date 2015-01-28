@@ -53,7 +53,7 @@ public class ChangedListener implements IValueChangeListener {
 
             final List<IObservableValue> values = new ArrayList<IObservableValue>();
             for (final EStructuralFeature attribute : FeatureGetterUtility
-                    .getStructuralFeatureListOfStereotypeApplication((stereotypeApplication))) {
+                    .getTaggedStructuralFeatures((stereotypeApplication))) {
                 LOGGER.info("The structural features:" + attribute);
                 this.value = EMFEditProperties.value(this.view.getEditingDomain(), attribute).observeDetail(
                         this.view.getMaster());
