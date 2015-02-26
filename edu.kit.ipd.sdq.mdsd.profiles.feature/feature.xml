@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="edu.kit.ipd.sdq.mdsd.profiles.feature"
-      label="Profiles"
+      label="PCM Profiles"
       version="3.5.0.qualifier"
       provider-name="palladiosimulator.org">
 
