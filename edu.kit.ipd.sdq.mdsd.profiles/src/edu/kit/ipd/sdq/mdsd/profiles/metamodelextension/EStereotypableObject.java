@@ -24,13 +24,23 @@ public interface EStereotypableObject extends EObject {
      * @return The stereotype applications for this element.
      */
     EList<StereotypeApplication> getStereotypeApplications();
+    
+    /**
+     * Retrieves all applications of stereotypes of the specified profile for this element.
+     * 
+     * @param profile
+     *            The profile for which to retrieve all stereotype applications.
+     * @return The applications of stereotypes of the specified profile for this element, or an
+     *         empty list if no such stereotype application exists.
+     */
+	EList<StereotypeApplication> getStereotypeApplications(Profile profile);
 
     /**
      * Retrieves the applications of the specified stereotype for this element.
      * 
      * @param stereotype
      *            The stereotype for which to retrieve the applications.
-     * @return The applications of the specified stereotype for this element, or
+     * @return The applications of the specified stereotype for this element, or an
      *         empty list if no such stereotype application exists.
      */
     EList<StereotypeApplication>

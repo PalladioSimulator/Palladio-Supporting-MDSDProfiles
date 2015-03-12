@@ -12,9 +12,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
@@ -89,6 +86,20 @@ public class EStereotypableObjectImpl extends EObjectImpl implements
                     .getStereotypeApplications(this));
         }
 
+        return stereotypeApplications;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EList<StereotypeApplication> getStereotypeApplications(Profile profile) {
+    	ProfileApplicationDecorator pad = ProfileApplicationFileRegistry.INSTANCE.getExistingProfileApplicationDecorator(this, profile);
+        final EList<StereotypeApplication> stereotypeApplications =
+                new BasicEList<StereotypeApplication>();
+        if (pad != null) {
+        	stereotypeApplications.addAll(pad.getStereotypeApplications());
+        }
         return stereotypeApplications;
     }
 
