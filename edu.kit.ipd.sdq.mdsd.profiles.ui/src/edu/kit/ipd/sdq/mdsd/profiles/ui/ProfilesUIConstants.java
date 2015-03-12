@@ -1,5 +1,15 @@
 package edu.kit.ipd.sdq.mdsd.profiles.ui;
 
+import org.apache.log4j.Logger;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.PlatformUI;
+
+import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
+
 /**
  * A utility class containing all constant ids and labels for the ui
  * contribution.
@@ -8,6 +18,8 @@ package edu.kit.ipd.sdq.mdsd.profiles.ui;
  * 
  */
 public final class ProfilesUIConstants {
+    private static final Logger LOGGER = Logger.getLogger(ProfilesUIConstants.class);
+	
     /**
      * Utility classes should not have a public or default constructor.
      */
@@ -83,4 +95,41 @@ public final class ProfilesUIConstants {
     public static String getDefaultApplyLabel(final String stereotypeName) {
         return "Apply " + stereotypeName + " stereotype";
     }
+
+
+	public static EStereotypableObject getEStereotypableObjectFromCurrentSelection() {
+		ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
+                .getSelection();
+        if (selection == null || !(selection instanceof IStructuredSelection)) {
+            LOGGER.debug("selection is null or not instance of IStructuredSelection");
+            return null;
+        }
+        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+        Object firstElement = structuredSelection.getFirstElement();
+        if (firstElement == null || !(firstElement instanceof EStereotypableObject)) {
+            if (firstElement instanceof EditPart) {
+                EditPart editPart = (EditPart) firstElement;
+                Object model = editPart.getModel();
+                if (model instanceof View) {
+                    EObject element = ((View) editPart.getModel()).getElement();
+                    if (element instanceof EStereotypableObject) {
+                        firstElement = element;
+                    } else {
+                        LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement
+                                + "' is null or not an instance of EStereotypableObject");
+                        return null;
+                    }
+                } else {
+                    LOGGER.debug("model '" + model + "' of firstElement ' " + firstElement
+                            + "' is not an instance of View");
+                    return null;
+                }
+            } else {
+                LOGGER.debug("firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
+                return null;
+            }
+        }
+        final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
+		return eStereotypableObject;
+	}
 }

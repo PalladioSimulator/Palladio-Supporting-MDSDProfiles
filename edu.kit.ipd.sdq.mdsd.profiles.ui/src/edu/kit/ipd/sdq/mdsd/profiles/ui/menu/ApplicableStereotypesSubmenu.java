@@ -8,13 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
@@ -24,6 +18,7 @@ import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
+import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 
 /**
  * @author Matthias Eisenmann
@@ -92,43 +87,11 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
     @Override
     protected IContributionItem[] getContributionItems() {
 
-        ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
-                .getSelection();
-
-        if (selection == null || !(selection instanceof IStructuredSelection)) {
-            LOGGER.debug("selection is null or not instance of IStructuredSelection");
-            return new IContributionItem[] {};
+        final EStereotypableObject eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
+        
+        if (eStereotypableObject == null) {
+        	return new IContributionItem[] {};
         }
-
-        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-
-        Object firstElement = structuredSelection.getFirstElement();
-
-        if (firstElement == null || !(firstElement instanceof EStereotypableObject)) {
-            if (firstElement instanceof EditPart) {
-                EditPart editPart = (EditPart) firstElement;
-                Object model = editPart.getModel();
-                if (model instanceof View) {
-                    EObject element = ((View) editPart.getModel()).getElement();
-                    if (element instanceof EStereotypableObject) {
-                        firstElement = element;
-                    } else {
-                        LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement
-                                + "' is null or not an instance of EStereotypableObject");
-                        return new IContributionItem[] {};
-                    }
-                } else {
-                    LOGGER.debug("model '" + model + "' of firstElement ' " + firstElement
-                            + "' is not an instance of View");
-                    return new IContributionItem[] {};
-                }
-            } else {
-                LOGGER.debug("firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
-                return new IContributionItem[] {};
-            }
-        }
-
-        final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
 
         final EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes();
 

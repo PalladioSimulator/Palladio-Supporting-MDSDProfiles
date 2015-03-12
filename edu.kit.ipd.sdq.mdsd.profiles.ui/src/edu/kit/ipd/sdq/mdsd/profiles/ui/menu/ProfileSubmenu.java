@@ -12,14 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmf.runtime.notation.Shape;
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
@@ -38,8 +34,6 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.datastructures.Pair;
  */
 
 public class ProfileSubmenu extends CompoundContributionItem {
-
-    private static final Logger LOGGER = Logger.getLogger(ApplicableStereotypesSubmenu.class.getName());
 
     static {
         /*
@@ -87,27 +81,10 @@ public class ProfileSubmenu extends CompoundContributionItem {
      */
     @Override
     protected IContributionItem[] getContributionItems() {
-
-        ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
-                .getSelection();
-
-        if (selection == null || !(selection instanceof IStructuredSelection)) {
-            LOGGER.debug("selection is null or not instance of IStructuredSelection");
-            return new IContributionItem[] {};
+        final EStereotypableObject eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
+        if (eStereotypableObject == null) {
+        	return new IContributionItem[] {};
         }
-
-        IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-
-        Object firstElement = structuredSelection.getFirstElement();
-
-        if (firstElement == null || !(firstElement instanceof EStereotypableObject)) {
-            if (firstElement instanceof Shape) {
-                LOGGER.debug("vc " + ((Shape) firstElement).getVisibleChildren());
-            }
-            LOGGER.debug("firstElement ' " + firstElement + "' is null or not an instance of EStereotypableObject");
-            return new IContributionItem[] {};
-        }
-        final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
         return getContributionItemsForSelectedElement(eStereotypableObject);
     }
 
