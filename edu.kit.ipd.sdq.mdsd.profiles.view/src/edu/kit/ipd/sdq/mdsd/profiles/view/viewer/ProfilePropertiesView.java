@@ -183,30 +183,32 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                 if (treeSelection instanceof IAdaptable) {
                     // do nothing
                 }
-                if (treeSelection.getFirstElement() instanceof EStereotypableObject
-                        && !((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
+                Object firstElement = treeSelection.getFirstElement();
+				if (firstElement instanceof EStereotypableObject) {
+					EStereotypableObject firstEStereotypableObject = (EStereotypableObject) firstElement;
                     LOGGER.info("TreeSelection: " + treeSelection);
-                    LOGGER.info(treeSelection.getFirstElement() instanceof EStereotypableObject);
-                    ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
+                    LOGGER.info(firstElement instanceof EStereotypableObject);
+                    ProfilePropertiesView.this.eStereotyped = firstEStereotypableObject;
                     LOGGER.info("eStereotyped: " + ProfilePropertiesView.this.eStereotyped);
+					boolean stereotypesApplied = firstEStereotypableObject.getAppliedStereotypes().isEmpty();
                     ProfileListMenu.createOrUpdateMenuForEachProfile(treeSelection);
-                    ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
-                    ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+                    if (!stereotypesApplied) {
+	                    ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
+	                    ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+	                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
+	                } else {
+	                    // The following two lines of code is temporary and have to out-commented if to
+	                    // work on the "load twice"-problem
+	                    // And the first selection from a resource must than be a EStereotypableObject
+	                    // WITH APLIED STEREOTYPES
+	//                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
+	//                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
+	                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
+	                    LOGGER.warn("The selected element '" + firstEStereotypableObject + "' wasn't applied any stereotypes.");
+	                }
+                } else {
                     ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                } else if (treeSelection.getFirstElement() instanceof EStereotypableObject
-                        && ((EStereotypableObject) treeSelection.getFirstElement()).getAppliedStereotypes().isEmpty()) {
-                    ProfilePropertiesView.this.eStereotyped = (EStereotypableObject) treeSelection.getFirstElement();
-                    // The following two lines of code is temporary and have to out-commented if to
-                    // work on the "load twice"-problem
-                    // And the first selection from a resource must than be a EStereotypableObject
-                    // WITH APLIED STEREOTYPES
-//                     ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
-//                     ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
-                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    LOGGER.warn("The root element wasn't applied any stereotypes.");
-                } else if (!(treeSelection.getFirstElement() instanceof EStereotypableObject)) {
-                    ProfilePropertiesView.this.tableViewer.setItemCount(0);
-                    LOGGER.error("The root element was not an EStereotypableObject.");
+                    LOGGER.error("The selected element '" + firstElement + "' was not an EStereotypableObject.");
                 }
             }
         }
