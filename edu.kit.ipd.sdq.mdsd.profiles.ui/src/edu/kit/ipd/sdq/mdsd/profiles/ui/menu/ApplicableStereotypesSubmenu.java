@@ -87,10 +87,11 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
     @Override
     protected IContributionItem[] getContributionItems() {
 
-        final EStereotypableObject eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
-        
+        final EStereotypableObject eStereotypableObject = ProfilesUIConstants
+                .getEStereotypableObjectFromCurrentSelection();
+
         if (eStereotypableObject == null) {
-        	return new IContributionItem[] {};
+            return new IContributionItem[] {};
         }
 
         final EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes();
@@ -102,7 +103,7 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
         for (int i = 0; i < items.length; i++) {
             Stereotype applicableStereotype = applicableStereotypes.get(i);
 
-            Profile profile = applicableStereotype.getProfile();
+            final Profile profile = applicableStereotype.getProfile();
 
             items[i] = createContributionItem(applicableStereotype.getName(), profile.getName());
         }

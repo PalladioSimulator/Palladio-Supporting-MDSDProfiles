@@ -53,7 +53,7 @@ public class ProfileListMenu extends CompoundContributionItem {
                 final Collection<IProfileProvider> registeredProfileProviders = IProfileRegistry.INSTANCE
                         .getRegisteredProfileProviders();
                 profileSubmenuPairs = new ArrayList<Pair<Profile, MenuManager>>(registeredProfileProviders.size());
-                IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                final IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                         .getService(IMenuService.class);
 
                 AbstractContributionFactory viewMenuAddition = new AbstractContributionFactory(
@@ -63,11 +63,11 @@ public class ProfileListMenu extends CompoundContributionItem {
                             final IContributionRoot additions) {
 
                         for (final IProfileProvider profileProvider : registeredProfileProviders) {
-                            String profileDescription = profileProvider.getProfileDescription();
-                            Profile profile = profileProvider.getProfile();
-                            MenuManager submenu = new MenuManager(profileDescription,
+                            final String profileDescription = profileProvider.getProfileDescription();
+                            final Profile profile = profileProvider.getProfile();
+                            final MenuManager submenu = new MenuManager(profileDescription,
                                     ProfilesUIConstants.PROFILE_LIST_MENU_ID);
-                            IContributionItem dynamicItem = new CompoundContributionItem(
+                            final IContributionItem dynamicItem = new CompoundContributionItem(
                                     ProfilesUIConstants.DYNAMIC_LIST_ID) {
                                 @Override
                                 protected IContributionItem[] getContributionItems() {
