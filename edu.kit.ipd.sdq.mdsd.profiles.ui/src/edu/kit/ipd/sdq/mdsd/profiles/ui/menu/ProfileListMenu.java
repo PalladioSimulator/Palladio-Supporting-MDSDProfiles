@@ -35,119 +35,101 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.datastructures.Pair;
  */
 
 public class ProfileListMenu extends CompoundContributionItem {
-	private static final Logger LOGGER = Logger.getLogger(ProfileListMenu.class);
+    private static final Logger LOGGER = Logger.getLogger(ProfileListMenu.class);
 
-    private static List<Pair<Profile,MenuManager>> profileSubmenuPairs = null;
+    private static List<Pair<Profile, MenuManager>> profileSubmenuPairs = null;
 
     /**
-     * Creates or updates a context menu for the current selection if the first
-     * element is a stereotypable eObject.
+     * Creates or updates a context menu for the current selection if the first element is a
+     * stereotypable eObject.
      * 
      * @param treeSelection
      *            the current selection
      */
-    public static void createOrUpdateMenuForEachProfile(
-            final ITreeSelection treeSelection) {
+    public static void createOrUpdateMenuForEachProfile(final ITreeSelection treeSelection) {
         Object firstElement = treeSelection.getFirstElement();
         if (firstElement instanceof EStereotypableObject) {
             if (profileSubmenuPairs == null) {
-                Collection<IProfileProvider> registeredProfileProviders =
-                        IProfileRegistry.INSTANCE
-                                .getRegisteredProfileProviders();
-            	profileSubmenuPairs = new ArrayList<Pair<Profile,MenuManager>>(registeredProfileProviders.size());
-                IMenuService menuService =
-                        (IMenuService) PlatformUI.getWorkbench()
-                                .getActiveWorkbenchWindow()
-                                .getService(IMenuService.class);
+                final Collection<IProfileProvider> registeredProfileProviders = IProfileRegistry.INSTANCE
+                        .getRegisteredProfileProviders();
+                profileSubmenuPairs = new ArrayList<Pair<Profile, MenuManager>>(registeredProfileProviders.size());
+                IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                        .getService(IMenuService.class);
 
-                AbstractContributionFactory viewMenuAddition =
-                        new AbstractContributionFactory(
-                                ProfilesUIConstants.MENU_LOCATION, null) {
-                            @Override
-                            public void createContributionItems(
-                                    final IServiceLocator serviceLocator,
-                                    final IContributionRoot additions) {
+                AbstractContributionFactory viewMenuAddition = new AbstractContributionFactory(
+                        ProfilesUIConstants.MENU_LOCATION, null) {
+                    @Override
+                    public void createContributionItems(final IServiceLocator serviceLocator,
+                            final IContributionRoot additions) {
 
-                                for (final IProfileProvider profileProvider : registeredProfileProviders) {
-                                    String profileDescription =
-                                            profileProvider
-                                                    .getProfileDescription();
-                                    Profile profile = profileProvider
-									        .getProfile();
-                                    MenuManager submenu =
-                                            new MenuManager(
-                                                    profileDescription,
-                                                    ProfilesUIConstants.PROFILE_LIST_MENU_ID);
-                                    IContributionItem dynamicItem =
-                                            new CompoundContributionItem(
-                                                    ProfilesUIConstants.DYNAMIC_LIST_ID) {
-                                                @Override
-                                                protected IContributionItem[]
-                                                        getContributionItems() {
-                                                    IContributionItem[] contributionItems =
-                                                            new IContributionItem[1];
-													ProfileSubmenu profileSubmenu =
-                                                            new ProfileSubmenu(
-                                                                    profile);
-                                                    contributionItems[0] =
-                                                            profileSubmenu;
-                                                    return contributionItems;
-                                                }
-                                                
-                                                
-                                            };
-                                    profileSubmenuPairs.add(new Pair<Profile, MenuManager>(profile, submenu));
-                                    submenu.add(dynamicItem);
-                                    updateSubmenuVisibility(submenu, profile);
-
-                                    // FIXME add a visible when clause so that
-                                    // the menu
-                                    // is only visible when an instance of
-                                    // EStereotypableObject is selected
-                                    Expression visibleWhen = new Expression() {
-										
-										@Override
-										public EvaluationResult evaluate(IEvaluationContext context)
-												throws CoreException {
-											return getSubmenuVisibility(profile);
-										}
-									};
-                                    additions
-                                            .addContributionItem(submenu, visibleWhen);
+                        for (final IProfileProvider profileProvider : registeredProfileProviders) {
+                            String profileDescription = profileProvider.getProfileDescription();
+                            Profile profile = profileProvider.getProfile();
+                            MenuManager submenu = new MenuManager(profileDescription,
+                                    ProfilesUIConstants.PROFILE_LIST_MENU_ID);
+                            IContributionItem dynamicItem = new CompoundContributionItem(
+                                    ProfilesUIConstants.DYNAMIC_LIST_ID) {
+                                @Override
+                                protected IContributionItem[] getContributionItems() {
+                                    IContributionItem[] contributionItems = new IContributionItem[1];
+                                    ProfileSubmenu profileSubmenu = new ProfileSubmenu(profile);
+                                    contributionItems[0] = profileSubmenu;
+                                    return contributionItems;
                                 }
-                            }
-                        };
+
+                            };
+                            profileSubmenuPairs.add(new Pair<Profile, MenuManager>(profile, submenu));
+                            submenu.add(dynamicItem);
+                            updateSubmenuVisibility(submenu, profile);
+
+                            // FIXME add a visible when clause so that
+                            // the menu
+                            // is only visible when an instance of
+                            // EStereotypableObject is selected
+                            Expression visibleWhen = new Expression() {
+
+                                @Override
+                                public EvaluationResult evaluate(IEvaluationContext context) throws CoreException {
+                                    return getSubmenuVisibility(profile);
+                                }
+                            };
+                            additions.addContributionItem(submenu, visibleWhen);
+                        }
+                    }
+                };
                 menuService.addContributionFactory(viewMenuAddition);
             } else {
-            	for (Pair<Profile,MenuManager> profileSubmenuPair : profileSubmenuPairs) {
-            		Profile profile = profileSubmenuPair.getFirst();
-            		MenuManager submenu = profileSubmenuPair.getSecond();
-            		updateSubmenuVisibility(submenu, profile);
-            	}
+                for (Pair<Profile, MenuManager> profileSubmenuPair : profileSubmenuPairs) {
+                    Profile profile = profileSubmenuPair.getFirst();
+                    MenuManager submenu = profileSubmenuPair.getSecond();
+                    updateSubmenuVisibility(submenu, profile);
+                }
             }
         }
 
     }
-    
-	private static void updateSubmenuVisibility(MenuManager submenu, Profile profile) {
-		EvaluationResult shallBeVisible = getSubmenuVisibility(profile);
-		boolean newVisibility = EvaluationResult.TRUE.equals(shallBeVisible);
-		submenu.setVisible(newVisibility);
-	}
-    
+
+    private static void updateSubmenuVisibility(MenuManager submenu, Profile profile) {
+        EvaluationResult shallBeVisible = getSubmenuVisibility(profile);
+        boolean newVisibility = EvaluationResult.TRUE.equals(shallBeVisible);
+        submenu.setVisible(newVisibility);
+    }
+
     private static EvaluationResult getSubmenuVisibility(Profile profile) {
-    	EStereotypableObject eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
-		if (eStereotypableObject != null) {
-			EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes(profile);
-			EList<StereotypeApplication> stereotypeApplications = eStereotypableObject.getStereotypeApplications(profile);
-			boolean applicableOrApplied = !applicableStereotypes.isEmpty() || !stereotypeApplications.isEmpty();
-			if (applicableOrApplied) {
-				LOGGER.error("asd applicableStereotypes" + applicableStereotypes + " stereotypeApplications " + stereotypeApplications);
-				return EvaluationResult.TRUE;
-			}
-		}
-		LOGGER.error("visible false");
-		return EvaluationResult.FALSE;
+        EStereotypableObject eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
+        if (eStereotypableObject != null) {
+            EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes(profile);
+            EList<StereotypeApplication> stereotypeApplications = eStereotypableObject
+                    .getStereotypeApplications(profile);
+            boolean applicableOrApplied = !applicableStereotypes.isEmpty() || !stereotypeApplications.isEmpty();
+            if (applicableOrApplied) {
+                LOGGER.error("asd applicableStereotypes" + applicableStereotypes + " stereotypeApplications "
+                        + stereotypeApplications);
+                return EvaluationResult.TRUE;
+            }
+        }
+        LOGGER.error("visible false");
+        return EvaluationResult.FALSE;
     }
 
     @Override
