@@ -269,7 +269,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     private final IResourceChangeListener changeListener = new IResourceChangeListener() {
         @Override
         public void resourceChanged(final IResourceChangeEvent event) {
-            LOGGER.error("Resource change test!");
+            LOGGER.debug("Resource change test!");
             if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
                 final IResource resource = event.getResource();
                 if (resource == null) {
