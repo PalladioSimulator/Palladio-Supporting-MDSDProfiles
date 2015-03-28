@@ -128,7 +128,7 @@ public class ProfileListMenu extends CompoundContributionItem {
                 return EvaluationResult.TRUE;
             }
         }
-        LOGGER.error("visible false");
+        LOGGER.debug("visible false");
         return EvaluationResult.FALSE;
     }
 
