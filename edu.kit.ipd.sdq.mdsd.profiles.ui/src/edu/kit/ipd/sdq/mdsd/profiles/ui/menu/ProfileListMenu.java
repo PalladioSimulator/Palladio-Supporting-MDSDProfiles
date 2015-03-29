@@ -123,7 +123,7 @@ public class ProfileListMenu extends CompoundContributionItem {
                     .getStereotypeApplications(profile);
             boolean applicableOrApplied = !applicableStereotypes.isEmpty() || !stereotypeApplications.isEmpty();
             if (applicableOrApplied) {
-                LOGGER.error("asd applicableStereotypes" + applicableStereotypes + " stereotypeApplications "
+                LOGGER.debug("asd applicableStereotypes" + applicableStereotypes + " stereotypeApplications "
                         + stereotypeApplications);
                 return EvaluationResult.TRUE;
             }
