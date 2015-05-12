@@ -529,7 +529,13 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
 
     @Override
     public void update(final IFile file) {
-        addProfileApplicationFile(file);
+        if (file.exists()) {
+            addProfileApplicationFile(file);
+        } else {
+            if (profileApplicationFiles.contains(file)) {
+                profileApplicationFiles.remove(file);
+            }
+        }
     }
 
     /**

@@ -101,10 +101,13 @@ public class ProfileProjectBuilder extends IncrementalProjectBuilder implements 
                 break;
             case IResourceDelta.REMOVED:
                 // handle removed resource
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
-                            + " | method=ProfileProjectResourceDeltaVisitor" + ".visit | kind=removed | resource="
-                            + resource.getFullPath());
+                if (isProfileApplicationFile(resource)) {
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("project=" + ProfileProjectBuilder.this.getProject().getName()
+                                + " | method=ProfileProjectResourceDeltaVisitor" + ".visit | kind=removed | resource="
+                                + resource.getFullPath());
+                    }
+                    notifyObservers((IFile) resource);
                 }
                 break;
             case IResourceDelta.CHANGED:
