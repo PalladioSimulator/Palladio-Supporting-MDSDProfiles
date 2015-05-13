@@ -6,6 +6,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.sirius.viewpoint.DSemanticDecorator;
 import org.eclipse.ui.PlatformUI;
 
 import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
@@ -97,6 +98,10 @@ public final class ProfilesUIConstants {
     }
 
 
+    /**
+     * Gets the currently selected {@link EStereotypableObject} if possible. Otherwise returns null.
+     * @return selected stereotypable object
+     */
 	public static EStereotypableObject getEStereotypableObjectFromCurrentSelection() {
 		ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
                 .getSelection();
@@ -114,6 +119,8 @@ public final class ProfilesUIConstants {
                     EObject element = ((View) editPart.getModel()).getElement();
                     if (element instanceof EStereotypableObject) {
                         firstElement = element;
+                    } else if (element instanceof DSemanticDecorator && ((DSemanticDecorator) element).getTarget() instanceof EStereotypableObject) {
+                    	firstElement = (EStereotypableObject) ((DSemanticDecorator) element).getTarget();
                     } else {
                         LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement
                                 + "' is null or not an instance of EStereotypableObject");
