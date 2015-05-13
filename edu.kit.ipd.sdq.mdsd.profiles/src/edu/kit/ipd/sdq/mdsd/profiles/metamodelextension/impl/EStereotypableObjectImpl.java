@@ -269,6 +269,9 @@ public class EStereotypableObjectImpl extends EObjectImpl implements
 			final StereotypeApplication stereotypeApplication) {
 		List<EStructuralFeature> taggedStructuralFeatures = FeatureGetterUtility.getTaggedStructuralFeatures(stereotypeApplication);
 		for (EStructuralFeature taggedFeature : taggedStructuralFeatures) {
+			if (!taggedFeature.isChangeable())
+				continue;
+			
 			Object value = null;
 			if (taggedFeature instanceof EAttribute) {
 				EAttribute attribute = (EAttribute) taggedFeature;
