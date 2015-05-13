@@ -204,7 +204,7 @@ public final class ProfileApplicationFileRegistryImpl implements ProfileApplicat
      *            the pa file
      */
     private void addProfileApplicationFile(final IFile profileApplicationFile) {
-        if (!profileApplicationFiles.contains(profileApplicationFile)) {
+        if (profileApplicationFile != null && !profileApplicationFiles.contains(profileApplicationFile)) {
             profileApplicationFiles.add(profileApplicationFile);
             LOGGER.debug("method=addProfileApplicationFile | profileApplicationFile="
                     + profileApplicationFile.getFullPath());
