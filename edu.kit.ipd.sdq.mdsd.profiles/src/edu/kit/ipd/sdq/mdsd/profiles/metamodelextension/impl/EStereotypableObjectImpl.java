@@ -432,9 +432,7 @@ public class EStereotypableObjectImpl extends EObjectImpl implements
         }
 
         for (final ProfileApplicationDecorator profileApplicationDecorator : getProfileApplicationDecorators()) {
-            if (profileApplicationDecorator.isDirty()
-                    && !profileApplicationDecorator.getStereotypeApplications(
-                            this).isEmpty()) {
+            if (profileApplicationDecorator.isDirty()) {
                 try {
                     profileApplicationDecorator.save();
                 } catch (IOException e) {
