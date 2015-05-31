@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author Matthias Eisenmann
- *
- */
-package edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.impl;
