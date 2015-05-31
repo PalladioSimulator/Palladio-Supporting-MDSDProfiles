@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MDSD Profiles Tests
-Bundle-SymbolicName: org.palladiosimulator.mdsdprofiles.tests;singleton:=true
+Bundle-SymbolicName: org.palladiosimulator.pcm.profiles.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: palladiosimulator.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

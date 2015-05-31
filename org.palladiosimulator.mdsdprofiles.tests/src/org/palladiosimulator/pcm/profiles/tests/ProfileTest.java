@@ -1,4 +1,4 @@
-package org.palladiosimulator.mdsdprofiles.tests;
+package org.palladiosimulator.pcm.profiles.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

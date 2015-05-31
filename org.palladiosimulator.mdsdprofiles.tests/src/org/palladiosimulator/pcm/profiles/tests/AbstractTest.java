@@ -1,4 +1,4 @@
-package org.palladiosimulator.mdsdprofiles.tests;
+package org.palladiosimulator.pcm.profiles.tests;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -21,7 +21,7 @@ public abstract class AbstractTest {
 
     private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
     private static final String FILE_URI = "file://" + SYSTEM_TEMP + "/Palladio/ProfileTest.repository";
-    private static final String PLUGIN_URI = "platform:/plugin/org.palladiosimulator.mdsdprofiles.tests/model/default.repository";
+    private static final String PLUGIN_URI = "platform:/plugin/org.palladiosimulator.pcm.profiles.tests/model/default.repository";
     private static final String REPOSITORY_ID = "_Mh6NQAOdEeW7RJF7nLqWPA";
     private static final String ORIGINAL_REPOSITORY_URI = PLUGIN_URI + "#" + REPOSITORY_ID;
     private static final String STORAGE_REPOSITORY_URI = FILE_URI + "#" + REPOSITORY_ID;
