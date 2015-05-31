@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mdsdprofiles" nsURI="http://palladiosimulator.org/MDSDProfiles/1.0"
+    nsPrefix="org.palladiosimulator">
+  <eClassifiers xsi:type="ecore:EClass" name="ProfileableElement" eSuperTypes="#//StereotypableElement">
+    <eOperations name="applyProfile">
+      <eParameters name="profile" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
+    </eOperations>
+    <eOperations name="updateProfileApplications" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="profilesToBeApplied" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
+    </eOperations>
+    <eOperations name="hasProfileApplication" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getProfileApplication" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofileapplication.ecore#//ProfileApplication"/>
+    <eOperations name="getApplicableProfiles" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
+    <eOperations name="getAppliedProfiles" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
+    <eOperations name="unapplyProfile">
+      <eParameters name="profile" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StereotypableElement" abstract="true"
+      eSuperTypes="../../org.eclipse.emf.ecore/model/Ecore.ecore#//EModelElement">
+    <eOperations name="applyStereotype">
+      <eParameters name="stereotype" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    </eOperations>
+    <eOperations name="applyStereotype">
+      <eParameters name="stereotypeName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="updateStereotypeApplications" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="stereotypesToBeApplied" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    </eOperations>
+    <eOperations name="isStereotypeApplicable" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="stereotype" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    </eOperations>
+    <eOperations name="isStereotypeApplicable" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="stereotypeName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="isStereotypeApplied" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="stereotype" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    </eOperations>
+    <eOperations name="isStereotypeApplied" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="stereotypeName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="hasStereotypeApplications" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="getApplicableStereotypes" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    <eOperations name="getApplicableStereotypes" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype">
+      <eParameters name="profile" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
+    </eOperations>
+    <eOperations name="getApplicableStereotypes" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype">
+      <eParameters name="stereotypeName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getStereotypeApplications" ordered="false" upperBound="-1"
+        eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofileapplication.ecore#//StereotypeApplication"/>
+    <eOperations name="getStereotypeApplications" ordered="false" upperBound="-1"
+        eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofileapplication.ecore#//StereotypeApplication">
+      <eParameters name="profile" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
+    </eOperations>
+    <eOperations name="getStereotypeApplications" ordered="false" upperBound="-1"
+        eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofileapplication.ecore#//StereotypeApplication">
+      <eParameters name="stereotypeName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getStereotypeApplication" ordered="false" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofileapplication.ecore#//StereotypeApplication">
+      <eParameters name="stereotype" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    </eOperations>
+    <eOperations name="getAppliedStereotypes" ordered="false" upperBound="-1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    <eOperations name="unapplyStereotype">
+      <eParameters name="stereotype" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
+    </eOperations>
+    <eOperations name="unapplyStereotype">
+      <eParameters name="stereotypeName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="profileableElement" eType="#//ProfileableElement"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+  </eClassifiers>
+</ecore:EPackage>

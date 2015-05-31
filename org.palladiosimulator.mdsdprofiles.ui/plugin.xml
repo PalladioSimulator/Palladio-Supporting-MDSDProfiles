@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.palladiosimulator.mdsdprofiles.ui.commands"
+         name="MDSD Profile Commands"
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.palladiosimulator.mdsdprofiles.ui.handlers.ProfileApplyUnapplyHandler"
+            id="org.palladiosimulator.mdsdprofiles.ui.commands.ApplyUnapplyProfiles"
+            name="Apply/Unapply Profiles">
+      </command>
+      <command
+            defaultHandler="org.palladiosimulator.mdsdprofiles.ui.handlers.StereotypeApplyUnapplyHandler"
+            id="org.palladiosimulator.mdsdprofiles.ui.commands.ApplyUnapplyStereotypes"
+            name="Apply/Unapply Stereotypes">
+      </command>
+   </extension>
+   <extension
+         id="org.palladiosimulator.mdsdprofiles.ui.popup"
+         name="Popup (right-click) menu for profiles"
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <separator
+               name="org.palladiosimulator.mdsdprofiles.ui.separator.before"
+               visible="false">
+         </separator>
+         <menu
+               id="org.palladiosimulator.mdsdprofiles.ui.popup.profiles"
+               label="MDSD Profiles...">
+            <command
+                  commandId="org.palladiosimulator.mdsdprofiles.ui.commands.ApplyUnapplyProfiles"
+                  label="Apply/Unapply Profiles"
+                  style="push"
+                  tooltip="Configure profile applications">
+               <visibleWhen
+                     checkEnabled="false">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="org.palladiosimulator.mdsdprofiles.ProfileableElement">
+                     </instanceof>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.palladiosimulator.mdsdprofiles.ui.commands.ApplyUnapplyStereotypes"
+                  label="Apply/Unapply Stereotypes"
+                  style="push"
+                  tooltip="Configure stereotype applications">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="org.palladiosimulator.mdsdprofiles.StereotypableElement">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </menu>
+         <separator
+               name="org.palladiosimulator.mdsdprofiles.ui.separator.after"
+               visible="false">
+         </separator>
+      </menuContribution>
+   </extension>
+</plugin>
