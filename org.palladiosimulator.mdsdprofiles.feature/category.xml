@@ -1,39 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles" version="1.0.0.qualifier">
+   <bundle id="org.palladiosimulator.mdsdprofiles" version="1.0.0.qualifier">
       <category name="Profiles"/>
    </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.builder" version="1.0.0.qualifier">
-      <category name="Profiles"/>
-   </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.nature" version="1.0.0.qualifier">
-      <category name="Profiles"/>
-   </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.ui" version="1.0.0.qualifier">
-      <category name="Profiles"/>
-   </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.util" version="1.0.0.qualifier">
-      <category name="Profiles"/>
-   </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.view" version="1.0.0.qualifier">
-      <category name="Profiles"/>
-   </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model" version="1.0.0.qualifier">
+   <bundle id="org.palladiosimulator.mdsdprofiles.examples.library.model" version="1.0.0.qualifier">
       <category name="Examples"/>
    </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model.edit" version="1.0.0.qualifier">
+   <bundle id="org.palladiosimulator.mdsdprofiles.examples.library.model.edit" version="1.0.0.qualifier">
       <category name="Examples"/>
    </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model.editor" version="1.0.0.qualifier">
+   <bundle id="org.palladiosimulator.mdsdprofiles.examples.library.model.editor" version="1.0.0.qualifier">
       <category name="Examples"/>
    </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.model.tests" version="1.0.0.qualifier">
+   <bundle id="org.palladiosimulator.mdsdprofiles.examples.library.model.tests" version="1.0.0.qualifier">
       <category name="Examples"/>
    </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.examples.library.profile" version="1.0.0.qualifier">
+   <bundle id="org.palladiosimulator.mdsdprofiles.examples.library.profile" version="1.0.0.qualifier">
       <category name="Examples"/>
    </bundle>
-   <bundle id="edu.kit.ipd.sdq.mdsd.profiles.testprofile" version="1.0.0.qualifier">
+   <bundle id="org.palladiosimulator.mdsdprofiles.testprofile" version="1.0.0.qualifier">
       <category name="Examples"/>
    </bundle>
    <category-def name="Profiles" label="Profiles"/>
