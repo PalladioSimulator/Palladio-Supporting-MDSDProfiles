@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="edu.kit.ipd.sdq.mdsd.profiles.buckminster"
+      id="org.palladiosimulator.mdsdprofiles.buckminster"
       label="MDSD Profiles"
       version="1.0.0.qualifier"
       provider-name="palladiosimulator.org">
@@ -10,7 +10,7 @@
          version="0.0.0"/>
 
    <includes
-         id="edu.kit.ipd.sdq.mdsd.profiles.feature"
+         id="org.palladiosimulator.mdsdprofiles.feature"
          version="0.0.0"/>
 
    <plugin
