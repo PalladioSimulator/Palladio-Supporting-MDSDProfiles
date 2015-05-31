@@ -1,11 +1,7 @@
 package edu.kit.ipd.sdq.mdsd.profiles.ui.commands;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.modelversioning.emfprofile.Stereotype;
-import org.modelversioning.emfprofileapplication.StereotypeApplication;
-
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
 /**
  * A command for the removal of a single stereotype application.
@@ -13,11 +9,7 @@ import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
  * @author Max Kramer
  * 
  */
-public class RemoveStereotypeApplicationCommand extends
-        AbstractStereotypeCommand {
-
-    private StereotypeApplication stereotypeApplication;
-
+public class RemoveStereotypeApplicationCommand extends AbstractStereotypeCommand {
     /**
      * Default constructor for the command.
      * 
@@ -28,42 +20,19 @@ public class RemoveStereotypeApplicationCommand extends
      * @param stereotypeApplication
      *            the stereotype application to be removed
      */
-    public RemoveStereotypeApplicationCommand(
-            final EStereotypableObject eStereotypableObject,
-            final Stereotype stereotype,
-            final StereotypeApplication stereotypeApplication) {
+    public RemoveStereotypeApplicationCommand(final StereotypableElement eStereotypableObject,
+            final Stereotype stereotype) {
         super("Remove Stereotype Application", eStereotypableObject, stereotype);
-        this.stereotypeApplication = stereotypeApplication;
     }
 
     @Override
     public void execute() {
-        this.eStereotypableObject
-                .removeStereotypeApplication(this.stereotypeApplication);
+        this.eStereotypableObject.unapplyStereotype(this.stereotype);
     }
 
     @Override
     public void undo() {
-        // undo removeStereoapplication by using the values of the removed
-        // application
-        StereotypeApplication oldStereotypeApplication =
-                this.stereotypeApplication;
-        StereotypeApplication newStereotypeApplication =
-                this.eStereotypableObject.applyStereotype(stereotype);
-        Stereotype currentStereotype = oldStereotypeApplication.getStereotype();
-        EList<EStructuralFeature> structuralFeatures =
-                currentStereotype.getEAllStructuralFeatures();
-        for (EStructuralFeature structuralFeature : structuralFeatures) {
-            if (!"appliedTo".equals(structuralFeature.getName())
-                    && !"profileApplication"
-                            .equals(structuralFeature.getName())
-                    && !"extension".equals(structuralFeature.getName())) {
-                Object oldValue =
-                        oldStereotypeApplication.eGet(structuralFeature);
-                newStereotypeApplication.eSet(structuralFeature, oldValue);
-            }
-        }
-        this.stereotypeApplication = newStereotypeApplication;
+        this.eStereotypableObject.applyStereotype(stereotype);
     }
 
 }

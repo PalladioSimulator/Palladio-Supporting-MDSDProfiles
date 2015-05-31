@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.modelversioning.emfprofile.application.registry.ui.providers.ProfileProviderContentAdapter;
 
+// FIXME for extending this super class, the external project needs to export it. Ensure that.
 public class EProfileProviderContentAdapter extends ProfileProviderContentAdapter implements IResourceChangeListener {
 
     private final AdapterFactoryContentProvider provider;

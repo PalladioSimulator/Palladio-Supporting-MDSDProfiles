@@ -12,8 +12,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.commands.RemoveStereotypeApplicationCommand;
 
 /**
@@ -42,11 +42,11 @@ public class RemoveStereotypeAction extends Action {
                 .getFirstElement();
         LOGGER.info("To be removed stereotype application is: " + sa.toString());
         if (sa != null) {
-            final EStereotypableObject temp = (EStereotypableObject) sa.getAppliedTo();
+            final StereotypableElement temp = (StereotypableElement) sa.getAppliedTo();
             LOGGER.info("Temp is: " + temp);
-            final Stereotype stereotype = sa.getStereotype();
+            final Stereotype stereotype = sa.getExtension().getSource();
             LOGGER.info("Stereotype is: " + stereotype);
-            final Command removeStereotypeCommand = new RemoveStereotypeApplicationCommand(temp, stereotype, sa);
+            final Command removeStereotypeCommand = new RemoveStereotypeApplicationCommand(temp, stereotype);
             ((IEditingDomainProvider) editorPart).getEditingDomain().getCommandStack().execute(removeStereotypeCommand);
             LOGGER.info("Following stereotype is removed " + sa.toString() + " from " + temp.toString());
             this.treeViewer.refresh();

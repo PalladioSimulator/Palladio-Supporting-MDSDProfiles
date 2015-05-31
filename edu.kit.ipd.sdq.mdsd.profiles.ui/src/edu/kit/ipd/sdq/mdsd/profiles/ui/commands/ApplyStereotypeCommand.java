@@ -4,18 +4,13 @@
 package edu.kit.ipd.sdq.mdsd.profiles.ui.commands;
 
 import org.modelversioning.emfprofile.Stereotype;
-import org.modelversioning.emfprofileapplication.StereotypeApplication;
-
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
 /**
  * @author Matthias Eisenmann, Max Kramer
  * 
  */
 public class ApplyStereotypeCommand extends AbstractStereotypeCommand {
-
-    // is set after execution was successful
-    private StereotypeApplication stereotypeApplication;
 
     /**
      * 
@@ -25,7 +20,7 @@ public class ApplyStereotypeCommand extends AbstractStereotypeCommand {
      * @param stereotype
      *            The stereotype to be applied.
      */
-    public ApplyStereotypeCommand(final EStereotypableObject eStereotypableObject, final Stereotype stereotype) {
+    public ApplyStereotypeCommand(final StereotypableElement eStereotypableObject, final Stereotype stereotype) {
         super("Apply Stereotype", eStereotypableObject, stereotype);
     }
 
@@ -36,12 +31,12 @@ public class ApplyStereotypeCommand extends AbstractStereotypeCommand {
      */
     @Override
     public void execute() {
-        this.stereotypeApplication = this.eStereotypableObject.applyStereotype(this.stereotype);
+        this.eStereotypableObject.applyStereotype(this.stereotype);
     }
 
     @Override
     public void undo() {
-        this.eStereotypableObject.removeStereotypeApplication(this.stereotypeApplication);
+        this.eStereotypableObject.unapplyStereotype(this.stereotype);
     }
 
 }

@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension point="org.eclipse.ui.menus">
-      <menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu">
-         <command
-               commandId="edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.toggleNatureCommand"
-               label="Add/Remove Profile Project Nature"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activeMenuSelection">
-                  <iterate
-                        ifEmpty="false"
-                        operator="or">
-                     <adapt
-                           type="org.eclipse.core.resources.IProject">
-                     </adapt>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-   </extension>
-   <extension point="org.eclipse.ui.commands">
-      <command defaultHandler="edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.ToggleNatureHandler" id="edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.toggleNatureCommand" name="Toggle Profile Project Nature">
-      </command>
-   </extension>
-
    <extension point="org.eclipse.ui.commands">
       <command defaultHandler="edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.ApplyStereotypeHandler" id="edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand" name="Apply Stereotype">
          <commandParameter
@@ -78,7 +51,7 @@
                      ifEmpty="false"
                      operator="or">
                      <adapt
-                        type="edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject">
+                        type="org.palladiosimulator.mdsdprofiles.StereotypableElement">
                      </adapt>
                   </iterate>
                </with>

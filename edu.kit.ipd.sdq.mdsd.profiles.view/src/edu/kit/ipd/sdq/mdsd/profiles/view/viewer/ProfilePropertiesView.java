@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.mdsd.profiles.view.viewer;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
@@ -84,16 +83,13 @@ import org.modelversioning.emfprofileapplication.ProfileApplication;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 import org.modelversioning.emfprofileapplication.impl.StereotypeApplicationImpl;
 import org.modelversioning.emfprofileapplication.provider.EMFProfileApplicationItemProviderAdapterFactory;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
-import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.menu.ProfileListMenu;
 import edu.kit.ipd.sdq.mdsd.profiles.view.action.ClearAction;
 import edu.kit.ipd.sdq.mdsd.profiles.view.action.RemoveStereotypeAction;
 import edu.kit.ipd.sdq.mdsd.profiles.view.databinding.ChangedListener;
 import edu.kit.ipd.sdq.mdsd.profiles.view.databinding.TaggedValueEditingSupport;
-import edu.kit.ipd.sdq.mdsd.profiles.view.observer.EProfileApplicationLoader;
-import edu.kit.ipd.sdq.mdsd.profiles.view.observer.EStereotypedEditorObserver;
 import edu.kit.ipd.sdq.mdsd.profiles.view.utility.EObjectSorter;
 
 /**
@@ -112,7 +108,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
     private PropertySheetPage propertySheetPage;
 
-    private DrillDownAdapter drillDownAdapter;
     private static LocalResourceManager resourceManager;
     private static ComposedAdapterFactory adapterFactory;
 
@@ -147,15 +142,13 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     String eStructuralFeatureName_extension = "extension";
     String eStructuralFeatureName_profileApplication = "profileApplication";
 
-    EProfileApplicationLoader loader = new EProfileApplicationLoader();
     IAdapterManager manager = Platform.getAdapterManager();
 
     private final IObservableValue master = new WritableValue();
 
-    private List<IObservableValue> values;
     protected EStructuralFeature attr;
 
-    private EStereotypableObject eStereotyped;
+    private StereotypableElement eStereotyped;
 
     private RemoveStereotypeAction removeStereotypeAction;
     private ClearAction clearAction;
@@ -167,8 +160,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      * EObject, which should be a EStereotypableObject.
      */
     private final ISelectionListener listener = new ISelectionListener() {
-
-        private EStereotypableObject localEStereotyped;
 
         @Override
         public void selectionChanged(IWorkbenchPart sourcepart, ISelection selection) {
@@ -185,16 +176,15 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
                     return;
                 }
 
-                if (firstElement instanceof EStereotypableObject) {
-                    EStereotypableObject firstEStereotypableObject = (EStereotypableObject) firstElement;
+                if (firstElement instanceof StereotypableElement) {
+                    StereotypableElement firstEStereotypableObject = (StereotypableElement) firstElement;
                     LOGGER.debug("TreeSelection: " + treeSelection);
                     LOGGER.debug("true");
                     ProfilePropertiesView.this.eStereotyped = firstEStereotypableObject;
                     LOGGER.debug("eStereotyped: " + ProfilePropertiesView.this.eStereotyped);
-                    boolean stereotypesApplied = firstEStereotypableObject.getAppliedStereotypes().isEmpty();
+                    boolean stereotypesApplied = firstEStereotypableObject.getStereotypeApplications().isEmpty();
                     ProfileListMenu.createOrUpdateMenuForEachProfile(treeSelection);
                     if (!stereotypesApplied) {
-                        ProfilePropertiesView.this.callPerformObservation(ProfilePropertiesView.this.eStereotyped);
                         ProfilePropertiesView.this.eRefreshViewer(ProfilePropertiesView.this.eStereotyped);
                         ProfilePropertiesView.this.tableViewer.setItemCount(0);
                     } else {
@@ -288,47 +278,17 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
     };
 
     /**
-     * The method is called by the registered listener for -almost- every ITreeSelection. It
-     * initializes the Loader, which then looks to StereotypeApplicationFileRegistry.
-     * 
-     * @param eStereotypableObject
-     */
-    private Collection<EStereotypableObject> callPerformObservation(final EStereotypableObject eStereotypableObject) {
-        LOGGER.info("Observation beginns.");
-        // List of estereotyped objects
-        Collection<EStereotypableObject> temp = this.loader.performObservation(eStereotypableObject);
-        if (temp.isEmpty()) {
-            LOGGER.warn("Couldn't perform observation.");
-            return null;
-        } else {
-            LOGGER.info("Observation and refreshments performed completely.");
-            return temp;
-        }
-    }
-
-    /**
      * Complete refresh of the viewer.
      */
-    private void eRefreshViewer(final EStereotypableObject eStereotypableObject) {
+    private void eRefreshViewer(final StereotypableElement eStereotypableObject) {
         if (this.treeViewer == null || this.treeViewer.getTree().isDisposed()) {
             return;
         }
-        final EProfileApplicationLoader tempLoader = loader;
         this.treeViewer.getTree().getDisplay().asyncExec(new Runnable() {
             @Override
             public void run() {
                 if (ProfilePropertiesView.this.treeViewer.getInput().equals(Collections.emptyList())) {
-                    ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
-                            .getAllExistingProfileApplicationDecorators(eStereotypableObject));
-                } else if (ProfilePropertiesView.this.treeViewer.getInput().equals(
-                        tempLoader.getProfileApplicationDecorator(eStereotypableObject))) {
-                    ProfilePropertiesView.this.treeViewer.setInput(ProfileApplicationFileRegistry.INSTANCE
-                            .getAllExistingProfileApplicationDecorators(eStereotypableObject));
-                    ;
-                    ProfilePropertiesView.this.treeViewer.refresh();
-                    ProfilePropertiesView.this.treeViewer.expandToLevel(2);
-                    ProfilePropertiesView.this.tableViewer.setItemCount(0); // Workaround for
-                                                                            // tableViewer.refresh();
+                    ProfilePropertiesView.this.treeViewer.setInput(eStereotypableObject.getStereotypeApplications());
                 }
             }
         });
@@ -359,7 +319,7 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
 
     private void createTreeViewer(final Composite parent) {
         this.treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-        this.drillDownAdapter = new DrillDownAdapter(this.treeViewer);
+        new DrillDownAdapter(this.treeViewer);
 
         this.treeViewer.setLabelProvider(new ProfileProviderLabelAdapter(getAdapterFactory()));
         // Using our own content adapter to support an IResourceChangeListener
@@ -373,10 +333,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
         ProfilePropertiesView.resourceManager = new LocalResourceManager(JFaceResources.getResources());
         this.treeViewer.setUseHashlookup(true);
         this.treeViewer.setInput(Collections.emptyList());
-
-        // Active editor sets tree viewer from outside
-        // ActiveEditorObserver.INSTANCE.setViewer(treeViewer);
-        EStereotypedEditorObserver.getActiveEditorObserver().setViewer(this.treeViewer);
 
         new AdapterFactoryTreeEditor(this.treeViewer.getTree(), adapterFactory);
 
@@ -668,7 +624,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      */
     @Override
     public void dispose() {
-        EStereotypedEditorObserver.getActiveEditorObserver().cleanUp();
 
         if (this.propertySheetPage != null) {
             this.propertySheetPage.dispose();
@@ -780,7 +735,6 @@ public class ProfilePropertiesView extends ViewPart implements Listener, IEditin
      *            the values to set
      */
     public void setValues(final List<IObservableValue> values) {
-        this.values = values;
     }
 
     /**

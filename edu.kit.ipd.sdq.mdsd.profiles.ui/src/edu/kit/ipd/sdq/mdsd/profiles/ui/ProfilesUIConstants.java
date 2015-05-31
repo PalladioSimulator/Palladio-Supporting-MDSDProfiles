@@ -8,19 +8,17 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.viewpoint.DSemanticDecorator;
 import org.eclipse.ui.PlatformUI;
-
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
 /**
- * A utility class containing all constant ids and labels for the ui
- * contribution.
+ * A utility class containing all constant ids and labels for the ui contribution.
  * 
  * @author Matthias Eisenmann
  * 
  */
 public final class ProfilesUIConstants {
     private static final Logger LOGGER = Logger.getLogger(ProfilesUIConstants.class);
-	
+
     /**
      * Utility classes should not have a public or default constructor.
      */
@@ -28,54 +26,39 @@ public final class ProfilesUIConstants {
         // empty
     }
 
-    public static final String APPLY_STEREO_PARAM_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
-    public static final String APPLY_PROFILE_PARAM_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
+    public static final String APPLY_STEREO_PARAM_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
+    public static final String APPLY_PROFILE_PARAM_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
     public static final String APPLY_ACTION_NAME = "application";
 
-    public static final String UNAPPLY_STEREO_PARAM_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.stereotype";
-    public static final String UNAPPLY_PROFILE_PARAM_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.profile";
+    public static final String UNAPPLY_STEREO_PARAM_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.stereotype";
+    public static final String UNAPPLY_PROFILE_PARAM_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.profile";
     public static final String UNAPPLY_ACTION_NAME = "removal";
 
-    public static final String MENU_LOCATION =
-            "popup:org.eclipse.ui.popup.any?after=additions";
-    public static final String PROFILE_LIST_MENU_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.menu.profilelistmenu";
-    public static final String DYNAMIC_LIST_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.menu.dynamicprofilelistmenu";
+    public static final String MENU_LOCATION = "popup:org.eclipse.ui.popup.any?after=additions";
+    public static final String PROFILE_LIST_MENU_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.menu.profilelistmenu";
+    public static final String DYNAMIC_LIST_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.menu.dynamicprofilelistmenu";
     /**
      * This command id is also used in plugin.xml.
      */
-    public static final String APPLY_COMMAND_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand";
-    public static final String UNAPPLY_COMMAND_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand";
+    public static final String APPLY_COMMAND_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand";
+    public static final String UNAPPLY_COMMAND_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand";
     /**
      * This stereotype command parameter id is also used in plugin.xml.
      */
-    public static final String APPLY_STEREOTYPE_PARAMETER_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
-    public static final String UNAPPLY_STEREOTYPE_PARAMETER_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.stereotype";
+    public static final String APPLY_STEREOTYPE_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.stereotype";
+    public static final String UNAPPLY_STEREOTYPE_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.stereotype";
     /**
      * This profile command parameter id is also used in plugin.xml.
      */
-    public static final String APPLY_PROFILE_PARAMETER_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
-    public static final String UNAPPLY_PROFILE_PARAMETER_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.profile";
-    public static final String CUSTOMCOMMANDLABEL_EXT_PT_ID =
-            "edu.kit.ipd.sdq.mdsd.profiles.ui.customcommandlabel";
+    public static final String APPLY_PROFILE_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.applyStereotypeCommand.parameter.profile";
+    public static final String UNAPPLY_PROFILE_PARAMETER_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.handlers.unapplyStereotypeCommand.parameter.profile";
+    public static final String CUSTOMCOMMANDLABEL_EXT_PT_ID = "edu.kit.ipd.sdq.mdsd.profiles.ui.customcommandlabel";
     public static final String STEREOTYPE_NAME_ATTRIBUTE = "stereotype_name";
     public static final String APPLY_LABEL_ATTR = "apply_label";
     public static final String UNAPPLY_LABEL_ATTR = "unapply_label";
 
     /**
-     * Return the default label for the "unapply stereotype" action for the
-     * given stereotype name.
+     * Return the default label for the "unapply stereotype" action for the given stereotype name.
      * 
      * @param stereotypeName
      *            the name of the stereotype to be labeled
@@ -86,8 +69,7 @@ public final class ProfilesUIConstants {
     }
 
     /**
-     * Return the default label for the "apply stereotype" action for the given
-     * stereotype name.
+     * Return the default label for the "apply stereotype" action for the given stereotype name.
      * 
      * @param stereotypeName
      *            the name of the stereotype to be labeled
@@ -97,13 +79,13 @@ public final class ProfilesUIConstants {
         return "Apply " + stereotypeName + " stereotype";
     }
 
-
     /**
-     * Gets the currently selected {@link EStereotypableObject} if possible. Otherwise returns null.
+     * Gets the currently selected {@link StereotypableElement} if possible. Otherwise returns null.
+     * 
      * @return selected stereotypable object
      */
-	public static EStereotypableObject getEStereotypableObjectFromCurrentSelection() {
-		ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
+    public static StereotypableElement getEStereotypableObjectFromCurrentSelection() {
+        ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
                 .getSelection();
         if (selection == null || !(selection instanceof IStructuredSelection)) {
             LOGGER.debug("selection is null or not instance of IStructuredSelection");
@@ -111,16 +93,17 @@ public final class ProfilesUIConstants {
         }
         IStructuredSelection structuredSelection = (IStructuredSelection) selection;
         Object firstElement = structuredSelection.getFirstElement();
-        if (firstElement == null || !(firstElement instanceof EStereotypableObject)) {
+        if (firstElement == null || !(firstElement instanceof StereotypableElement)) {
             if (firstElement instanceof EditPart) {
                 EditPart editPart = (EditPart) firstElement;
                 Object model = editPart.getModel();
                 if (model instanceof View) {
                     EObject element = ((View) editPart.getModel()).getElement();
-                    if (element instanceof EStereotypableObject) {
+                    if (element instanceof StereotypableElement) {
                         firstElement = element;
-                    } else if (element instanceof DSemanticDecorator && ((DSemanticDecorator) element).getTarget() instanceof EStereotypableObject) {
-                    	firstElement = (EStereotypableObject) ((DSemanticDecorator) element).getTarget();
+                    } else if (element instanceof DSemanticDecorator
+                            && ((DSemanticDecorator) element).getTarget() instanceof StereotypableElement) {
+                        firstElement = ((DSemanticDecorator) element).getTarget();
                     } else {
                         LOGGER.debug("model element '" + element + "' of firstElement ' " + firstElement
                                 + "' is null or not an instance of EStereotypableObject");
@@ -136,7 +119,7 @@ public final class ProfilesUIConstants {
                 return null;
             }
         }
-        final EStereotypableObject eStereotypableObject = (EStereotypableObject) firstElement;
-		return eStereotypableObject;
-	}
+        final StereotypableElement eStereotypableObject = (StereotypableElement) firstElement;
+        return eStereotypableObject;
+    }
 }

@@ -24,8 +24,8 @@ import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofile.registry.IProfileProvider;
 import org.modelversioning.emfprofile.registry.IProfileRegistry;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 import edu.kit.ipd.sdq.mdsd.profiles.util.datastructures.Pair;
 
@@ -48,9 +48,9 @@ public class ProfileListMenu extends CompoundContributionItem {
      */
     public static void createOrUpdateMenuForEachProfile(final ITreeSelection treeSelection) {
         Object firstElement = treeSelection.getFirstElement();
-        if (firstElement instanceof EStereotypableObject) {
+        if (firstElement instanceof StereotypableElement) {
             if (profileSubmenuPairs == null) {
-                final Collection<IProfileProvider> registeredProfileProviders = IProfileRegistry.INSTANCE
+                final Collection<IProfileProvider> registeredProfileProviders = IProfileRegistry.eINSTANCE
                         .getRegisteredProfileProviders();
                 profileSubmenuPairs = new ArrayList<Pair<Profile, MenuManager>>(registeredProfileProviders.size());
                 final IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
@@ -63,9 +63,9 @@ public class ProfileListMenu extends CompoundContributionItem {
                             final IContributionRoot additions) {
 
                         for (final IProfileProvider profileProvider : registeredProfileProviders) {
-                            final String profileDescription = profileProvider.getProfileDescription();
+                            final String profileName = profileProvider.getProfileName();
                             final Profile profile = profileProvider.getProfile();
-                            final MenuManager submenu = new MenuManager(profileDescription,
+                            final MenuManager submenu = new MenuManager(profileName,
                                     ProfilesUIConstants.PROFILE_LIST_MENU_ID);
                             final IContributionItem dynamicItem = new CompoundContributionItem(
                                     ProfilesUIConstants.DYNAMIC_LIST_ID) {
@@ -116,7 +116,7 @@ public class ProfileListMenu extends CompoundContributionItem {
     }
 
     private static EvaluationResult getSubmenuVisibility(Profile profile) {
-        EStereotypableObject eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
+        StereotypableElement eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
         if (eStereotypableObject != null) {
             EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes(profile);
             EList<StereotypeApplication> stereotypeApplications = eStereotypableObject

@@ -33,12 +33,10 @@ public final class ProfileHelper {
      * 
      * @param profileName
      *            The name of profile to be retrieved.
-     * @return The profile with the specified name, or null if no profile was
-     *         found.
+     * @return The profile with the specified name, or null if no profile was found.
      */
     public static Profile getProfile(final String profileName) {
-        Collection<Profile> profiles =
-                IProfileRegistry.INSTANCE.getRegisteredProfiles();
+        Collection<Profile> profiles = IProfileRegistry.eINSTANCE.getRegisteredProfiles();
 
         for (Profile profile : profiles) {
             if (profile.getName().equals(profileName)) {
@@ -50,15 +48,14 @@ public final class ProfileHelper {
     }
 
     /**
-     * Retrieves the resource set of the first registered profile. All
-     * registered profiles should have the same resource set.
+     * Retrieves the resource set of the first registered profile. All registered profiles should
+     * have the same resource set.
      * 
-     * @return The resource set of the first registered profile, or null if no
-     *         profile is registered.
+     * @return The resource set of the first registered profile, or null if no profile is
+     *         registered.
      */
     public static ResourceSet getProfileRegistryResourceSet() {
-        Collection<Profile> profiles =
-                IProfileRegistry.INSTANCE.getRegisteredProfiles();
+        Collection<Profile> profiles = IProfileRegistry.eINSTANCE.getRegisteredProfiles();
 
         if (profiles.iterator().hasNext()) {
             return profiles.iterator().next().eResource().getResourceSet();
@@ -77,8 +74,7 @@ public final class ProfileHelper {
     public static IPath createPath(final URI uri) {
 
         if (uri.isPlatform()) {
-            return new Path(uri.toPlatformString(true))
-                    .removeTrailingSeparator();
+            return new Path(uri.toPlatformString(true)).removeTrailingSeparator();
         } else if (uri.isFile()) {
             return new Path(uri.toFileString()).removeTrailingSeparator();
         } else {
@@ -87,18 +83,15 @@ public final class ProfileHelper {
     }
 
     /**
-     * Determines whether the specified project has the nature specified by the
-     * ID.
+     * Determines whether the specified project has the nature specified by the ID.
      * 
      * @param project
      *            The project in question.
      * @param natureId
      *            The nature ID in question.
-     * @return True if the specified project has the specified nature, otherwise
-     *         false.
+     * @return True if the specified project has the specified nature, otherwise false.
      */
-    public static boolean hasProfileProjectNature(final IProject project,
-            final String natureId) {
+    public static boolean hasProfileProjectNature(final IProject project, final String natureId) {
 
         boolean isNatureEnabled = false;
         try {

@@ -2,8 +2,7 @@ package edu.kit.ipd.sdq.mdsd.profiles.ui.commands;
 
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.modelversioning.emfprofile.Stereotype;
-
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
 /**
  * Abstract superclass for all stereotype commands.
@@ -16,7 +15,7 @@ public abstract class AbstractStereotypeCommand extends AbstractCommand {
     /**
      * The stereotypable object of the command.
      */
-    protected EStereotypableObject eStereotypableObject;
+    protected StereotypableElement eStereotypableObject;
     /**
      * The stereotype of the command.
      */
@@ -32,8 +31,7 @@ public abstract class AbstractStereotypeCommand extends AbstractCommand {
      * @param stereotype
      *            the stereotype of the command
      */
-    public AbstractStereotypeCommand(final String label,
-            final EStereotypableObject eStereotypableObject,
+    public AbstractStereotypeCommand(final String label, final StereotypableElement eStereotypableObject,
             final Stereotype stereotype) {
         super(label);
         this.eStereotypableObject = eStereotypableObject;

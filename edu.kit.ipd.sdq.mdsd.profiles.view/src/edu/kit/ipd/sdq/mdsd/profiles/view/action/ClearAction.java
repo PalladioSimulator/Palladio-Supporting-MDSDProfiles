@@ -6,8 +6,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 
-import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
-
 /**
  * Clears the entire PCM Profiles View, if activated.
  * 
@@ -29,7 +27,6 @@ public class ClearAction extends Action {
 
     @Override
     public void run() {
-        ProfileApplicationFileRegistry.INSTANCE.clear();
         this.treeViewer.refresh();
         this.tableViewer.refresh();
         LOGGER.info("View cleared.");

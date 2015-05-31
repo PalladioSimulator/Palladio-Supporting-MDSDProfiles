@@ -11,7 +11,6 @@ import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofile.application.registry.ProfileApplicationDecorator;
@@ -21,7 +20,8 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.helper.FeatureGetterUtility;
 import edu.kit.ipd.sdq.mdsd.profiles.view.viewer.ProfilePropertiesView;
 
 /**
- * ChangedListener reacts on the selection changes from the TreeViewer and forwards the StereotypeApplication objects to the Table Viewer.
+ * ChangedListener reacts on the selection changes from the TreeViewer and forwards the
+ * StereotypeApplication objects to the Table Viewer.
  * 
  * @author Martin Küster, Emre Taspolatoglu
  * 
@@ -47,7 +47,7 @@ public class ChangedListener implements IValueChangeListener {
             final StereotypeApplication stereotypeApplication = (StereotypeApplication) event.diff.getNewValue();
             LOGGER.info("Selected StereotypeAplication: " + stereotypeApplication);
 
-            final Stereotype stereotype = ((StereotypeApplication) event.diff.getNewValue()).getStereotype();
+            final Stereotype stereotype = ((StereotypeApplication) event.diff.getNewValue()).getExtension().getSource();
             LOGGER.info("Selected Stereotype: " + stereotype);
             this.view.getMaster().setValue(stereotypeApplication);
 

@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.ui.PlatformUI;
@@ -23,8 +24,9 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.services.IServiceLocator;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
+import org.modelversioning.emfprofileapplication.StereotypeApplication;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 import edu.kit.ipd.sdq.mdsd.profiles.util.datastructures.Pair;
 
@@ -81,9 +83,10 @@ public class ProfileSubmenu extends CompoundContributionItem {
      */
     @Override
     protected IContributionItem[] getContributionItems() {
-        final EStereotypableObject eStereotypableObject = ProfilesUIConstants.getEStereotypableObjectFromCurrentSelection();
+        final StereotypableElement eStereotypableObject = ProfilesUIConstants
+                .getEStereotypableObjectFromCurrentSelection();
         if (eStereotypableObject == null) {
-        	return new IContributionItem[] {};
+            return new IContributionItem[] {};
         }
         return getContributionItemsForSelectedElement(eStereotypableObject);
     }
@@ -95,11 +98,14 @@ public class ProfileSubmenu extends CompoundContributionItem {
      *            the selected stereotypableeObject
      * @return the array
      */
-    private IContributionItem[] getContributionItemsForSelectedElement(final EStereotypableObject eStereotypableObject) {
+    private IContributionItem[] getContributionItemsForSelectedElement(final StereotypableElement eStereotypableObject) {
 
         final EList<Stereotype> applicableStereotypes = eStereotypableObject.getApplicableStereotypes(this.profile);
 
-        EList<Stereotype> appliedStereotypes = eStereotypableObject.getAppliedStereotypes();
+        final EList<Stereotype> appliedStereotypes = new BasicEList<Stereotype>();
+        for (StereotypeApplication application : eStereotypableObject.getStereotypeApplications()) {
+            appliedStereotypes.add(application.getExtension().getSource());
+        }
 
         removeAppliedStereotypesOfOtherProfiles(appliedStereotypes);
 
@@ -257,7 +263,8 @@ public class ProfileSubmenu extends CompoundContributionItem {
         String label = isUnapply ? ProfilesUIConstants.getDefaultUnapplyLabel(stereotypeName) : ProfilesUIConstants
                 .getDefaultApplyLabel(stereotypeName);
         if (configElement != null) {
-            String labelAttribute = isUnapply ? ProfilesUIConstants.UNAPPLY_LABEL_ATTR : ProfilesUIConstants.APPLY_LABEL_ATTR;
+            String labelAttribute = isUnapply ? ProfilesUIConstants.UNAPPLY_LABEL_ATTR
+                    : ProfilesUIConstants.APPLY_LABEL_ATTR;
             String customLabel = configElement.getAttribute(labelAttribute);
             if (customLabel != null && !customLabel.equals("")) {
                 label = customLabel;

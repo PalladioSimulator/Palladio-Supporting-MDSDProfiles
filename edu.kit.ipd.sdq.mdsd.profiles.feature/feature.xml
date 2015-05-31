@@ -212,86 +212,40 @@ Agreement more than one year after the cause of action arose.
 Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
+
    <requires>
-      <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.8.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.8.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore" version="2.8.3" match="greaterOrEqual"/>
       <import plugin="org.modelversioning.emfprofile" version="1.1.0" match="greaterOrEqual"/>
-      <import plugin="org.modelversioning.emfprofile.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.modelversioning.emfprofile.application.registry" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.gmf.runtime.emf.core"/>
+      <import plugin="org.eclipse.core.resources" version="3.8.1" match="greaterOrEqual"/>
+      <import plugin="org.modelversioning.emfprofile.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-      <import plugin="org.eclipse.emf.edit.ui"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.junit"/>
-      <import plugin="org.modelversioning.emfprofile" version="1.1.0"/>
-      <import plugin="org.modelversioning.emfprofile.registry" version="1.0.0"/>
       <import plugin="org.eclipse.ui" version="3.104.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.gef" version="3.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.gmf.runtime.notation.edit" version="1.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.edit" version="2.8.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.core.expressions" version="3.4.500" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.databinding.beans" version="1.2.200" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.databinding.property" version="1.4.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface.databinding" version="1.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore.editor" version="2.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore.change.edit" version="2.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.databinding.edit" version="1.2.1" match="greaterOrEqual"/>
-      <import plugin="edu.kit.ipd.sdq.mdsd.profiles.ui" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.modelversioning.emfprofile.editor" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.modelversioning.emfprofile.diagram" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.modelversioning.emfprofile.application.registry.ui" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.transaction"/>
-      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.palladiosimulator.commons"/>
+      <import plugin="org.eclipse.emf.ecore.edit"/>
+      <import plugin="org.modelversioning.emfprofile.edit"/>
+      <import plugin="org.palladiosimulator.mdsdprofiles" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.views.properties.tabbed" version="3.6.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles"
+         id="org.palladiosimulator.mdsdprofiles"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.builder"
+         id="org.palladiosimulator.mdsdprofiles.edit"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.nature"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.testprofile"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.mdsd.profiles.view"
+         id="org.palladiosimulator.mdsdprofiles.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -16,8 +16,8 @@ import org.eclipse.ui.menus.IWorkbenchContribution;
 import org.eclipse.ui.services.IServiceLocator;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 
 /**
@@ -87,7 +87,7 @@ public class ApplicableStereotypesSubmenu extends CompoundContributionItem imple
     @Override
     protected IContributionItem[] getContributionItems() {
 
-        final EStereotypableObject eStereotypableObject = ProfilesUIConstants
+        final StereotypableElement eStereotypableObject = ProfilesUIConstants
                 .getEStereotypableObjectFromCurrentSelection();
 
         if (eStereotypableObject == null) {

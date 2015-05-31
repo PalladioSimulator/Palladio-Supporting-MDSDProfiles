@@ -17,8 +17,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.util.helper.ProfileHelper;
 
 /**
@@ -27,20 +27,17 @@ import edu.kit.ipd.sdq.mdsd.profiles.util.helper.ProfileHelper;
  */
 public abstract class AbstractStereotypeHandler extends AbstractHandler {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ApplyStereotypeHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ApplyStereotypeHandler.class.getName());
 
     /**
-     * Returns the identifier for the stereotype command parameter as defined in
-     * the plugin.xml.
+     * Returns the identifier for the stereotype command parameter as defined in the plugin.xml.
      * 
      * @return the identifier
      */
     protected abstract String getStereotypeParameterID();
 
     /**
-     * Returns the identifier for the profile command parameter as defined in
-     * the plugin.xml.
+     * Returns the identifier for the profile command parameter as defined in the plugin.xml.
      * 
      * @return the identifier
      */
@@ -62,8 +59,7 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
      *            the stereotype for the command
      * @return the command object
      */
-    protected abstract Command getCommand(
-            EStereotypableObject eStereotypableObject, Stereotype stereotype);
+    protected abstract Command getCommand(StereotypableElement eStereotypableObject, Stereotype stereotype);
 
     /**
      * Performs the concrete command in the concrete handler.
@@ -73,8 +69,7 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
      * @param stereotype
      *            the stereotype for the command
      */
-    protected abstract void handle(EStereotypableObject eStereotypableObject,
-            Stereotype stereotype);
+    protected abstract void handle(StereotypableElement eStereotypableObject, Stereotype stereotype);
 
     /**
      * {@inheritDoc}
@@ -90,13 +85,11 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
         final String stereotypeParameterID = getStereotypeParameterID();
         final String profileParameterID = getProfileParameterID();
 
-        final String selectedStereotype =
-                event.getParameter(stereotypeParameterID);
+        final String selectedStereotype = event.getParameter(stereotypeParameterID);
         final String selectedProfile = event.getParameter(profileParameterID);
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("selected stereotype '" + selectedStereotype
-                    + "' from profile '" + selectedProfile + "' for "
+            LOGGER.debug("selected stereotype '" + selectedStereotype + "' from profile '" + selectedProfile + "' for "
                     + getActionName());
         }
 
@@ -106,36 +99,27 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
             return null;
         }
 
-        final IStructuredSelection structuredSelection =
-                (IStructuredSelection) selection;
+        final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
         final Object firstElement = structuredSelection.getFirstElement();
 
-        if (firstElement != null
-                && firstElement instanceof EStereotypableObject) {
+        if (firstElement != null && firstElement instanceof StereotypableElement) {
 
-            final EStereotypableObject eStereotypableObject =
-                    (EStereotypableObject) firstElement;
+            final StereotypableElement eStereotypableObject = (StereotypableElement) firstElement;
 
             final Profile profile = ProfileHelper.getProfile(selectedProfile);
 
             if (profile != null) {
-                final Stereotype applicableStereotype =
-                        profile.getStereotype(selectedStereotype);
+                final Stereotype applicableStereotype = profile.getStereotype(selectedStereotype);
 
                 if (applicableStereotype != null) {
 
-                    final IEditorPart editorPart =
-                            HandlerUtil.getActiveEditor(event);
+                    final IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
 
-                    if (editorPart != null
-                            && editorPart instanceof IEditingDomainProvider) {
-                        Command stereotypeCommand =
-                                getCommand(eStereotypableObject,
-                                        applicableStereotype);
+                    if (editorPart != null && editorPart instanceof IEditingDomainProvider) {
+                        Command stereotypeCommand = getCommand(eStereotypableObject, applicableStereotype);
 
-                        ((IEditingDomainProvider) editorPart)
-                                .getEditingDomain().getCommandStack()
+                        ((IEditingDomainProvider) editorPart).getEditingDomain().getCommandStack()
                                 .execute(stereotypeCommand);
                     }
                 }
@@ -155,18 +139,20 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
                 Node node = (Node) model;
                 EObject selectedObject = node.getElement();
 
-                if (selectedObject != null
-                        && selectedObject instanceof EStereotypableObject) {
+                if (selectedObject != null && selectedObject instanceof StereotypableElement) {
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("selected object is instance of EStereotypableObject | class="
                                 + selectedObject.getClass());
                     }
 
-                    final EStereotypableObject eStereotypableObject =
-                            (EStereotypableObject) selectedObject;
-                    final Stereotype applicableStereotype =
-                            eStereotypableObject
-                                    .getApplicableStereotype(selectedStereotype);
+                    final StereotypableElement eStereotypableObject = (StereotypableElement) selectedObject;
+                    Stereotype applicableStereotype = null;
+                    for (final Stereotype appStereotype : eStereotypableObject.getApplicableStereotypes()) {
+                        if (appStereotype.getName().equals(selectedStereotype)) {
+                            applicableStereotype = appStereotype;
+                            break;
+                        }
+                    }
 
                     handle(eStereotypableObject, applicableStereotype);
 
@@ -178,13 +164,11 @@ public abstract class AbstractStereotypeHandler extends AbstractHandler {
                 }
 
             } else {
-                MessageDialog.openInformation(shell, "Info",
-                        "model from edit part is not an instance of Node!");
+                MessageDialog.openInformation(shell, "Info", "model from edit part is not an instance of Node!");
             }
 
         } else {
-            MessageDialog.openInformation(shell, "Info",
-                    "Please select an edit part");
+            MessageDialog.openInformation(shell, "Info", "Please select an edit part");
         }
         return null;
     }

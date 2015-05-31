@@ -5,8 +5,8 @@ package edu.kit.ipd.sdq.mdsd.profiles.ui.handlers;
 
 import org.eclipse.emf.common.command.Command;
 import org.modelversioning.emfprofile.Stereotype;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
-import edu.kit.ipd.sdq.mdsd.profiles.metamodelextension.EStereotypableObject;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.ProfilesUIConstants;
 import edu.kit.ipd.sdq.mdsd.profiles.ui.commands.UnapplyStereotypeCommand;
 
@@ -31,12 +31,12 @@ public class UnapplyStereotypeHandler extends AbstractStereotypeHandler {
     }
 
     @Override
-    protected Command getCommand(EStereotypableObject eStereotypableObject, Stereotype stereotype) {
+    protected Command getCommand(StereotypableElement eStereotypableObject, Stereotype stereotype) {
         return new UnapplyStereotypeCommand(eStereotypableObject, stereotype);
     }
 
     @Override
-    protected void handle(EStereotypableObject eStereotypableObject, Stereotype stereotype) {
-        eStereotypableObject.removeAllStereotypeApplications(stereotype);
+    protected void handle(StereotypableElement eStereotypableObject, Stereotype stereotype) {
+        eStereotypableObject.unapplyStereotype(stereotype);
     }
 }
