@@ -2,8 +2,9 @@
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
   <rm:locator pattern="^org\.palladiosimulator\.mdsdprofiles\.*" searchPathRef="MDSDProfiles" failOnError="false"/>
   <rm:locator pattern="^org\.modelversioning\.*" searchPathRef="EMFProfiles" failOnError="false"/>
-  <rm:locator pattern="^de\.uka\.*" searchPathRef="pcm" failOnError="false"/>
-  <rm:locator pattern="^org\.palladio\.*" searchPathRef="pcm" failOnError="false"/>
+  <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="palladio-commons" failOnError="false"/>
+  <rm:locator pattern="^org\.palladiosimulator\..*" searchPathRef="palladio-commons" failOnError="false"/>
+  <rm:locator pattern="^edu\.kit\..*" searchPathRef="palladio-commons" failOnError="false"/>
   <rm:locator searchPathRef="eclipse-release" failOnError="false"/>
   <rm:locator searchPathRef="orbit" failOnError="true"/>
   <rm:searchPath name="MDSDProfiles">
@@ -22,11 +23,11 @@
       <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>      
     </rm:provider>
   </rm:searchPath>
-  <rm:searchPath name="pcm">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+  <rm:searchPath name="palladio-commons">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
+      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="eclipse-release">
