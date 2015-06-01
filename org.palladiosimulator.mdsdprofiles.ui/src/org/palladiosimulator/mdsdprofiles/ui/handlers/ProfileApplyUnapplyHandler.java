@@ -18,6 +18,9 @@ public class ProfileApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
     protected boolean applyUnapplyStateChanged(final ExecutionEvent event) throws ExecutionException {
         final ProfileableElement profileableElement = getTargetElement(event);
 
+        // FIXME
+        // final ProfileableElement profileableElement = getTargetElement(event);
+        // getEditingDomainFor(profileableElement).createCommand(commandClass, commandParameter)
         return profileableElement.updateProfileApplications(getUpdatedProfileElementsFromDialog(event,
                 profileableElement, profileableElement.getAppliedProfiles(),
                 profileableElement.getApplicableProfiles(), SELECT_PROFILE_TO_BE_APPLIED));
