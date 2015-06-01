@@ -8,6 +8,11 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.emf.edit.ui.celleditor.FeatureEditorDialog;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -69,5 +74,29 @@ public abstract class AbstractApplyUnapplyHandler extends AbstractHandler {
                 currentValues, displayName, choiceOfValues, false, true, true);
         dialog.open();
         return (EList<PROFILE_ELEMENT_TYPE>) dialog.getResult();
+    }
+
+    static public EditingDomain getEditingDomainFor(final EObject object) {
+        final Resource resource = object.eResource();
+        if (resource != null) {
+            IEditingDomainProvider editingDomainProvider = (IEditingDomainProvider) EcoreUtil.getExistingAdapter(
+                    resource, IEditingDomainProvider.class);
+            if (editingDomainProvider != null) {
+                return editingDomainProvider.getEditingDomain();
+            } else {
+                final ResourceSet resourceSet = resource.getResourceSet();
+                if (resourceSet instanceof IEditingDomainProvider) {
+                    return ((IEditingDomainProvider) resourceSet).getEditingDomain();
+                } else if (resourceSet != null) {
+                    editingDomainProvider = (IEditingDomainProvider) EcoreUtil.getExistingAdapter(resourceSet,
+                            IEditingDomainProvider.class);
+                    if (editingDomainProvider != null) {
+                        return editingDomainProvider.getEditingDomain();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
