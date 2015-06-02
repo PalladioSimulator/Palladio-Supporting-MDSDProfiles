@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.impl.EModelElementImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
-import org.modelversioning.emfprofileapplication.EMFProfileApplicationFactory;
 import org.modelversioning.emfprofileapplication.ProfileApplication;
 import org.modelversioning.emfprofileapplication.ProfileImport;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
@@ -114,8 +113,10 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
                     + this.getClass().getName() + "\"!");
         }
 
-        final StereotypeApplication newStereotypeApplication = EMFProfileApplicationFactory.eINSTANCE
-                .createStereotypeApplication();
+        final StereotypeApplication newStereotypeApplication = (StereotypeApplication) stereotype.getEPackage()
+                .getEFactoryInstance().create(stereotype);
+        // final StereotypeApplication newStereotypeApplication =
+        // EMFProfileApplicationFactory.eINSTANCE.createStereotypeApplication();
         newStereotypeApplication.setAppliedTo(this);
         // TODO is the next operation save? necessary? [Lehrig]
         newStereotypeApplication.setExtension(stereotype.getApplicableExtensions(this).get(0));

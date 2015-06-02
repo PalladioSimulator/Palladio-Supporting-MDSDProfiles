@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
  org.modelversioning.emfprofile;visibility:=reexport,
- org.modelversioning.emfprofile.edit;visibility:=reexport
+ org.modelversioning.emfprofile.edit;visibility:=reexport,
+ org.eclipse.ui.views
 Bundle-ActivationPolicy: lazy
