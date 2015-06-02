@@ -11,11 +11,7 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.provider.EModelElementItemProvider;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.modelversioning.emfprofileapplication.StereotypeApplication;
 import org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage;
-import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
 /**
  * This is the item provider adapter for a
@@ -25,7 +21,6 @@ import org.palladiosimulator.mdsdprofiles.StereotypableElement;
  * @generated
  */
 public class StereotypableElementItemProvider extends EModelElementItemProvider {
-    private static final AdapterFactory ADAPTER_FACTORY = new ReflectiveItemProviderAdapterFactory();
 
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
@@ -41,7 +36,7 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
      * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      * 
-     * @generated NOT
+     * @generated
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(final Object object) {
@@ -49,67 +44,8 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
             super.getPropertyDescriptors(object);
 
             this.addProfileableElementPropertyDescriptor(object);
-            this.getTaggedValuesPropertyDescriptors(object);
         }
-
         return this.itemPropertyDescriptors;
-    }
-
-    private void getTaggedValuesPropertyDescriptors(final Object object) {
-        if (object instanceof StereotypableElement) {
-            final StereotypableElement stereotypableElement = (StereotypableElement) object;
-
-            for (final StereotypeApplication stereotypeApplication : stereotypableElement.getStereotypeApplications()) {
-                // final Stereotype stereotype = stereotypeApplication.getExtension().getSource();
-                final IItemPropertySource stereotypeApplicationPropertySource = (IItemPropertySource) ADAPTER_FACTORY
-                        .adapt(stereotypeApplication, IItemPropertySource.class);
-
-                // final IItemPropertySource stereotypeApplicationPropertySource =
-                // (IItemPropertySource) this
-                // .getAdapterFactory().adapt(stereotypeApplication, IItemPropertySource.class);
-                //
-                //
-
-                // this.itemPropertyDescriptors.addAll(stereotypeApplicationPropertySource
-                // .getPropertyDescriptors(stereotypeApplication));
-
-                //
-                // for (final EStructuralFeature attribute : stereotype.getTaggedValues()) {
-                // // stereotype.getName();
-                // // attribute.getName();
-                // // stereotypeApplication.eGet(taggedValue);
-                //
-                // // FIXME Tagged values do not work yet; enable them here [Lehrig]
-                //
-                // // final IItemPropertyDescriptor propertyDescriptor = new
-                // // ItemPropertyDescriptor(
-                // // ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-                // // getResourceLocator(),
-                // // getString("_UI_EAnnotation_source_feature"),
-                // // getString("_UI_EAnnotation_source_description"),
-                // // EcorePackage.Literals.EANNOTATION__SOURCE,
-                // // true, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null) {
-                // // @Override
-                // // public void setPropertyValue(Object object, Object value) {
-                // // super.setPropertyValue(object, stripToNull((String) value));
-                // // }
-                // //
-                // //
-                // // };
-                //
-                // // this.itemPropertyDescriptors.add(propertyDescriptor);
-                //
-                // this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                // ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                // this.getResourceLocator(),
-                // stereotype.getName() + "::" + attribute.getName(),
-                // "Tagged value for attribute \"" + attribute.getName() + "\" of stereotype \""
-                // + stereotype.getName() + "\"", EcorePackage.Literals.ECLASS__EALL_ATTRIBUTES,
-                // true,
-                // false, false, null, null, null));
-                // }
-            }
-        }
     }
 
     /**
@@ -124,8 +60,8 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
                 this.getString("_UI_StereotypableElement_profileableElement_feature"), this.getString(
                         "_UI_PropertyDescriptor_description", "_UI_StereotypableElement_profileableElement_feature",
                         "_UI_StereotypableElement_type"),
-                MdsdprofilesPackage.Literals.STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT, false, false, false, null,
-                null, null));
+                        MdsdprofilesPackage.Literals.STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT, false, false, false, null,
+                        null, null));
     }
 
     /**

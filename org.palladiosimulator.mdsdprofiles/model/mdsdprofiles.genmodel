@@ -7,12 +7,69 @@
     importOrganizing="true" cleanup="true">
   <foreignModel>mdsdprofiles.ecore</foreignModel>
   <genPackages prefix="Mdsdprofiles" basePackage="org.palladiosimulator" ecorePackage="mdsdprofiles.ecore#/">
-    <genClasses ecoreClass="mdsdprofiles.ecore#//EStereotypableObject">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference mdsdprofiles.ecore#//EStereotypableObject/stereotypeApplications"/>
-      <genOperations ecoreOperation="mdsdprofiles.ecore#//EStereotypableObject/applyStereotype">
-        <genParameters ecoreParameter="mdsdprofiles.ecore#//EStereotypableObject/applyStereotype/stereotype"/>
+    <genClasses provider="Stateful" ecoreClass="mdsdprofiles.ecore#//ProfileableElement">
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//ProfileableElement/applyProfile">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//ProfileableElement/applyProfile/profile"/>
       </genOperations>
-      <genOperations ecoreOperation="mdsdprofiles.ecore#//EStereotypableObject/getAllApplicableStereotypes"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//ProfileableElement/updateProfileApplications">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//ProfileableElement/updateProfileApplications/profilesToBeApplied"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//ProfileableElement/hasProfileApplication"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//ProfileableElement/getProfileApplication"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//ProfileableElement/getApplicableProfiles"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//ProfileableElement/getAppliedProfiles"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//ProfileableElement/unapplyProfile">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//ProfileableElement/unapplyProfile/profile"/>
+      </genOperations>
+    </genClasses>
+    <genClasses provider="Stateful" image="false" ecoreClass="mdsdprofiles.ecore#//StereotypableElement">
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference mdsdprofiles.ecore#//StereotypableElement/profileableElement"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/applyStereotype">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/applyStereotype/stereotype"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/applyStereotype.1">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/applyStereotype.1/stereotypeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/updateStereotypeApplications">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/updateStereotypeApplications/stereotypesToBeApplied"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplicable">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplicable/stereotype"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplicable.1">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplicable.1/stereotypeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplied">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplied/stereotype"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplied.1">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/isStereotypeApplied.1/stereotypeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/hasStereotypeApplications"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getApplicableStereotypes"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getApplicableStereotypes.1">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/getApplicableStereotypes.1/profile"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getApplicableStereotypes.2">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/getApplicableStereotypes.2/stereotypeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getStereotypeApplications"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getStereotypeApplications.1">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/getStereotypeApplications.1/profile"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getStereotypeApplications.2">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/getStereotypeApplications.2/stereotypeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getStereotypeApplication">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/getStereotypeApplication/stereotype"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/getAppliedStereotypes"/>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/unapplyStereotype">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/unapplyStereotype/stereotype"/>
+      </genOperations>
+      <genOperations ecoreOperation="mdsdprofiles.ecore#//StereotypableElement/unapplyStereotype.1">
+        <genParameters ecoreParameter="mdsdprofiles.ecore#//StereotypableElement/unapplyStereotype.1/stereotypeName"/>
+      </genOperations>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -69,15 +69,6 @@ ComposeableAdapterFactory, IChangeNotifier {
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.mdsdprofiles.ProfileableElement} instances. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    protected ProfileableElementItemProvider profileableElementItemProvider;
-
-    /**
      * This creates an adapter for a {@link org.palladiosimulator.mdsdprofiles.ProfileableElement}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
@@ -85,11 +76,7 @@ ComposeableAdapterFactory, IChangeNotifier {
      */
     @Override
     public Adapter createProfileableElementAdapter() {
-        if (this.profileableElementItemProvider == null) {
-            this.profileableElementItemProvider = new ProfileableElementItemProvider(this);
-        }
-
-        return this.profileableElementItemProvider;
+        return new ProfileableElementItemProvider(this);
     }
 
     /**
