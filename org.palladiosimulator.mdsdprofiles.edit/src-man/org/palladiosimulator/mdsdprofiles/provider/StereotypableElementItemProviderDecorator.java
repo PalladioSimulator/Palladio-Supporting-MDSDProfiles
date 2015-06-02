@@ -17,6 +17,12 @@ import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 
+/**
+ * Customizes the item provider of stereotypable elements, e.g., to show a custom stereotype string
+ * with guillemets.
+ * 
+ * @author Sebastian Lehrig, Steffen Becker
+ */
 public class StereotypableElementItemProviderDecorator extends ItemProviderDecorator implements
         IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider,
         IItemPropertySource, Adapter {
@@ -25,8 +31,11 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
         super(adapterFactory);
     }
 
+    /**
+     * An object is prefixed by all stereotype names; each surrounded by guillemets.
+     */
     @Override
-    public String getText(Object object) {
+    public String getText(final Object object) {
         if (notStereotyped(object)) {
             return super.getText(object);
         }
@@ -42,7 +51,7 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
     }
 
     @Override
-    public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
+    public List<IItemPropertyDescriptor> getPropertyDescriptors(final Object object) {
         if (notStereotyped(object)) {
             return super.getPropertyDescriptors(object);
         }

@@ -8,6 +8,11 @@ import org.eclipse.emf.edit.provider.IItemProviderDecorator;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
+/**
+ * An adapter factory for stereotypable elements.
+ * 
+ * @author Sebastian Lehrig, Steffen Becker
+ */
 public class StereotypableElementDecoratorAdapterFactory extends DecoratorAdapterFactory {
 
     public StereotypableElementDecoratorAdapterFactory(final AdapterFactory decoratedAdapterFactory) {

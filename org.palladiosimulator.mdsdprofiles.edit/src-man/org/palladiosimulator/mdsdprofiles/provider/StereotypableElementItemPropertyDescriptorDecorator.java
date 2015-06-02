@@ -12,6 +12,12 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptorDecorator;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 
+/**
+ * Customizes the properties of stereotypable elements, e.g., to add entries for tagged values to
+ * the property sheet.
+ * 
+ * @author Sebastian Lehrig, Steffen Becker
+ */
 public class StereotypableElementItemPropertyDescriptorDecorator extends ItemPropertyDescriptorDecorator {
 
     protected final StereotypeApplication stereotypeApplication;
@@ -23,6 +29,9 @@ public class StereotypableElementItemPropertyDescriptorDecorator extends ItemPro
         this.stereotypeApplication = (StereotypeApplication) object;
     }
 
+    /**
+     * Prefix tags with the stereotype name plus "::".
+     */
     @Override
     public String getDisplayName(final Object thisObject) {
         return stereotypeApplication.getStereotype().getName() + "::" + super.getDisplayName(thisObject);
@@ -30,7 +39,6 @@ public class StereotypableElementItemPropertyDescriptorDecorator extends ItemPro
 
     @Override
     public void setPropertyValue(final Object thisObject, final Object value) {
-        // FIXME Executing this command should not alter the selection [Lehrig]
         final EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(thisObject);
         final Command command = new CommandWrapper(SetCommand.create(editingDomain, stereotypeApplication,
                 super.getFeature(stereotypeApplication), value)) {
@@ -41,9 +49,6 @@ public class StereotypableElementItemPropertyDescriptorDecorator extends ItemPro
             }
         };
         editingDomain.getCommandStack().execute(command);
-        // stereotypeApplication.eSet((EStructuralFeature) super.getFeature(stereotypeApplication),
-        // value);
-        // this.itemPropertyDescriptor.setPropertyValue(stereotypeApplication, value);
     }
 
     @Override
