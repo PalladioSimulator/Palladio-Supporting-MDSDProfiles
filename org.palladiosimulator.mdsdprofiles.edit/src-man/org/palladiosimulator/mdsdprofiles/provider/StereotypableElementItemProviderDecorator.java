@@ -83,7 +83,11 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
 
             final List<IItemPropertyDescriptor> stereotypePropertyDescriptors = stereotypeApplicationPropertySource
                     .getPropertyDescriptors(stereotypeApplication);
-            propertyDescriptors.addAll(stereotypePropertyDescriptors);
+
+            for (final IItemPropertyDescriptor stereotypePropertyDescriptor : stereotypePropertyDescriptors) {
+                propertyDescriptors.add(new StereotypableElementItemPropertyDescriptorDecorator(stereotypeApplication,
+                        stereotypePropertyDescriptor));
+            }
         }
     }
 
