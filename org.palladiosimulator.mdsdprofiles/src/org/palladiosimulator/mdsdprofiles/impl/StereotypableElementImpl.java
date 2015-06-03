@@ -361,12 +361,6 @@ public abstract class StereotypableElementImpl extends MinimalEObjectImpl.Contai
      */
     @Override
     public EList<StereotypeApplication> getStereotypeApplications() {
-        final EList<StereotypeApplication> stereotypeApplications = new BasicEList<StereotypeApplication>();
-
-        if (!this.hasStereotypeApplications()) {
-            return stereotypeApplications;
-        }
-
         return new StereotypeApplicationCrossReferencer(this.eResource()).findStereotypeApplications(this);
     }
 
