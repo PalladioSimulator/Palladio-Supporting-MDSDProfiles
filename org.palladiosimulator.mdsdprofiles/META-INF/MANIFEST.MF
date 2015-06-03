@@ -15,6 +15,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.mdsdprofiles,
  org.palladiosimulator.mdsdprofiles.impl,
+ org.palladiosimulator.mdsdprofiles.notifier,
  org.palladiosimulator.mdsdprofiles.util
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

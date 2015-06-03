@@ -11,7 +11,9 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.provider.EModelElementItemProvider;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage;
+import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 
 /**
  * This is the item provider adapter for a
@@ -60,8 +62,8 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
                 this.getString("_UI_StereotypableElement_profileableElement_feature"), this.getString(
                         "_UI_PropertyDescriptor_description", "_UI_StereotypableElement_profileableElement_feature",
                         "_UI_StereotypableElement_type"),
-                        MdsdprofilesPackage.Literals.STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT, false, false, false, null,
-                        null, null));
+                MdsdprofilesPackage.Literals.STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT, false, false, false, null,
+                null, null));
     }
 
     /**
@@ -80,11 +82,17 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}
      * . <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
-     * @generated
+     * @generated NOT
      */
     @Override
     public void notifyChanged(final Notification notification) {
         this.updateChildren(notification);
+
+        if (notification instanceof MDSDProfilesNotifier) {
+            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            return;
+        }
+
         super.notifyChanged(notification);
     }
 

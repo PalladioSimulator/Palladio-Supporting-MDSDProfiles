@@ -6,8 +6,7 @@ import org.eclipse.emf.edit.provider.DecoratorAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemProviderDecorator;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
-import org.modelversioning.emfprofileapplication.StereotypeApplication;
+import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 
 /**
  * An adapter factory for stereotypable elements. Takes care of firing notifications about
@@ -33,20 +32,11 @@ public class StereotypableElementDecoratorAdapterFactory extends DecoratorAdapte
                 public void notifyChanged(final Notification notification) {
                     fireNotifyChanged(notification);
 
-                    if (notification.getFeature() == EMFProfileApplicationPackage.eINSTANCE
-                            .getProfileApplication_StereotypeApplications()) {
-                        Object elementToUpdate = null;
-                        if (notification.getEventType() == Notification.REMOVE) {
-                            elementToUpdate = ((StereotypeApplication) notification.getOldValue()).getAppliedTo();
-                        } else if (notification.getEventType() == Notification.ADD) {
-                            elementToUpdate = ((StereotypeApplication) notification.getNewValue()).getAppliedTo();
-                        }
-
-                        if (elementToUpdate != null) {
-                            // Request a label update of the Annotation's parent object
-                            fireNotifyChanged(new ViewerNotification(notification, elementToUpdate, false, true));
-                        }
+                    if (notification.getEventType() == MDSDProfilesNotifier.APPLY_STEREOTYPE
+                            || notification.getEventType() == MDSDProfilesNotifier.UNAPPLY_STEREOTYPE) {
+                        fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                     }
+
                 }
             });
             return stereotypableElementItemProviderDecorator;

@@ -22,6 +22,7 @@ import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
 import org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage;
 import org.palladiosimulator.mdsdprofiles.ProfileableElement;
 import org.palladiosimulator.mdsdprofiles.StereotypableElement;
+import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
@@ -78,6 +79,8 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
         newProfileImport.setNsURI(profile.getNsURI());
         newProfileImport.setLocation(profile.eResource().getURI().toString());
         profileApplication.getImportedProfiles().add(newProfileImport);
+
+        this.eNotify(new MDSDProfilesNotifier(this, MDSDProfilesNotifier.APPLY_PROFILE, profile));
     }
 
     /**
@@ -247,6 +250,8 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
         if (profileImports.size() == 0) {
             this.removeProfileApplication();
         }
+
+        this.eNotify(new MDSDProfilesNotifier(this, MDSDProfilesNotifier.UNAPPLY_PROFILE, profile));
     }
 
     /**

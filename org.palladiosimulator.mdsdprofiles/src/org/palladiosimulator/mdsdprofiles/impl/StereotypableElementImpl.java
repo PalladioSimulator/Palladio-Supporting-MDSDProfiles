@@ -27,6 +27,7 @@ import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
 import org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage;
 import org.palladiosimulator.mdsdprofiles.ProfileableElement;
 import org.palladiosimulator.mdsdprofiles.StereotypableElement;
+import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
@@ -169,6 +170,8 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
 
         final ProfileApplication profileApplication = profileableElement.getProfileApplication();
         profileApplication.getStereotypeApplications().add(newStereotypeApplication);
+
+        this.eNotify(new MDSDProfilesNotifier(this, MDSDProfilesNotifier.APPLY_STEREOTYPE, stereotype));
     }
 
     /**
@@ -454,6 +457,8 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
 
         final StereotypeApplication stereotypeApplication = this.getStereotypeApplication(stereotype);
         stereotypeApplication.getProfileApplication().getStereotypeApplications().remove(stereotypeApplication);
+
+        this.eNotify(new MDSDProfilesNotifier(this, MDSDProfilesNotifier.UNAPPLY_STEREOTYPE, stereotype));
     }
 
     /**
