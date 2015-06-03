@@ -3,7 +3,7 @@
 package org.palladiosimulator.mdsdprofiles;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.EObject;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
@@ -24,7 +24,8 @@ import org.modelversioning.emfprofileapplication.StereotypeApplication;
  * @model abstract="true"
  * @generated
  */
-public interface StereotypableElement extends EModelElement {
+public interface StereotypableElement extends EObject {
+
     /**
      * Returns the value of the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
      * -->

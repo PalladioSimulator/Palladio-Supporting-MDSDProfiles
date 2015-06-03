@@ -15,6 +15,7 @@ import org.modelversioning.emfprofileapplication.provider.EMFProfileApplicationE
  * @generated
  */
 public final class MdsdprofilesEditPlugin extends EMFPlugin {
+
     /**
      * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
@@ -69,6 +70,7 @@ public final class MdsdprofilesEditPlugin extends EMFPlugin {
      * @generated
      */
     public static class Implementation extends EclipsePlugin {
+
         /**
          * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
          * 

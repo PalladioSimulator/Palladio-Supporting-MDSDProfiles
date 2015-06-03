@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.modelversioning.emfprofile.EMFProfilePackage;
 import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
@@ -21,6 +20,7 @@ import org.palladiosimulator.mdsdprofiles.StereotypableElement;
  * @generated
  */
 public class MdsdprofilesPackageImpl extends EPackageImpl implements MdsdprofilesPackage {
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -197,8 +197,6 @@ public class MdsdprofilesPackageImpl extends EPackageImpl implements Mdsdprofile
                 .getEPackage(EMFProfilePackage.eNS_URI);
         final EMFProfileApplicationPackage theEMFProfileApplicationPackage = (EMFProfileApplicationPackage) EPackage.Registry.INSTANCE
                 .getEPackage(EMFProfileApplicationPackage.eNS_URI);
-        final EcorePackage theEcorePackage = (EcorePackage) EPackage.Registry.INSTANCE
-                .getEPackage(EcorePackage.eNS_URI);
 
         // Create type parameters
 
@@ -206,7 +204,6 @@ public class MdsdprofilesPackageImpl extends EPackageImpl implements Mdsdprofile
 
         // Add supertypes to classes
         this.profileableElementEClass.getESuperTypes().add(this.getStereotypableElement());
-        this.stereotypableElementEClass.getESuperTypes().add(theEcorePackage.getEModelElement());
 
         // Initialize classes and features; add operations and parameters
         this.initEClass(this.profileableElementEClass, ProfileableElement.class, "ProfileableElement", !IS_ABSTRACT,

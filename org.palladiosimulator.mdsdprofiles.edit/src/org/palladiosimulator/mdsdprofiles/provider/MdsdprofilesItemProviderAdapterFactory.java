@@ -31,6 +31,7 @@ import org.palladiosimulator.mdsdprofiles.util.MdsdprofilesAdapterFactory;
  */
 public class MdsdprofilesItemProviderAdapterFactory extends MdsdprofilesAdapterFactory implements
 ComposeableAdapterFactory, IChangeNotifier {
+
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->

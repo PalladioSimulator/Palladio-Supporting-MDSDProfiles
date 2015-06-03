@@ -2,7 +2,6 @@
  */
 package org.palladiosimulator.mdsdprofiles.util;
 
-import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
@@ -21,6 +20,7 @@ import org.palladiosimulator.mdsdprofiles.StereotypableElement;
  * @generated
  */
 public class MdsdprofilesSwitch<T> extends Switch<T> {
+
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -69,9 +69,6 @@ public class MdsdprofilesSwitch<T> extends Switch<T> {
                 result = this.caseStereotypableElement(profileableElement);
             }
             if (result == null) {
-                result = this.caseEModelElement(profileableElement);
-            }
-            if (result == null) {
                 result = this.defaultCase(theEObject);
             }
             return result;
@@ -79,9 +76,6 @@ public class MdsdprofilesSwitch<T> extends Switch<T> {
         case MdsdprofilesPackage.STEREOTYPABLE_ELEMENT: {
             final StereotypableElement stereotypableElement = (StereotypableElement) theEObject;
             T result = this.caseStereotypableElement(stereotypableElement);
-            if (result == null) {
-                result = this.caseEModelElement(stereotypableElement);
-            }
             if (result == null) {
                 result = this.defaultCase(theEObject);
             }
@@ -121,21 +115,6 @@ public class MdsdprofilesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseStereotypableElement(final StereotypableElement object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>EModel Element</em>'.
-     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
-     * terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EModel Element</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseEModelElement(final EModelElement object) {
         return null;
     }
 

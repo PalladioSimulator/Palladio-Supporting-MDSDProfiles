@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.EModelElementImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.modelversioning.emfprofile.Profile;
@@ -41,18 +41,16 @@ import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
  * </ul>
  * </p>
  *
- * @author Sebastian Lehrig
- *
  * @generated
  */
-public abstract class StereotypableElementImpl extends EModelElementImpl implements StereotypableElement {
+public abstract class StereotypableElementImpl extends MinimalEObjectImpl.Container implements StereotypableElement {
 
     /**
      * This cross referencer finds, for a given stereotypable element, its stereotype applications.
-     * 
+     *
      * @see Book "Eclipse Modeling Framework: A Developer's Guide" chapter
      *      "13.5.3 Using Cross Referencers"
-     * 
+     *
      * @author Sebastian Lehrig
      */
     private final class StereotypeApplicationCrossReferencer extends EcoreUtil.UsageCrossReferencer {
@@ -83,7 +81,7 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
         public EList<StereotypeApplication> findStereotypeApplications(final EObject eObject) {
             final EList<StereotypeApplication> stereotypeApplications = new BasicEList<StereotypeApplication>();
 
-            for (final Setting setting : findUsage(eObject)) {
+            for (final Setting setting : this.findUsage(eObject)) {
                 stereotypeApplications.add((StereotypeApplication) setting.getEObject());
             }
 

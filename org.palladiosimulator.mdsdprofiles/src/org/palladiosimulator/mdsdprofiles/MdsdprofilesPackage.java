@@ -5,7 +5,6 @@ package org.palladiosimulator.mdsdprofiles;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
 
 /**
  * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains accessors for the meta
@@ -23,6 +22,7 @@ import org.eclipse.emf.ecore.EcorePackage;
  * @generated
  */
 public interface MdsdprofilesPackage extends EPackage {
+
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -74,22 +74,13 @@ public interface MdsdprofilesPackage extends EPackage {
     int STEREOTYPABLE_ELEMENT = 1;
 
     /**
-     * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STEREOTYPABLE_ELEMENT__EANNOTATIONS = EcorePackage.EMODEL_ELEMENT__EANNOTATIONS;
-
-    /**
      * The feature id for the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT = EcorePackage.EMODEL_ELEMENT_FEATURE_COUNT + 0;
+    int STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT = 0;
 
     /**
      * The number of structural features of the '<em>Stereotypable Element</em>' class. <!--
@@ -98,16 +89,7 @@ public interface MdsdprofilesPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int STEREOTYPABLE_ELEMENT_FEATURE_COUNT = EcorePackage.EMODEL_ELEMENT_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROFILEABLE_ELEMENT__EANNOTATIONS = STEREOTYPABLE_ELEMENT__EANNOTATIONS;
+    int STEREOTYPABLE_ELEMENT_FEATURE_COUNT = 1;
 
     /**
      * The feature id for the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
@@ -183,6 +165,7 @@ public interface MdsdprofilesPackage extends EPackage {
      * @generated
      */
     interface Literals {
+
         /**
          * The meta object literal for the '
          * {@link org.palladiosimulator.mdsdprofiles.impl.ProfileableElementImpl

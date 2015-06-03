@@ -5,7 +5,6 @@ package org.palladiosimulator.mdsdprofiles.util;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage;
 import org.palladiosimulator.mdsdprofiles.ProfileableElement;
@@ -19,6 +18,7 @@ import org.palladiosimulator.mdsdprofiles.StereotypableElement;
  * @generated
  */
 public class MdsdprofilesAdapterFactory extends AdapterFactoryImpl {
+
     /**
      * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -63,6 +63,7 @@ public class MdsdprofilesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     protected MdsdprofilesSwitch<Adapter> modelSwitch = new MdsdprofilesSwitch<Adapter>() {
+
         @Override
         public Adapter caseProfileableElement(final ProfileableElement object) {
             return MdsdprofilesAdapterFactory.this.createProfileableElementAdapter();
@@ -71,11 +72,6 @@ public class MdsdprofilesAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseStereotypableElement(final StereotypableElement object) {
             return MdsdprofilesAdapterFactory.this.createStereotypableElementAdapter();
-        }
-
-        @Override
-        public Adapter caseEModelElement(final EModelElement object) {
-            return MdsdprofilesAdapterFactory.this.createEModelElementAdapter();
         }
 
         @Override
@@ -124,20 +120,6 @@ public class MdsdprofilesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createStereotypableElementAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.emf.ecore.EModelElement
-     * <em>EModel Element</em>}'. <!-- begin-user-doc --> This default implementation returns null
-     * so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch
-     * all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.emf.ecore.EModelElement
-     * @generated
-     */
-    public Adapter createEModelElementAdapter() {
         return null;
     }
 

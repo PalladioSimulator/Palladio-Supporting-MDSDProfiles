@@ -17,8 +17,7 @@
       <eParameters name="profile" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Profile"/>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StereotypableElement" abstract="true"
-      eSuperTypes="../../org.eclipse.emf.ecore/model/Ecore.ecore#//EModelElement">
+  <eClassifiers xsi:type="ecore:EClass" name="StereotypableElement" abstract="true">
     <eOperations name="applyStereotype">
       <eParameters name="stereotype" lowerBound="1" eType="ecore:EClass ../../org.modelversioning.emfprofile/model/emfprofiles.ecore#//Stereotype"/>
     </eOperations>

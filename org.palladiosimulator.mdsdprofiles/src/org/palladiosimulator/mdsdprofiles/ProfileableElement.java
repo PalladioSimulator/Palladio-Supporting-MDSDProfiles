@@ -16,6 +16,7 @@ import org.modelversioning.emfprofileapplication.ProfileApplication;
  * @generated
  */
 public interface ProfileableElement extends StereotypableElement {
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *

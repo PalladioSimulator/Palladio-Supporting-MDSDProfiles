@@ -8,9 +8,14 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.emf.ecore.provider.EModelElementItemProvider;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
@@ -22,7 +27,8 @@ import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
  * 
  * @generated
  */
-public class StereotypableElementItemProvider extends EModelElementItemProvider {
+public class StereotypableElementItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
@@ -62,8 +68,8 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
                 this.getString("_UI_StereotypableElement_profileableElement_feature"), this.getString(
                         "_UI_PropertyDescriptor_description", "_UI_StereotypableElement_profileableElement_feature",
                         "_UI_StereotypableElement_type"),
-                MdsdprofilesPackage.Literals.STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT, false, false, false, null,
-                null, null));
+                        MdsdprofilesPackage.Literals.STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT, false, false, false, null,
+                        null, null));
     }
 
     /**
@@ -81,7 +87,7 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
      * This handles model notifications by calling {@link #updateChildren} to update any cached
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}
      * . <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -89,7 +95,7 @@ public class StereotypableElementItemProvider extends EModelElementItemProvider 
         this.updateChildren(notification);
 
         if (notification instanceof MDSDProfilesNotifier) {
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }
 

@@ -31,8 +31,6 @@ import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
  * <p>
  * </p>
  *
- * @author Sebastian Lehrig
- * 
  * @generated
  */
 public class ProfileableElementImpl extends StereotypableElementImpl implements ProfileableElement {
@@ -123,7 +121,7 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
     }
 
     private ProfileApplication ensureProfileApplicationExists() {
-        final ProfileApplication profileApplication = queryProfileApplication();
+        final ProfileApplication profileApplication = this.queryProfileApplication();
 
         if (profileApplication != null) {
             return profileApplication;
@@ -147,7 +145,7 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
      */
     @Override
     public boolean hasProfileApplication() {
-        return queryProfileApplication() != null;
+        return this.queryProfileApplication() != null;
     }
 
     /**
@@ -157,7 +155,7 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
      */
     @Override
     public ProfileApplication getProfileApplication() {
-        final ProfileApplication profileApplication = queryProfileApplication();
+        final ProfileApplication profileApplication = this.queryProfileApplication();
 
         if (profileApplication == null) {
             throw new RuntimeException("GetProfileApplication failed: Element of type \"" + this.getClass().getName()
