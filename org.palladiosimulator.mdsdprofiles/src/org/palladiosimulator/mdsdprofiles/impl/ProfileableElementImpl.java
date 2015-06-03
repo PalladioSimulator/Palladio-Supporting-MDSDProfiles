@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -19,7 +18,6 @@ import org.modelversioning.emfprofileapplication.ProfileApplication;
 import org.modelversioning.emfprofileapplication.ProfileImport;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 import org.modelversioning.emfprofileapplication.util.ProfileImportResolver;
-import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
 import org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage;
 import org.palladiosimulator.mdsdprofiles.ProfileableElement;
 import org.palladiosimulator.mdsdprofiles.StereotypableElement;
@@ -181,17 +179,6 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
             }
         }
         return profileApplication;
-    }
-
-    private ProfileApplication getProfileApplicationForURI(final String profileApplicationURI) {
-        final URI objectURI = URI.createURI(profileApplicationURI);
-
-        if (objectURI.isRelative()) {
-            return (ProfileApplication) this.eResource().getEObject(objectURI.fragment());
-        } else {
-            return (ProfileApplication) EMFLoadHelper.loadAndResolveEObject(this.getProfileApplicationResource()
-                    .getResourceSet(), objectURI);
-        }
     }
 
     /**
