@@ -10,7 +10,8 @@ import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 
 /**
- * An adapter factory for stereotypable elements.
+ * An adapter factory for stereotypable elements. Takes care of firing notifications about
+ * stereotype apply and unapply operations, e.g., needed for label updates within viewers.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */
