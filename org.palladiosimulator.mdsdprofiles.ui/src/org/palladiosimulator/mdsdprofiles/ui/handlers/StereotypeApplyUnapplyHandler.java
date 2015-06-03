@@ -1,11 +1,14 @@
 package org.palladiosimulator.mdsdprofiles.ui.handlers;
 
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.modelversioning.emfprofile.Stereotype;
 import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 import org.palladiosimulator.mdsdprofiles.ui.Activator;
 import org.palladiosimulator.mdsdprofiles.ui.commands.UpdateStereotypeElementsCommand;
@@ -30,11 +33,14 @@ public class StereotypeApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
             return;
         }
 
+        // FIXME
+        final List<Stereotype> choiceOfValues = stereotypeableElement.getApplicableStereotypes();
+        choiceOfValues.removeAll(stereotypeableElement.getAppliedStereotypes());
+
         final UpdateStereotypeElementsCommand command = UpdateStereotypeElementsCommand.create(
                 stereotypeableElement,
                 getUpdatedProfileElementsFromDialog(event, stereotypeableElement,
-                        stereotypeableElement.getAppliedStereotypes(),
-                        stereotypeableElement.getApplicableStereotypes(), "Select Profile to be applied"));
+                        stereotypeableElement.getAppliedStereotypes(), choiceOfValues, "Select Profile to be applied"));
 
         getEditingDomainFor(stereotypeableElement).getCommandStack().execute(command);
     }

@@ -7,13 +7,14 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.registry.IProfileRegistry;
 import org.modelversioning.emfprofileapplication.EMFProfileApplicationFactory;
+import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
 import org.modelversioning.emfprofileapplication.ProfileApplication;
 import org.modelversioning.emfprofileapplication.ProfileImport;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
@@ -35,9 +36,6 @@ import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
  * @generated
  */
 public class ProfileableElementImpl extends StereotypableElementImpl implements ProfileableElement {
-
-    private static final String PROFILE_APPLICATION_URI = "profileApplicationURI";
-    private static final String HTTP_PALLADIOSIMULATOR_ORG_MDSD_PROFILES_PROFILE_APPLICATION_1_0 = "http://palladiosimulator.org/MDSDProfiles/ProfileApplication/1.0";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -125,37 +123,21 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
     }
 
     private ProfileApplication ensureProfileApplicationExists() {
-        final EAnnotation profileApplicationAnnotation = this.ensureProfileAnnotationExists();
+        final ProfileApplication profileApplication = queryProfileApplication();
 
-        if (profileApplicationAnnotation.getDetails().get(PROFILE_APPLICATION_URI) == null) {
-            final ProfileApplication newProfileApplication = EMFProfileApplicationFactory.eINSTANCE
-                    .createProfileApplication();
-
-            this.getProfileApplicationResource().getContents().add(newProfileApplication);
-
-            // FIXME use relative URI instead of getResourceURI(...) result [Lehrig]
-            profileApplicationAnnotation.getDetails().put(PROFILE_APPLICATION_URI,
-                    EMFLoadHelper.getResourceURI(newProfileApplication));
+        if (profileApplication != null) {
+            return profileApplication;
         }
 
-        return this.getProfileApplication();
+        final ProfileApplication newProfileApplication = EMFProfileApplicationFactory.eINSTANCE
+                .createProfileApplication();
+        this.getProfileApplicationResource().getContents().add(newProfileApplication);
+
+        return newProfileApplication;
     }
 
     private Resource getProfileApplicationResource() {
         return this.eResource();
-    }
-
-    private EAnnotation ensureProfileAnnotationExists() {
-        if (!this.hasProfileApplication()) {
-            final EAnnotation eAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
-            eAnnotation.setSource(HTTP_PALLADIOSIMULATOR_ORG_MDSD_PROFILES_PROFILE_APPLICATION_1_0);
-            this.getEAnnotations().add(eAnnotation);
-        }
-        return this.getProfileApplicationAnnotation();
-    }
-
-    private EAnnotation getProfileApplicationAnnotation() {
-        return this.getEAnnotation(HTTP_PALLADIOSIMULATOR_ORG_MDSD_PROFILES_PROFILE_APPLICATION_1_0);
     }
 
     /**
@@ -165,7 +147,7 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
      */
     @Override
     public boolean hasProfileApplication() {
-        return this.getProfileApplicationAnnotation() != null;
+        return queryProfileApplication() != null;
     }
 
     /**
@@ -175,15 +157,12 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
      */
     @Override
     public ProfileApplication getProfileApplication() {
-        if (!this.hasProfileApplication()) {
+        final ProfileApplication profileApplication = queryProfileApplication();
+
+        if (profileApplication == null) {
             throw new RuntimeException("GetProfileApplication failed: Element of type \"" + this.getClass().getName()
                     + "\" has no profile application!");
         }
-
-        final EAnnotation profileApplicationAnnotation = this.getProfileApplicationAnnotation();
-        final String profileApplicationURI = profileApplicationAnnotation.getDetails().get(PROFILE_APPLICATION_URI);
-        final ProfileApplication profileApplication = (ProfileApplication) EMFLoadHelper.loadAndResolveEObject(this
-                .getProfileApplicationResource().getResourceSet(), profileApplicationURI);
 
         for (final ProfileImport profileImport : profileApplication.getImportedProfiles()) {
             if (profileImport.getProfile() == null) {
@@ -192,6 +171,29 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
         }
 
         return profileApplication;
+    }
+
+    private ProfileApplication queryProfileApplication() {
+        ProfileApplication profileApplication = null;
+
+        for (final EObject eObject : this.eResource().getContents()) {
+            if (eObject.eClass() == EMFProfileApplicationPackage.eINSTANCE.getProfileApplication()) {
+                profileApplication = (ProfileApplication) eObject;
+                break;
+            }
+        }
+        return profileApplication;
+    }
+
+    private ProfileApplication getProfileApplicationForURI(final String profileApplicationURI) {
+        final URI objectURI = URI.createURI(profileApplicationURI);
+
+        if (objectURI.isRelative()) {
+            return (ProfileApplication) this.eResource().getEObject(objectURI.fragment());
+        } else {
+            return (ProfileApplication) EMFLoadHelper.loadAndResolveEObject(this.getProfileApplicationResource()
+                    .getResourceSet(), objectURI);
+        }
     }
 
     /**
@@ -275,6 +277,5 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
 
     private void removeProfileApplication() {
         this.getProfileApplicationResource().getContents().remove(this.getProfileApplication());
-        this.getEAnnotations().remove(this.getProfileApplicationAnnotation());
     }
 } // ProfileableElementImpl
