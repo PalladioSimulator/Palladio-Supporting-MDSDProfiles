@@ -40,6 +40,8 @@ import org.palladiosimulator.mdsdprofiles.StereotypableElement;
  * </ul>
  * </p>
  *
+ * @author Sebastian Lehrig
+ *
  * @generated
  */
 public abstract class StereotypableElementImpl extends EModelElementImpl implements StereotypableElement {

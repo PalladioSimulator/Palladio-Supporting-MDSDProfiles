@@ -29,9 +29,12 @@ import org.palladiosimulator.mdsdprofiles.StereotypableElement;
  * <p>
  * </p>
  *
+ * @author Sebastian Lehrig
+ * 
  * @generated
  */
 public class ProfileableElementImpl extends StereotypableElementImpl implements ProfileableElement {
+
     private static final String PROFILE_APPLICATION_URI = "profileApplicationURI";
     private static final String HTTP_PALLADIOSIMULATOR_ORG_MDSD_PROFILES_PROFILE_APPLICATION_1_0 = "http://palladiosimulator.org/MDSDProfiles/ProfileApplication/1.0";
 
