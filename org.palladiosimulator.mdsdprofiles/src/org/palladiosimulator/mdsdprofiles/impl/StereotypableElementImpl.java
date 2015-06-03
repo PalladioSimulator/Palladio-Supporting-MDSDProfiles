@@ -2,21 +2,24 @@
  */
 package org.palladiosimulator.mdsdprofiles.impl;
 
+import java.awt.print.Book;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.EModelElementImpl;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
+import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
 import org.modelversioning.emfprofileapplication.ProfileApplication;
 import org.modelversioning.emfprofileapplication.ProfileImport;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
@@ -40,7 +43,50 @@ import org.palladiosimulator.mdsdprofiles.StereotypableElement;
  * @generated
  */
 public abstract class StereotypableElementImpl extends EModelElementImpl implements StereotypableElement {
-    private static final String HTTP_PALLADIOSIMULATOR_ORG_MDSD_PROFILES_STEREOTYPE_APPLICATION_1_0 = "http://palladiosimulator.org/MDSDProfiles/StereotypeApplication/1.0";
+
+    /**
+     * This cross referencer finds, for a given stereotypable element, its stereotype applications.
+     * 
+     * @see Book "Eclipse Modeling Framework: A Developer's Guide" chapter
+     *      "13.5.3 Using Cross Referencers"
+     * 
+     * @author Sebastian Lehrig
+     */
+    private final class StereotypeApplicationCrossReferencer extends EcoreUtil.UsageCrossReferencer {
+
+        private static final long serialVersionUID = -5714219655560791971L;
+
+        private StereotypeApplicationCrossReferencer(final Resource resource) {
+            super(resource);
+        }
+
+        @Override
+        protected boolean crossReference(final EObject eObject, final EReference eReference,
+                final EObject crossReferencedObject) {
+            return StereotypableElementImpl.this == crossReferencedObject
+                    && eReference == EMFProfileApplicationPackage.eINSTANCE.getStereotypeApplication_AppliedTo();
+        }
+
+        @Override
+        protected boolean containment(final EObject eObject) {
+            return !(eObject instanceof ProfileableElement);
+        }
+
+        @Override
+        public Collection<Setting> findUsage(final EObject eObject) {
+            return super.findUsage(eObject);
+        }
+
+        public EList<StereotypeApplication> findStereotypeApplications(final EObject eObject) {
+            final EList<StereotypeApplication> stereotypeApplications = new BasicEList<StereotypeApplication>();
+
+            for (final Setting setting : findUsage(eObject)) {
+                stereotypeApplications.add((StereotypeApplication) setting.getEObject());
+            }
+
+            return stereotypeApplications;
+        }
+    }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -115,28 +161,12 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
 
         final StereotypeApplication newStereotypeApplication = (StereotypeApplication) stereotype.getEPackage()
                 .getEFactoryInstance().create(stereotype);
-        // final StereotypeApplication newStereotypeApplication =
-        // EMFProfileApplicationFactory.eINSTANCE.createStereotypeApplication();
+
         newStereotypeApplication.setAppliedTo(this);
-        // TODO is the next operation save? necessary? [Lehrig]
         newStereotypeApplication.setExtension(stereotype.getApplicableExtensions(this).get(0));
 
         final ProfileApplication profileApplication = profileableElement.getProfileApplication();
         profileApplication.getStereotypeApplications().add(newStereotypeApplication);
-
-        final EAnnotation stereotypeApplicationAnnotation = this.ensureStereotypeAnnotationExists();
-        // FIXME use relative URI instead of getResourceURI(...) result [Lehrig]
-        stereotypeApplicationAnnotation.getDetails().put(EMFLoadHelper.getResourceURI(stereotype),
-                EMFLoadHelper.getResourceURI(newStereotypeApplication));
-    }
-
-    private EAnnotation ensureStereotypeAnnotationExists() {
-        if (!this.hasStereotypeApplications()) {
-            final EAnnotation eAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
-            eAnnotation.setSource(HTTP_PALLADIOSIMULATOR_ORG_MDSD_PROFILES_STEREOTYPE_APPLICATION_1_0);
-            this.getEAnnotations().add(eAnnotation);
-        }
-        return this.getStereotypeApplicationAnnotation();
     }
 
     /**
@@ -267,7 +297,7 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
      */
     @Override
     public boolean hasStereotypeApplications() {
-        return this.getStereotypeApplicationAnnotation() != null;
+        return !new StereotypeApplicationCrossReferencer(this.eResource()).findUsage(this).isEmpty();
     }
 
     /**
@@ -334,18 +364,7 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
             return stereotypeApplications;
         }
 
-        final EAnnotation stereotypeApplicationAnnotation = this.getStereotypeApplicationAnnotation();
-        final Collection<String> stereotypeApplicationURIs = stereotypeApplicationAnnotation.getDetails().values();
-        for (final String stereotypeApplicationURI : stereotypeApplicationURIs) {
-            stereotypeApplications.add((StereotypeApplication) EMFLoadHelper.loadAndResolveEObject(this
-                    .getProfileApplicationResource().getResourceSet(), stereotypeApplicationURI));
-        }
-
-        return stereotypeApplications;
-    }
-
-    private EAnnotation getStereotypeApplicationAnnotation() {
-        return this.getEAnnotation(HTTP_PALLADIOSIMULATOR_ORG_MDSD_PROFILES_STEREOTYPE_APPLICATION_1_0);
+        return new StereotypeApplicationCrossReferencer(this.eResource()).findStereotypeApplications(this);
     }
 
     /**
@@ -433,12 +452,6 @@ public abstract class StereotypableElementImpl extends EModelElementImpl impleme
 
         final StereotypeApplication stereotypeApplication = this.getStereotypeApplication(stereotype);
         stereotypeApplication.getProfileApplication().getStereotypeApplications().remove(stereotypeApplication);
-
-        this.getStereotypeApplicationAnnotation().getDetails().removeKey(EMFLoadHelper.getResourceURI(stereotype));
-
-        if (this.getStereotypeApplicationAnnotation().getDetails().size() == 0) {
-            this.getEAnnotations().remove(this.getStereotypeApplicationAnnotation());
-        }
     }
 
     /**
