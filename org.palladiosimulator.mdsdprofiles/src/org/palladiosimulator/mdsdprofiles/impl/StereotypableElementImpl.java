@@ -311,6 +311,7 @@ public abstract class StereotypableElementImpl extends MinimalEObjectImpl.Contai
     @Override
     public EList<Stereotype> getApplicableStereotypes() {
         final EList<Stereotype> applicableStereotypes = new BasicEList<Stereotype>();
+
         for (final ProfileImport profileImport : this.getProfileImports()) {
             applicableStereotypes.addAll(profileImport.getProfile().getApplicableStereotypes(this.eClass()));
         }
@@ -426,11 +427,11 @@ public abstract class StereotypableElementImpl extends MinimalEObjectImpl.Contai
     @Override
     public EList<Stereotype> getAppliedStereotypes() {
         final EList<Stereotype> appliedStereotypes = new BasicEList<Stereotype>();
-        if (this.hasStereotypeApplications()) {
-            for (final StereotypeApplication stereotypeApplication : this.getStereotypeApplications()) {
-                appliedStereotypes.add(stereotypeApplication.getExtension().getSource());
-            }
+
+        for (final StereotypeApplication stereotypeApplication : this.getStereotypeApplications()) {
+            appliedStereotypes.add(stereotypeApplication.getExtension().getSource());
         }
+
         return appliedStereotypes;
     }
 
