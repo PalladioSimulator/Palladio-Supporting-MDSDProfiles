@@ -2,6 +2,9 @@ package org.palladiosimulator.mdsdprofiles.ui.handlers;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
+import org.modelversioning.emfprofile.Profile;
 import org.palladiosimulator.mdsdprofiles.ProfileableElement;
 import org.palladiosimulator.mdsdprofiles.ui.commands.UpdateProfileElementsCommand;
 
@@ -18,13 +21,13 @@ public class ProfileApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
     @Override
     protected void applyUnapplyStateChanged(final ExecutionEvent event) throws ExecutionException {
         final ProfileableElement profileableElement = getTargetElement(event);
+        final EList<Profile> updatedProfiles = getUpdatedProfileElementsFromDialog(event, profileableElement,
+                profileableElement.getAppliedProfiles(), profileableElement.getApplicableProfiles(),
+                SELECT_PROFILE_TO_BE_APPLIED);
 
-        final UpdateProfileElementsCommand command = UpdateProfileElementsCommand.create(
-                profileableElement,
-                getUpdatedProfileElementsFromDialog(event, profileableElement, profileableElement.getAppliedProfiles(),
-                        profileableElement.getApplicableProfiles(), SELECT_PROFILE_TO_BE_APPLIED));
-
-        getEditingDomainFor(profileableElement).getCommandStack().execute(command);
+        if (updatedProfiles != null) {
+            final Command command = UpdateProfileElementsCommand.create(profileableElement, updatedProfiles);
+            getEditingDomainFor(profileableElement).getCommandStack().execute(command);
+        }
     }
-
 }

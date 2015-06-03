@@ -7,6 +7,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.modelversioning.emfprofile.Stereotype;
@@ -42,11 +44,12 @@ public class StereotypeApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
             }
         }
 
-        final UpdateStereotypeElementsCommand command = UpdateStereotypeElementsCommand.create(
-                stereotypeableElement,
-                getUpdatedProfileElementsFromDialog(event, stereotypeableElement, currentValues, choiceOfValues,
-                        "Select Profile to be applied"));
+        final EList<Stereotype> updatedStereotypes = getUpdatedProfileElementsFromDialog(event, stereotypeableElement,
+                currentValues, choiceOfValues, "Select Profile to be applied");
 
-        getEditingDomainFor(stereotypeableElement).getCommandStack().execute(command);
+        if (updatedStereotypes != null) {
+            final Command command = UpdateStereotypeElementsCommand.create(stereotypeableElement, updatedStereotypes);
+            getEditingDomainFor(stereotypeableElement).getCommandStack().execute(command);
+        }
     }
 }
