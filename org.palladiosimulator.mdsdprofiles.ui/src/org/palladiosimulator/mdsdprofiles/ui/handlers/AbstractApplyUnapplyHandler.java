@@ -5,7 +5,6 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -37,18 +36,15 @@ public abstract class AbstractApplyUnapplyHandler extends AbstractHandler {
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        if (applyUnapplyStateChanged(event)) {
-            // FIXME Set the editor dirty instead of directly saving [Lehrig]
-            HandlerUtil.getActiveEditorChecked(event).doSave(new NullProgressMonitor());
-        }
+        applyUnapplyStateChanged(event);
 
         return null;
     }
 
-    protected abstract boolean applyUnapplyStateChanged(final ExecutionEvent event) throws ExecutionException;
+    protected abstract void applyUnapplyStateChanged(final ExecutionEvent event) throws ExecutionException;
 
     private static ILabelProvider getLabelProvider() {
-        EMFProfileItemProviderAdapterFactory adapterFactory = new EMFProfileItemProviderAdapterFactory();
+        final EMFProfileItemProviderAdapterFactory adapterFactory = new EMFProfileItemProviderAdapterFactory();
         return new AdapterFactoryLabelProvider(adapterFactory);
     }
 

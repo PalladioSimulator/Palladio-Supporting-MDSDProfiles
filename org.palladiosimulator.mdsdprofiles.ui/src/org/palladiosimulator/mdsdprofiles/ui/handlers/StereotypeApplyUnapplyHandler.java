@@ -8,6 +8,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 import org.palladiosimulator.mdsdprofiles.ui.Activator;
+import org.palladiosimulator.mdsdprofiles.ui.commands.UpdateStereotypeElementsCommand;
 
 /**
  * Handles apply and unapply operations of stereotypes to stereotypable elements via an
@@ -18,7 +19,7 @@ import org.palladiosimulator.mdsdprofiles.ui.Activator;
 public class StereotypeApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
 
     @Override
-    protected boolean applyUnapplyStateChanged(ExecutionEvent event) throws ExecutionException {
+    protected void applyUnapplyStateChanged(final ExecutionEvent event) throws ExecutionException {
         final StereotypableElement stereotypeableElement = getTargetElement(event);
 
         if (stereotypeableElement.getProfileableElement() == null
@@ -26,11 +27,15 @@ public class StereotypeApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
             final Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "No MDSD Profile applied", null);
             ErrorDialog.openError(HandlerUtil.getActiveShellChecked(event), "MDSD Profiles: Error",
                     "To apply stereotypes, at least one MDSD Profile has to be applied first to the root node", status);
-            return false;
+            return;
         }
 
-        return stereotypeableElement.updateStereotypeApplications(getUpdatedProfileElementsFromDialog(event,
-                stereotypeableElement, stereotypeableElement.getAppliedStereotypes(),
-                stereotypeableElement.getApplicableStereotypes(), "Select Profile to be applied"));
+        final UpdateStereotypeElementsCommand command = UpdateStereotypeElementsCommand.create(
+                stereotypeableElement,
+                getUpdatedProfileElementsFromDialog(event, stereotypeableElement,
+                        stereotypeableElement.getAppliedStereotypes(),
+                        stereotypeableElement.getApplicableStereotypes(), "Select Profile to be applied"));
+
+        getEditingDomainFor(stereotypeableElement).getCommandStack().execute(command);
     }
 }
