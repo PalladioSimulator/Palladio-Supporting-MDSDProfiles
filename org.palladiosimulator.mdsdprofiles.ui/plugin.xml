@@ -35,15 +35,6 @@
                   label="Apply/Unapply Profiles"
                   style="push"
                   tooltip="Configure profile applications">
-               <visibleWhen
-                     checkEnabled="false">
-                  <iterate
-                        ifEmpty="false">
-                     <instanceof
-                           value="org.palladiosimulator.mdsdprofiles.ProfileableElement">
-                     </instanceof>
-                  </iterate>
-               </visibleWhen>
             </command>
             <command
                   commandId="org.palladiosimulator.mdsdprofiles.ui.commands.ApplyUnapplyStereotypes"
@@ -56,7 +47,7 @@
                <iterate
                      ifEmpty="false">
                   <instanceof
-                        value="org.palladiosimulator.mdsdprofiles.StereotypableElement">
+                        value="org.eclipse.emf.ecore.EObject">
                   </instanceof>
                </iterate>
             </visibleWhen>

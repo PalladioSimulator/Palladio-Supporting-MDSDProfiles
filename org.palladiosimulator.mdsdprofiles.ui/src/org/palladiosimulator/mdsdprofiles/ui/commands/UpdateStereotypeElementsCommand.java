@@ -5,24 +5,25 @@ import java.util.Collections;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.ChangeCommand;
 import org.modelversioning.emfprofile.Stereotype;
-import org.palladiosimulator.mdsdprofiles.StereotypableElement;
+import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
 
 public class UpdateStereotypeElementsCommand extends ChangeCommand {
 
-    private final StereotypableElement stereotypableElement;
+    private final EObject stereotypedElement;
     private final EList<Stereotype> updatedStereotypeElements;
 
-    private UpdateStereotypeElementsCommand(final Notifier notifier, final StereotypableElement stereotypableElement,
+    private UpdateStereotypeElementsCommand(final Notifier notifier, final EObject stereotypedElement,
             final EList<Stereotype> updatedStereotypeableElements) {
         super(notifier);
 
-        this.stereotypableElement = stereotypableElement;
+        this.stereotypedElement = stereotypedElement;
         this.updatedStereotypeElements = updatedStereotypeableElements;
     }
 
-    public static UpdateStereotypeElementsCommand create(final StereotypableElement stereotypableElement,
+    public static UpdateStereotypeElementsCommand create(final EObject stereotypableElement,
             final EList<Stereotype> updatedStereotypableElements) {
         return new UpdateStereotypeElementsCommand(stereotypableElement.eResource(), stereotypableElement,
                 updatedStereotypableElements);
@@ -30,7 +31,7 @@ public class UpdateStereotypeElementsCommand extends ChangeCommand {
 
     @Override
     protected void doExecute() {
-        this.stereotypableElement.updateStereotypeApplications(this.updatedStereotypeElements);
+        StereotypeAPI.updateStereotypeApplications(this.stereotypedElement, this.updatedStereotypeElements);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class UpdateStereotypeElementsCommand extends ChangeCommand {
 
     @Override
     public Collection<?> getAffectedObjects() {
-        return Collections.singleton(this.stereotypableElement);
+        return Collections.singleton(this.stereotypedElement);
     }
 
 }

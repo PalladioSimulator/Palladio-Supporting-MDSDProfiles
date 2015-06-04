@@ -1,36 +1,32 @@
 package org.palladiosimulator.mdsdprofiles.ui.commands;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.ChangeCommand;
 import org.modelversioning.emfprofile.Profile;
-import org.palladiosimulator.mdsdprofiles.ProfileableElement;
+import org.palladiosimulator.mdsdprofiles.api.ProfileAPI;
 
 public class UpdateProfileElementsCommand extends ChangeCommand {
 
-    private final ProfileableElement profileableElement;
+    private final Resource profileApplicationStore;
     private final EList<Profile> updatedProfileElements;
 
-    private UpdateProfileElementsCommand(final Notifier notifier, final ProfileableElement profileableElement,
+    private UpdateProfileElementsCommand(final Resource profileApplicationStore,
             final EList<Profile> updatedProfileElements) {
-        super(notifier);
+        super(profileApplicationStore);
 
-        this.profileableElement = profileableElement;
+        this.profileApplicationStore = profileApplicationStore;
         this.updatedProfileElements = updatedProfileElements;
     }
 
-    public static UpdateProfileElementsCommand create(final ProfileableElement profileableElement,
+    public static UpdateProfileElementsCommand create(final Resource profileApplicationStore,
             final EList<Profile> updatedProfileElements) {
-        return new UpdateProfileElementsCommand(profileableElement.eResource(), profileableElement,
-                updatedProfileElements);
+        return new UpdateProfileElementsCommand(profileApplicationStore, updatedProfileElements);
     }
 
     @Override
     protected void doExecute() {
-        this.profileableElement.updateProfileApplications(this.updatedProfileElements);
+        ProfileAPI.updateProfileApplications(this.profileApplicationStore, this.updatedProfileElements);
     }
 
     @Override
@@ -42,10 +38,4 @@ public class UpdateProfileElementsCommand extends ChangeCommand {
     public String getDescription() {
         return "Configure profile applications";
     }
-
-    @Override
-    public Collection<?> getAffectedObjects() {
-        return Collections.singleton(this.profileableElement);
-    }
-
 }

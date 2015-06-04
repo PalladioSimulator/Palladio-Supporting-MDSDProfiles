@@ -9,11 +9,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.modelversioning.emfprofile.Stereotype;
-import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 import org.palladiosimulator.mdsdprofiles.api.ProfileAPI;
+import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
 import org.palladiosimulator.mdsdprofiles.ui.Activator;
 import org.palladiosimulator.mdsdprofiles.ui.commands.UpdateStereotypeElementsCommand;
 
@@ -27,29 +28,29 @@ public class StereotypeApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
 
     @Override
     protected void applyUnapplyStateChanged(final ExecutionEvent event) throws ExecutionException {
-        final StereotypableElement stereotypeableElement = getTargetElement(event);
+        final EObject stereotypedElement = getTargetElement(event);
 
-        if (!ProfileAPI.hasProfileApplication(stereotypeableElement.eResource())) {
+        if (!ProfileAPI.hasProfileApplication(stereotypedElement.eResource())) {
             final Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "No MDSD Profile applied", null);
             ErrorDialog.openError(HandlerUtil.getActiveShellChecked(event), "MDSD Profiles: Error",
                     "To apply stereotypes, at least one MDSD Profile has to be applied first to the root node", status);
             return;
         }
 
-        final List<Stereotype> choiceOfValues = stereotypeableElement.getApplicableStereotypes();
+        final List<Stereotype> choiceOfValues = StereotypeAPI.getApplicableStereotypes(stereotypedElement);
         final List<Stereotype> currentValues = new LinkedList<Stereotype>();
         for (final Stereotype applicableStereotype : choiceOfValues) {
-            if (stereotypeableElement.isStereotypeApplied(applicableStereotype)) {
+            if (StereotypeAPI.isStereotypeApplied(stereotypedElement, applicableStereotype)) {
                 currentValues.add(applicableStereotype);
             }
         }
 
-        final EList<Stereotype> updatedStereotypes = getUpdatedProfileElementsFromDialog(event, stereotypeableElement,
+        final EList<Stereotype> updatedStereotypes = getUpdatedProfileElementsFromDialog(event, stereotypedElement,
                 currentValues, choiceOfValues, "Select Profile to be applied");
 
         if (updatedStereotypes != null) {
-            final Command command = UpdateStereotypeElementsCommand.create(stereotypeableElement, updatedStereotypes);
-            getEditingDomainFor(stereotypeableElement).getCommandStack().execute(command);
+            final Command command = UpdateStereotypeElementsCommand.create(stereotypedElement, updatedStereotypes);
+            getEditingDomainFor(stereotypedElement).getCommandStack().execute(command);
         }
     }
 }
