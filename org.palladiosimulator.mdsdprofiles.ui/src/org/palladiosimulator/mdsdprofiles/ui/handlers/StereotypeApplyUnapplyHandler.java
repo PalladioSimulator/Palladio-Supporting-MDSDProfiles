@@ -13,6 +13,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.modelversioning.emfprofile.Stereotype;
 import org.palladiosimulator.mdsdprofiles.StereotypableElement;
+import org.palladiosimulator.mdsdprofiles.api.ProfileAPI;
 import org.palladiosimulator.mdsdprofiles.ui.Activator;
 import org.palladiosimulator.mdsdprofiles.ui.commands.UpdateStereotypeElementsCommand;
 
@@ -28,8 +29,7 @@ public class StereotypeApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
     protected void applyUnapplyStateChanged(final ExecutionEvent event) throws ExecutionException {
         final StereotypableElement stereotypeableElement = getTargetElement(event);
 
-        if (stereotypeableElement.getProfileableElement() == null
-                || !stereotypeableElement.getProfileableElement().hasProfileApplication()) {
+        if (!ProfileAPI.hasProfileApplication(stereotypeableElement.eResource())) {
             final Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "No MDSD Profile applied", null);
             ErrorDialog.openError(HandlerUtil.getActiveShellChecked(event), "MDSD Profiles: Error",
                     "To apply stereotypes, at least one MDSD Profile has to be applied first to the root node", status);

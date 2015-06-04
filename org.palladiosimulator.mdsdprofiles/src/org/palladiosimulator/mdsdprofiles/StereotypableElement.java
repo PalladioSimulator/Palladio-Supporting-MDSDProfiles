@@ -12,35 +12,12 @@ import org.modelversioning.emfprofileapplication.StereotypeApplication;
  * <!-- begin-user-doc --> A representation of the model object '
  * <em><b>Stereotypable Element</b></em>'. <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link org.palladiosimulator.mdsdprofiles.StereotypableElement#getProfileableElement <em>
- * Profileable Element</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage#getStereotypableElement()
  * @model abstract="true"
  * @generated
  */
 public interface StereotypableElement extends EObject {
-
-    /**
-     * Returns the value of the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
-     * -->
-     * <p>
-     * If the meaning of the '<em>Profileable Element</em>' reference isn't clear, there really
-     * should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Profileable Element</em>' reference.
-     * @see org.palladiosimulator.mdsdprofiles.MdsdprofilesPackage#getStereotypableElement_ProfileableElement()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
-     * @generated
-     */
-    ProfileableElement getProfileableElement();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

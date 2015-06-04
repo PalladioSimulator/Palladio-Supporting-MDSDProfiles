@@ -4,7 +4,6 @@ package org.palladiosimulator.mdsdprofiles;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains accessors for the meta
@@ -53,17 +52,6 @@ public interface MdsdprofilesPackage extends EPackage {
 
     /**
      * The meta object id for the '
-     * {@link org.palladiosimulator.mdsdprofiles.impl.ProfileableElementImpl
-     * <em>Profileable Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.palladiosimulator.mdsdprofiles.impl.ProfileableElementImpl
-     * @see org.palladiosimulator.mdsdprofiles.impl.MdsdprofilesPackageImpl#getProfileableElement()
-     * @generated
-     */
-    int PROFILEABLE_ELEMENT = 0;
-
-    /**
-     * The meta object id for the '
      * {@link org.palladiosimulator.mdsdprofiles.impl.StereotypableElementImpl
      * <em>Stereotypable Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -74,31 +62,24 @@ public interface MdsdprofilesPackage extends EPackage {
     int STEREOTYPABLE_ELEMENT = 1;
 
     /**
-     * The feature id for the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT = 0;
-
-    /**
      * The number of structural features of the '<em>Stereotypable Element</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int STEREOTYPABLE_ELEMENT_FEATURE_COUNT = 1;
+    int STEREOTYPABLE_ELEMENT_FEATURE_COUNT = 0;
 
     /**
-     * The feature id for the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The meta object id for the '
+     * {@link org.palladiosimulator.mdsdprofiles.impl.ProfileableElementImpl
+     * <em>Profileable Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see org.palladiosimulator.mdsdprofiles.impl.ProfileableElementImpl
+     * @see org.palladiosimulator.mdsdprofiles.impl.MdsdprofilesPackageImpl#getProfileableElement()
      * @generated
-     * @ordered
      */
-    int PROFILEABLE_ELEMENT__PROFILEABLE_ELEMENT = STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT;
+    int PROFILEABLE_ELEMENT = 0;
 
     /**
      * The number of structural features of the '<em>Profileable Element</em>' class. <!--
@@ -130,18 +111,6 @@ public interface MdsdprofilesPackage extends EPackage {
      * @generated
      */
     EClass getStereotypableElement();
-
-    /**
-     * Returns the meta object for the reference '
-     * {@link org.palladiosimulator.mdsdprofiles.StereotypableElement#getProfileableElement
-     * <em>Profileable Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the reference '<em>Profileable Element</em>'.
-     * @see org.palladiosimulator.mdsdprofiles.StereotypableElement#getProfileableElement()
-     * @see #getStereotypableElement()
-     * @generated
-     */
-    EReference getStereotypableElement_ProfileableElement();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
@@ -176,7 +145,6 @@ public interface MdsdprofilesPackage extends EPackage {
          * @generated
          */
         EClass PROFILEABLE_ELEMENT = eINSTANCE.getProfileableElement();
-
         /**
          * The meta object literal for the '
          * {@link org.palladiosimulator.mdsdprofiles.impl.StereotypableElementImpl
@@ -187,14 +155,6 @@ public interface MdsdprofilesPackage extends EPackage {
          * @generated
          */
         EClass STEREOTYPABLE_ELEMENT = eINSTANCE.getStereotypableElement();
-
-        /**
-         * The meta object literal for the '<em><b>Profileable Element</b></em>' reference feature.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT = eINSTANCE.getStereotypableElement_ProfileableElement();
 
     }
 

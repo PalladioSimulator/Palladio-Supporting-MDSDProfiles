@@ -5,7 +5,6 @@ package org.palladiosimulator.mdsdprofiles.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.modelversioning.emfprofile.EMFProfilePackage;
 import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
@@ -128,16 +127,6 @@ public class MdsdprofilesPackageImpl extends EPackageImpl implements Mdsdprofile
      * @generated
      */
     @Override
-    public EReference getStereotypableElement_ProfileableElement() {
-        return (EReference) this.stereotypableElementEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public MdsdprofilesFactory getMdsdprofilesFactory() {
         return (MdsdprofilesFactory) this.getEFactoryInstance();
     }
@@ -165,7 +154,6 @@ public class MdsdprofilesPackageImpl extends EPackageImpl implements Mdsdprofile
         this.profileableElementEClass = this.createEClass(PROFILEABLE_ELEMENT);
 
         this.stereotypableElementEClass = this.createEClass(STEREOTYPABLE_ELEMENT);
-        this.createEReference(this.stereotypableElementEClass, STEREOTYPABLE_ELEMENT__PROFILEABLE_ELEMENT);
     }
 
     /**
@@ -234,9 +222,6 @@ public class MdsdprofilesPackageImpl extends EPackageImpl implements Mdsdprofile
 
         this.initEClass(this.stereotypableElementEClass, StereotypableElement.class, "StereotypableElement",
                 IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getStereotypableElement_ProfileableElement(), this.getProfileableElement(), null,
-                "profileableElement", null, 0, 1, StereotypableElement.class, IS_TRANSIENT, IS_VOLATILE,
-                !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         op = this.addEOperation(this.stereotypableElementEClass, null, "applyStereotype", 0, 1, IS_UNIQUE, IS_ORDERED);
         this.addEParameter(op, theEMFProfilePackage.getStereotype(), "stereotype", 1, 1, IS_UNIQUE, IS_ORDERED);
