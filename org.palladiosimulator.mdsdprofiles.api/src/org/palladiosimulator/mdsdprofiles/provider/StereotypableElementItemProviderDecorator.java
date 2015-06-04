@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -18,10 +19,10 @@ import org.eclipse.emf.edit.provider.ItemProviderDecorator;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
-import org.palladiosimulator.mdsdprofiles.StereotypableElement;
+import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
 
 /**
- * Customizes the item provider of stereotypable elements, e.g., to show a custom stereotype string
+ * Customizes the item provider of stereotyped elements, e.g., to show a custom stereotype string
  * with guillemets.
  * 
  * @author Sebastian Lehrig, Steffen Becker
@@ -48,10 +49,10 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
             return super.getText(object);
         }
 
-        final StereotypableElement stereotypableElement = (StereotypableElement) object;
+        final EObject stereotypedElement = (EObject) object;
         final StringBuilder stringBuilder = new StringBuilder();
 
-        for (final Stereotype stereotype : stereotypableElement.getAppliedStereotypes()) {
+        for (final Stereotype stereotype : StereotypeAPI.getApplicableStereotypes(stereotypedElement)) {
             stringBuilder.append("«").append(stereotype.getName()).append("» ");
         }
 
@@ -64,22 +65,22 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
             return super.getPropertyDescriptors(object);
         }
 
-        final StereotypableElement stereotypableElement = (StereotypableElement) object;
+        final EObject stereotypedElement = (EObject) object;
         final List<IItemPropertyDescriptor> propertyDescriptors = new LinkedList<IItemPropertyDescriptor>(
-                super.getPropertyDescriptors(stereotypableElement));
-        addTaggedValuesPropertyDescriptors(propertyDescriptors, stereotypableElement);
+                super.getPropertyDescriptors(stereotypedElement));
+        addTaggedValuesPropertyDescriptors(propertyDescriptors, stereotypedElement);
 
         return propertyDescriptors;
     }
 
-    private boolean notStereotyped(Object object) {
-        return !(object instanceof StereotypableElement)
-                || !((StereotypableElement) object).hasStereotypeApplications();
+    private boolean notStereotyped(final Object object) {
+        return !(object instanceof EObject) || !StereotypeAPI.hasStereotypeApplications((EObject) object);
     }
 
     private void addTaggedValuesPropertyDescriptors(final List<IItemPropertyDescriptor> propertyDescriptors,
-            final StereotypableElement stereotypableElement) {
-        for (final StereotypeApplication stereotypeApplication : stereotypableElement.getStereotypeApplications()) {
+            final EObject stereotypedElement) {
+        for (final StereotypeApplication stereotypeApplication : StereotypeAPI
+                .getStereotypeApplications(stereotypedElement)) {
             final IItemPropertySource stereotypeApplicationPropertySource = (IItemPropertySource) this
                     .getAdapterFactory().adapt(stereotypeApplication, IItemPropertySource.class);
 
@@ -97,7 +98,7 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
     }
 
     @Override
-    public IItemPropertyDescriptor getPropertyDescriptor(Object object, Object propertyId) {
+    public IItemPropertyDescriptor getPropertyDescriptor(final Object object, final Object propertyId) {
         if (notStereotyped(object)) {
             return super.getPropertyDescriptor(object, propertyId);
         }
@@ -117,7 +118,7 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
     }
 
     @Override
-    public void setTarget(Notifier newTarget) {
+    public void setTarget(final Notifier newTarget) {
         ((Adapter) getDecoratedItemProvider()).setTarget(newTarget);
     }
 
