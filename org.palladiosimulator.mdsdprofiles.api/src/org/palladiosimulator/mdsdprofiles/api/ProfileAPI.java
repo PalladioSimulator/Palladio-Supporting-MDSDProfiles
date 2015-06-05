@@ -47,6 +47,27 @@ public final class ProfileAPI {
                 MDSDProfilesNotifier.APPLY_PROFILE, profile));
     }
 
+    public static void applyProfile(final Resource profileApplicationStore, final String profileName) {
+        final List<Profile> foundProfiles = new LinkedList<Profile>();
+
+        for (final Profile profile : ProfileAPI.getApplicableProfiles(profileApplicationStore)) {
+            if (profile.getName().equals(profileName)) {
+                foundProfiles.add(profile);
+            }
+        }
+
+        if (foundProfiles.size() == 0) {
+            throw new RuntimeException("ApplyProfile based on name failed: Name \"" + profileName
+                    + "\" not found in profile registry!");
+        }
+        if (foundProfiles.size() > 1) {
+            throw new RuntimeException("ApplyProfile based on name failed: Name \"" + profileName
+                    + "\" is not unique in profile registry!");
+        }
+
+        ProfileAPI.applyProfile(profileApplicationStore, foundProfiles.get(0));
+    }
+
     public static boolean updateProfileApplications(final Resource profileApplicationStore,
             final EList<Profile> profilesToBeApplied) {
         final List<Profile> appliedProfiles = getAppliedProfiles(profileApplicationStore);
