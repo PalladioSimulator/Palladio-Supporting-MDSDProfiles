@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -16,20 +17,22 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderDecorator;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
+import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 
 /**
  * Customizes the item provider of stereotyped elements, e.g., to show a custom stereotype string
  * with guillemets.
- * 
+ *
  * @author Sebastian Lehrig, Steffen Becker
  */
 public class StereotypableElementItemProviderDecorator extends ItemProviderDecorator implements
-        IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider,
-        IItemPropertySource, Adapter {
+IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider,
+IItemPropertySource, Adapter {
 
     protected final static List<Integer> EXLUDED_FEATURE_IDS = Arrays.asList(
             EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__APPLIED_TO,
@@ -114,12 +117,21 @@ public class StereotypableElementItemProviderDecorator extends ItemProviderDecor
 
     @Override
     public Notifier getTarget() {
-        return ((Adapter) getDecoratedItemProvider()).getTarget();
+        return ((Adapter)getDecoratedItemProvider()).getTarget();
     }
 
     @Override
     public void setTarget(final Notifier newTarget) {
-        ((Adapter) getDecoratedItemProvider()).setTarget(newTarget);
+        ((Adapter)getDecoratedItemProvider()).setTarget(newTarget);
+    }
+
+    @Override
+    public void notifyChanged(final Notification notification) {
+        super.notifyChanged(notification);
+        if (notification.getEventType() == MDSDProfilesNotifier.APPLY_STEREOTYPE
+                || notification.getEventType() == MDSDProfilesNotifier.UNAPPLY_STEREOTYPE) {
+            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+        }
     }
 
 }
