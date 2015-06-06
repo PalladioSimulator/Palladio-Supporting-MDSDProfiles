@@ -1,6 +1,7 @@
 package org.palladiosimulator.mdsdprofiles.provider;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.eclipse.emf.edit.provider.ItemProviderDecorator;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.modelversioning.emfprofile.Stereotype;
 import org.modelversioning.emfprofileapplication.EMFProfileApplicationPackage;
+import org.modelversioning.emfprofileapplication.ProfileApplication;
 import org.modelversioning.emfprofileapplication.StereotypeApplication;
 import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
@@ -76,10 +78,6 @@ IItemPropertySource, Adapter {
         return propertyDescriptors;
     }
 
-    private boolean notStereotyped(final Object object) {
-        return !(object instanceof EObject) || !StereotypeAPI.hasStereotypeApplications((EObject) object);
-    }
-
     private void addTaggedValuesPropertyDescriptors(final List<IItemPropertyDescriptor> propertyDescriptors,
             final EObject stereotypedElement) {
         for (final StereotypeApplication stereotypeApplication : StereotypeAPI
@@ -125,13 +123,52 @@ IItemPropertySource, Adapter {
         ((Adapter)getDecoratedItemProvider()).setTarget(newTarget);
     }
 
+    // Triggered by items for which this item provider provides labels, etc. to inform about updates
     @Override
     public void notifyChanged(final Notification notification) {
-        super.notifyChanged(notification);
-        if (notification.getEventType() == MDSDProfilesNotifier.APPLY_STEREOTYPE
-                || notification.getEventType() == MDSDProfilesNotifier.UNAPPLY_STEREOTYPE) {
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+        if (isChangeOfStereotype(notification)) {
+            informViewerAboutLabelUpdate(notification);
+        } else {
+            super.notifyChanged(notification);
         }
     }
 
+    /**
+     * @param object Object to check for stereotypes
+     * @return true if the object is an EObject with stereotypes
+     */
+    private boolean notStereotyped(final Object object) {
+        return !(object instanceof EObject) || !StereotypeAPI.hasStereotypeApplications((EObject) object);
+    }
+
+    /**
+     * The viewer has to update the items label as due to stereotype changes the label needs to be
+     * updated too
+     * @param notification Change notification describing a stereotype change
+     */
+    private void informViewerAboutLabelUpdate(final Notification notification) {
+        fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+    }
+
+    /**
+     * @param notification The notification to inspect
+     * @return true if notification was result of a stereotype modification
+     */
+    private boolean isChangeOfStereotype(final Notification notification) {
+        return notification.getEventType() == MDSDProfilesNotifier.APPLY_STEREOTYPE
+                || notification.getEventType() == MDSDProfilesNotifier.UNAPPLY_STEREOTYPE;
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public Collection<?> getChildren(final Object object) {
+        final Collection<?> result = super.getChildren(object);
+        final Collection newResult = new LinkedList();
+        for (final Object o : result) {
+            if (!(o instanceof ProfileApplication)) {
+                newResult.add(o);
+            }
+        }
+        return newResult;
+    }
 }

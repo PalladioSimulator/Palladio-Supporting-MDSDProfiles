@@ -19,8 +19,8 @@ public class StereotypableElementDecoratorAdapterFactory extends DecoratorAdapte
         super(decoratedAdapterFactory);
     }
 
-    // Method gets call only for every new item _type_ and not every element as we assume the ItemProvides to
-    // be stateless! In stateless case we should ignore target here!
+    // Method gets call only for every new item _type_ and not every element as we assume the ItemProviders
+    // which we decorate to be stateless! In stateless case we should ignore the target parameter here!
     @Override
     protected IItemProviderDecorator createItemProviderDecorator(final Object target, final Object type) {
         final StereotypableElementItemProviderDecorator stereotypableElementItemProviderDecorator =
