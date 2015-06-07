@@ -50,7 +50,7 @@ public final class ProfileAPI {
     public static void applyProfile(final Resource profileApplicationStore, final String profileName) {
         final List<Profile> foundProfiles = new LinkedList<Profile>();
 
-        for (final Profile profile : ProfileAPI.getApplicableProfiles(profileApplicationStore)) {
+        for (final Profile profile : getApplicableProfiles(profileApplicationStore)) {
             if (profile.getName().equals(profileName)) {
                 foundProfiles.add(profile);
             }
@@ -98,6 +98,45 @@ public final class ProfileAPI {
         }
 
         return changed;
+    }
+
+    public static boolean isProfileApplied(final Resource profileApplicationStore, final Profile profile) {
+        if (!hasProfileApplication(profileApplicationStore)) {
+            return false;
+        }
+
+        for (final Profile appliedProfile : getAppliedProfiles(profileApplicationStore)) {
+            if (profile.getName().equals(appliedProfile.getName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isProfileApplied(final Resource profileApplicationStore, final String profileName) {
+        if (!hasProfileApplication(profileApplicationStore)) {
+            return false;
+        }
+
+        final List<Profile> foundProfiles = new LinkedList<Profile>();
+
+        for (final Profile profile : getAppliedProfiles(profileApplicationStore)) {
+            if (profile.getName().equals(profileName)) {
+                foundProfiles.add(profile);
+            }
+        }
+
+        if (foundProfiles.size() == 0) {
+            return false;
+        }
+
+        if (foundProfiles.size() == 1) {
+            return true;
+        }
+
+        throw new RuntimeException("ApplyProfile based on name failed: Name \"" + profileName
+                + "\" is not unique in profile registry!");
     }
 
     public static boolean hasProfileApplication(final Resource profileApplicationStore) {
@@ -212,9 +251,9 @@ public final class ProfileAPI {
         stereotypeApplications.addAll(getProfileApplication(profileApplicationStore).getStereotypeApplications());
 
         for (final StereotypeApplication stereotypeApplication : stereotypeApplications) {
-            if (stereotypeApplication.getExtension().getSource().getProfile().getNsURI().equals(profile.getNsURI())) {
-                StereotypeAPI.unapplyStereotype(stereotypeApplication.getAppliedTo(), stereotypeApplication
-                        .getExtension().getSource());
+            if (stereotypeApplication.getStereotype().getProfile().getNsURI().equals(profile.getNsURI())) {
+                StereotypeAPI.unapplyStereotype(stereotypeApplication.getAppliedTo(),
+                        stereotypeApplication.getStereotype());
             }
         }
     }

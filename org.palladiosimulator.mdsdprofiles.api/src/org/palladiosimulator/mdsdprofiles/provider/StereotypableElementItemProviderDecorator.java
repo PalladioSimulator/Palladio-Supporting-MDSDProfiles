@@ -33,8 +33,8 @@ import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
  * @author Sebastian Lehrig, Steffen Becker
  */
 public class StereotypableElementItemProviderDecorator extends ItemProviderDecorator implements
-IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider,
-IItemPropertySource, Adapter {
+        IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider,
+        IItemPropertySource, Adapter {
 
     protected final static List<Integer> EXLUDED_FEATURE_IDS = Arrays.asList(
             EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__APPLIED_TO,
@@ -57,7 +57,7 @@ IItemPropertySource, Adapter {
         final EObject stereotypedElement = (EObject) object;
         final StringBuilder stringBuilder = new StringBuilder();
 
-        for (final Stereotype stereotype : StereotypeAPI.getApplicableStereotypes(stereotypedElement)) {
+        for (final Stereotype stereotype : StereotypeAPI.getAppliedStereotypes(stereotypedElement)) {
             stringBuilder.append("«").append(stereotype.getName()).append("» ");
         }
 
@@ -115,12 +115,12 @@ IItemPropertySource, Adapter {
 
     @Override
     public Notifier getTarget() {
-        return ((Adapter)getDecoratedItemProvider()).getTarget();
+        return ((Adapter) getDecoratedItemProvider()).getTarget();
     }
 
     @Override
     public void setTarget(final Notifier newTarget) {
-        ((Adapter)getDecoratedItemProvider()).setTarget(newTarget);
+        ((Adapter) getDecoratedItemProvider()).setTarget(newTarget);
     }
 
     // Triggered by items for which this item provider provides labels, etc. to inform about updates
@@ -134,7 +134,8 @@ IItemPropertySource, Adapter {
     }
 
     /**
-     * @param object Object to check for stereotypes
+     * @param object
+     *            Object to check for stereotypes
      * @return true if the object is an EObject with stereotypes
      */
     private boolean notStereotyped(final Object object) {
@@ -144,14 +145,17 @@ IItemPropertySource, Adapter {
     /**
      * The viewer has to update the items label as due to stereotype changes the label needs to be
      * updated too
-     * @param notification Change notification describing a stereotype change
+     * 
+     * @param notification
+     *            Change notification describing a stereotype change
      */
     private void informViewerAboutLabelUpdate(final Notification notification) {
         fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
     }
 
     /**
-     * @param notification The notification to inspect
+     * @param notification
+     *            The notification to inspect
      * @return true if notification was result of a stereotype modification
      */
     private boolean isChangeOfStereotype(final Notification notification) {
