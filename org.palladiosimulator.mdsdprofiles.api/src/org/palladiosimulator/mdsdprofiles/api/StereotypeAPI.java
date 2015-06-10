@@ -107,12 +107,13 @@ public class StereotypeAPI {
     }
 
     public static void applyStereotype(final EObject stereotypedElement, final String stereotypeName) {
-        if (getApplicableStereotypes(stereotypedElement, stereotypeName).size() != 1) {
+        final EList<Stereotype> applicableStereotypes = getApplicableStereotypes(stereotypedElement, stereotypeName);
+        if (applicableStereotypes.size() != 1) {
             throw new RuntimeException("ApplyStereotype based on name failed: name \"" + stereotypeName
-                    + "\" not (uniquely) found!");
+                    + "\" not uniquely found (" + applicableStereotypes.size() + " times)!");
         }
 
-        applyStereotype(stereotypedElement, getApplicableStereotypes(stereotypedElement, stereotypeName).get(0));
+        applyStereotype(stereotypedElement, applicableStereotypes.get(0));
     }
 
     public static boolean updateStereotypeApplications(final EObject stereotypedElement,
