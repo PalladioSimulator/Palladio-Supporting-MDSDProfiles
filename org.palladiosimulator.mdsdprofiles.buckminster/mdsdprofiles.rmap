@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
+
   <rm:locator pattern="^org\.palladiosimulator\.mdsdprofiles\.*" searchPathRef="MDSDProfiles" failOnError="false"/>
   <rm:locator pattern="^org\.modelversioning\.*" searchPathRef="EMFProfiles" failOnError="false"/>
-  <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="palladio-commons" failOnError="false"/>
-  <rm:locator pattern="^org\.palladiosimulator\..*" searchPathRef="palladio-commons" failOnError="false"/>
-  <rm:locator pattern="^edu\.kit\..*" searchPathRef="palladio-commons" failOnError="false"/>
-  <rm:locator searchPathRef="eclipse-release" failOnError="false"/>
-  <rm:locator searchPathRef="orbit" failOnError="true"/>
+
+  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Build/trunk/org.palladiosimulator.targetPlatformBuild/commons.rmap"/>
+
   <rm:searchPath name="MDSDProfiles">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn">
       <rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/Profiles/trunk/{0}">
@@ -14,6 +13,7 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
+
   <rm:searchPath name="EMFProfiles">
     <rm:provider readerType="git" componentTypes="osgi.bundle,eclipse.feature" resolutionFilter="">
         <rm:uri format="{0}/plugins,{1}">
@@ -23,25 +23,5 @@
       <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>      
     </rm:provider>
   </rm:searchPath>
-  <rm:searchPath name="palladio-commons">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="eclipse-release">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://download.eclipse.org/releases/luna/"/>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="orbit">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
-    </rm:provider>
-  </rm:searchPath> 
+
 </rm:rmap>
