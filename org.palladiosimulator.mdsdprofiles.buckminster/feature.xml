@@ -3,8 +3,11 @@
       id="org.palladiosimulator.mdsdprofiles.buckminster"
       label="MDSD Profiles"
       version="1.0.0.qualifier"
-      provider-name="palladiosimulator.org">
+      provider-name="palladiosimulator.org"
+      license-feature="org.palladiosimulator.license"
+      license-feature-version="1.0.0.qualifier">
 
+   
    <includes
          id="org.modelversioning.emfprofile.feature"
          version="0.0.0"/>
