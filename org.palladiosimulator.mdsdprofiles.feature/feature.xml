@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.palladiosimulator.mdsdprofiles.feature"
-      label="PCM Profiles"
+      label="MDSD Profiles"
       version="3.5.0.qualifier"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
