@@ -15,12 +15,8 @@
   </rm:searchPath>
 
   <rm:searchPath name="EMFProfiles">
-    <rm:provider readerType="git" componentTypes="osgi.bundle,eclipse.feature" resolutionFilter="">
-        <rm:uri format="{0}/plugins,{1}">
-          <bc:propertyRef key="workspace.root" />
-          <bc:propertyRef key="buckminster.component" />
-        </rm:uri>
-      <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>      
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+      <rm:uri format="http://www.modelversioning.org/emf-profiles-updatesite/"/>
     </rm:provider>
   </rm:searchPath>
 

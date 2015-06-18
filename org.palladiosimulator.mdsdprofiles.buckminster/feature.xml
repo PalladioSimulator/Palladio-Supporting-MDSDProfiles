@@ -6,14 +6,13 @@
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
 
-   
-   <includes
-         id="org.modelversioning.emfprofile.feature"
-         version="0.0.0"/>
-
    <includes
          id="org.palladiosimulator.mdsdprofiles.feature"
          version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.junit"/>
+   </requires>
 
    <plugin
          id="org.palladiosimulator.mdsdprofiles.tests"
