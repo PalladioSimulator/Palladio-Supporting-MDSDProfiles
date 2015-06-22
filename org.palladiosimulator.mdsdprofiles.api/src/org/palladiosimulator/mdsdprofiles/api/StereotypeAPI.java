@@ -8,11 +8,11 @@ import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.Stereotype;
@@ -25,7 +25,7 @@ import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 
 /**
  * API to apply, update, query, and unapply stereotypes for an EObject.
- * 
+ *
  * @author Sebastian Lehrig, Steffen Becker
  */
 public class StereotypeAPI {
@@ -40,11 +40,14 @@ public class StereotypeAPI {
      */
     private static final class StereotypeApplicationCrossReferencer extends EcoreUtil.UsageCrossReferencer {
 
+        private static final EClass STEREOTYPE_APPLICATION_ECLASS = EMFProfileApplicationPackage.eINSTANCE.getStereotypeApplication();
+        private static final EClass PROFILE_APPLICATION_ECLASS = EMFProfileApplicationPackage.eINSTANCE.getProfileApplication();
+        private static final EReference STEREOTYPE_APPLICATION_APPLIED_TO_EREFERENCE = EMFProfileApplicationPackage.eINSTANCE.getStereotypeApplication_AppliedTo();
         private static final long serialVersionUID = -5714219655560791971L;
         private final EObject referencedObject;
 
-        private StereotypeApplicationCrossReferencer(final Resource resource, final EObject referencedObject) {
-            super(resource);
+        private StereotypeApplicationCrossReferencer(final EObject referencedObject) {
+            super(referencedObject.eResource());
 
             this.referencedObject = referencedObject;
         }
@@ -53,14 +56,13 @@ public class StereotypeAPI {
         protected boolean crossReference(final EObject eObject, final EReference eReference,
                 final EObject crossReferencedObject) {
             return this.referencedObject == crossReferencedObject
-                    && eReference == EMFProfileApplicationPackage.eINSTANCE.getStereotypeApplication_AppliedTo();
+                    && eReference == STEREOTYPE_APPLICATION_APPLIED_TO_EREFERENCE;
         }
 
         @Override
         protected boolean containment(final EObject eObject) {
-            return (eObject.eClass() == EMFProfileApplicationPackage.eINSTANCE.getProfileApplication())
-                    || (EMFProfileApplicationPackage.eINSTANCE.getStereotypeApplication().isSuperTypeOf(eObject
-                            .eClass()));
+            return (eObject.eClass() == PROFILE_APPLICATION_ECLASS)
+                    || (STEREOTYPE_APPLICATION_ECLASS.isSuperTypeOf(eObject.eClass()));
         }
 
         @Override
@@ -150,7 +152,7 @@ public class StereotypeAPI {
 
     /**
      * Sets the specified tagged value on the {@link Stereotype}.
-     * 
+     *
      * @param stereotypedElement
      *            the entity on which the stereotype is applied.
      * @param newValue
@@ -212,14 +214,14 @@ public class StereotypeAPI {
     }
 
     public static boolean hasStereotypeApplications(final EObject stereotypedElement) {
-        return !new StereotypeApplicationCrossReferencer(stereotypedElement.eResource(), stereotypedElement)
-                .findStereotypeApplications().isEmpty();
+        return !new StereotypeApplicationCrossReferencer(stereotypedElement)
+        .findStereotypeApplications().isEmpty();
     }
 
     /**
      * Checks whether any {@link EObject} in the given set has a stereotype with the given name
      * applied.
-     * 
+     *
      * @param setOfElements
      *            the set of EObjects
      * @param stereotypeName
@@ -274,8 +276,8 @@ public class StereotypeAPI {
     }
 
     public static EList<StereotypeApplication> getStereotypeApplications(final EObject stereotypedElement) {
-        return new StereotypeApplicationCrossReferencer(stereotypedElement.eResource(), stereotypedElement)
-                .findStereotypeApplications();
+        return new StereotypeApplicationCrossReferencer(stereotypedElement)
+        .findStereotypeApplications();
     }
 
     public static EList<StereotypeApplication> getStereotypeApplications(final EObject stereotypedElement,
@@ -329,7 +331,7 @@ public class StereotypeAPI {
 
     /**
      * Returns the tagged value of the specified {@link Stereotype}.
-     * 
+     *
      * @param pcmEntity
      *            the entity on which the stereotype is applied
      * @param taggedValueName
