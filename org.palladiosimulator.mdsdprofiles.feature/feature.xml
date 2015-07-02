@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.mdsdprofiles.feature"
       label="MDSD Profiles"
-      version="3.5.0.qualifier"
+      version="1.0.0.qualifier"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
 
