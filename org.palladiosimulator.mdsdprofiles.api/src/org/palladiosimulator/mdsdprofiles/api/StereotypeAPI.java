@@ -1,6 +1,7 @@
 package org.palladiosimulator.mdsdprofiles.api;
 
 import java.awt.print.Book;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,10 +27,14 @@ import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 /**
  * API to apply, update, query, and unapply stereotypes for an EObject.
  *
- * @author Sebastian Lehrig, Steffen Becker
+ * @author Sebastian Lehrig, Steffen Becker, Max Schettler
  */
 public class StereotypeAPI {
 
+    private final static List<Integer> EXLUDED_PARAMETER_FEATURE_IDS = Arrays.asList(
+            EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__APPLIED_TO,
+            EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__PROFILE_APPLICATION,
+            EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__EXTENSION);
     /**
      * This cross referencer finds, for a given stereotypable element, its stereotype applications.
      *
@@ -379,6 +384,49 @@ public class StereotypeAPI {
 
         unapplyStereotype(stereotypedElement, stereotypeApplications.get(0).getStereotype());
     }
+
+	/**
+	 * Returns the {@link EStructuralFeature}s that define the {@link Stereotype}`s
+	 * parameters.
+	 * 
+	 * @param stereotype
+	 *            the {@link Stereotype}
+	 * @return the parameters` features
+	 */
+	public static Collection<EStructuralFeature> getParameters(
+			final Stereotype stereotype) {
+		final Collection<EStructuralFeature> parameterFeatures = new LinkedList<>();
+
+		for (EStructuralFeature eStructuralFeature : stereotype.getEAllStructuralFeatures()) {
+			if (!EXLUDED_PARAMETER_FEATURE_IDS.contains(eStructuralFeature.getFeatureID())) {
+				parameterFeatures.add(eStructuralFeature);
+			}
+
+		}
+		return parameterFeatures;
+	}
+
+	/**
+	 * Returns the {@link EStructuralFeature} that defines the given parameter
+	 * (identified by its name).
+	 * 
+	 * @param stereotype
+	 *            the {@link Stereotype}
+	 * @param parameterName
+	 *            the parameter`s name
+	 * @return the parameter`s {@link EStructuralFeature}
+	 */
+	public static EStructuralFeature getParameter(final Stereotype stereotype,
+			final String parameterName) {
+		for (EStructuralFeature parameterFeature : getParameters(stereotype)) {
+			if (parameterFeature.getName().equals(parameterName)) {
+				return parameterFeature;
+			}
+		}
+
+		throw new RuntimeException("The parameter with name \"" + parameterName
+				+ "\" does not exist on the Stereotype \"" + stereotype + "\"");
+	}
 
     private static ProfileApplication getProfileApplication(final EObject stereotypedElement) {
         return ProfileAPI.getProfileApplication(stereotypedElement.eResource());
