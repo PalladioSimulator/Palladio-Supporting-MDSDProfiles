@@ -6,7 +6,7 @@
   <rm:locator pattern="^org\.palladiosimulator\.mdsdprofiles\.*" searchPathRef="MDSDProfiles" failOnError="true"/>
   <rm:locator pattern="^org\.modelversioning\.*" searchPathRef="EMFProfiles" failOnError="true"/>
 
-  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Build/trunk/org.palladiosimulator.targetPlatformBuild/commons.rmap"/>
+  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Commons/trunk/org.palladiosimulator.commons.buckminster/commons.rmap"/>
 
   <rm:searchPath name="MDSDProfiles">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn" source="true">
