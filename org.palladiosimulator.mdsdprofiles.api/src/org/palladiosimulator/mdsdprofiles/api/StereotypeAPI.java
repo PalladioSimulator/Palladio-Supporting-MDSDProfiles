@@ -175,7 +175,28 @@ public class StereotypeAPI {
         final EStructuralFeature taggedValue = stereotypeApplication.getStereotype().getTaggedValue(taggedValueName);
         stereotypeApplication.eSet(taggedValue, newValue);
     }
-
+    
+    /**
+     * Sets the specified String tagged value on the {@link Stereotype}.
+     *
+     * @param stereotypedElement
+     *            the entity on which the stereotype is applied.
+     * @param newValue
+     *            the String value to be set
+     * @param stereotypeName
+     *            the stereotype`s name
+     * @param taggedValueName
+     *            the tagged value`s name
+     */
+    public static void setStringTaggedValue(final EObject stereotypedElement, final String newValue,
+            final String stereotypeName, final String taggedValueName) {
+        final List<StereotypeApplication> stereotypeApplications = getStereotypeApplications(stereotypedElement,
+                stereotypeName);
+        final StereotypeApplication stereotypeApplication = stereotypeApplications.get(0);
+        final EStructuralFeature taggedValue = stereotypeApplication.getStereotype().getTaggedValue(taggedValueName);
+        stereotypeApplication.eSet(taggedValue, newValue);
+    }
+    
     public static boolean isStereotypeApplicable(final EObject stereotypedElement, final Stereotype stereotype) {
         if (isStereotypeApplied(stereotypedElement, stereotype)) {
             return false;
