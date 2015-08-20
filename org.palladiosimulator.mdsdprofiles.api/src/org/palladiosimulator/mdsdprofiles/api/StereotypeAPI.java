@@ -35,6 +35,7 @@ public class StereotypeAPI {
             EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__APPLIED_TO,
             EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__PROFILE_APPLICATION,
             EMFProfileApplicationPackage.STEREOTYPE_APPLICATION__EXTENSION);
+
     /**
      * This cross referencer finds, for a given stereotypable element, its stereotype applications.
      *
@@ -45,9 +46,12 @@ public class StereotypeAPI {
      */
     private static final class StereotypeApplicationCrossReferencer extends EcoreUtil.UsageCrossReferencer {
 
-        private static final EClass STEREOTYPE_APPLICATION_ECLASS = EMFProfileApplicationPackage.eINSTANCE.getStereotypeApplication();
-        private static final EClass PROFILE_APPLICATION_ECLASS = EMFProfileApplicationPackage.eINSTANCE.getProfileApplication();
-        private static final EReference STEREOTYPE_APPLICATION_APPLIED_TO_EREFERENCE = EMFProfileApplicationPackage.eINSTANCE.getStereotypeApplication_AppliedTo();
+        private static final EClass STEREOTYPE_APPLICATION_ECLASS = EMFProfileApplicationPackage.eINSTANCE
+                .getStereotypeApplication();
+        private static final EClass PROFILE_APPLICATION_ECLASS = EMFProfileApplicationPackage.eINSTANCE
+                .getProfileApplication();
+        private static final EReference STEREOTYPE_APPLICATION_APPLIED_TO_EREFERENCE = EMFProfileApplicationPackage.eINSTANCE
+                .getStereotypeApplication_AppliedTo();
         private static final long serialVersionUID = -5714219655560791971L;
         private final EObject referencedObject;
 
@@ -109,8 +113,8 @@ public class StereotypeAPI {
 
         profileApplication.getStereotypeApplications().add(newStereotypeApplication);
 
-        stereotypedElement.eNotify(new MDSDProfilesNotifier(stereotypedElement, MDSDProfilesNotifier.APPLY_STEREOTYPE,
-                stereotype));
+        stereotypedElement.eNotify(
+                new MDSDProfilesNotifier(stereotypedElement, MDSDProfilesNotifier.APPLY_STEREOTYPE, stereotype));
     }
 
     public static void applyStereotype(final EObject stereotypedElement, final String stereotypeName) {
@@ -167,7 +171,7 @@ public class StereotypeAPI {
      * @param taggedValueName
      *            the tagged value`s name
      */
-    public static void setTaggedValue(final EObject stereotypedElement, final int newValue,
+    public static void setTaggedValue(final EObject stereotypedElement, final Object newValue,
             final String stereotypeName, final String taggedValueName) {
         final List<StereotypeApplication> stereotypeApplications = getStereotypeApplications(stereotypedElement,
                 stereotypeName);
@@ -175,37 +179,17 @@ public class StereotypeAPI {
         final EStructuralFeature taggedValue = stereotypeApplication.getStereotype().getTaggedValue(taggedValueName);
         stereotypeApplication.eSet(taggedValue, newValue);
     }
-    
-    /**
-     * Sets the specified String tagged value on the {@link Stereotype}.
-     *
-     * @param stereotypedElement
-     *            the entity on which the stereotype is applied.
-     * @param newValue
-     *            the String value to be set
-     * @param stereotypeName
-     *            the stereotype`s name
-     * @param taggedValueName
-     *            the tagged value`s name
-     */
-    public static void setStringTaggedValue(final EObject stereotypedElement, final String newValue,
-            final String stereotypeName, final String taggedValueName) {
-        final List<StereotypeApplication> stereotypeApplications = getStereotypeApplications(stereotypedElement,
-                stereotypeName);
-        final StereotypeApplication stereotypeApplication = stereotypeApplications.get(0);
-        final EStructuralFeature taggedValue = stereotypeApplication.getStereotype().getTaggedValue(taggedValueName);
-        stereotypeApplication.eSet(taggedValue, newValue);
-    }
-    
+
     public static boolean isStereotypeApplicable(final EObject stereotypedElement, final Stereotype stereotype) {
         if (isStereotypeApplied(stereotypedElement, stereotype)) {
             return false;
         }
 
         for (final ProfileImport profileImport : getProfileImports(stereotypedElement)) {
-            for (final Stereotype applicableStereotype : profileImport.getProfile().getApplicableStereotypes(
-                    stereotypedElement.eClass())) {
-                if (EMFLoadHelper.getResourceURI(applicableStereotype).equals(EMFLoadHelper.getResourceURI(stereotype))) {
+            for (final Stereotype applicableStereotype : profileImport.getProfile()
+                    .getApplicableStereotypes(stereotypedElement.eClass())) {
+                if (EMFLoadHelper.getResourceURI(applicableStereotype)
+                        .equals(EMFLoadHelper.getResourceURI(stereotype))) {
                     return true;
                 }
             }
@@ -216,12 +200,12 @@ public class StereotypeAPI {
 
     public static boolean isStereotypeApplicable(final EObject stereotypedElement, final String stereotypeName) {
         if (getApplicableStereotypes(stereotypedElement, stereotypeName).size() != 1) {
-            throw new RuntimeException("ApplyStereotype based on name failed: name \"" + stereotypeName
-                    + "\" not (uniquely) found!");
+            throw new RuntimeException(
+                    "ApplyStereotype based on name failed: name \"" + stereotypeName + "\" not (uniquely) found!");
         }
 
-        return isStereotypeApplicable(stereotypedElement, getApplicableStereotypes(stereotypedElement, stereotypeName)
-                .get(0));
+        return isStereotypeApplicable(stereotypedElement,
+                getApplicableStereotypes(stereotypedElement, stereotypeName).get(0));
     }
 
     public static boolean isStereotypeApplied(final EObject stereotypedElement, final Stereotype stereotype) {
@@ -240,8 +224,7 @@ public class StereotypeAPI {
     }
 
     public static boolean hasStereotypeApplications(final EObject stereotypedElement) {
-        return !new StereotypeApplicationCrossReferencer(stereotypedElement)
-        .findStereotypeApplications().isEmpty();
+        return !new StereotypeApplicationCrossReferencer(stereotypedElement).findStereotypeApplications().isEmpty();
     }
 
     /**
@@ -255,7 +238,8 @@ public class StereotypeAPI {
      * @return <code>true</code> if there is at least one stereotype application of the given
      *         stereotype to an element of the given set; <code>false</code> otherwise.
      */
-    public static boolean hasAppliedStereotype(final Set<? extends EObject> setOfElements, final String stereotypeName) {
+    public static boolean hasAppliedStereotype(final Set<? extends EObject> setOfElements,
+            final String stereotypeName) {
         for (final EObject eobject : setOfElements) {
             if (StereotypeAPI.isStereotypeApplied(eobject, stereotypeName)) {
                 return true;
@@ -269,8 +253,8 @@ public class StereotypeAPI {
         final EList<Stereotype> applicableStereotypes = new BasicEList<Stereotype>();
 
         for (final ProfileImport profileImport : getProfileImports(stereotypedElement)) {
-            applicableStereotypes.addAll(profileImport.getProfile().getApplicableStereotypes(
-                    stereotypedElement.eClass()));
+            applicableStereotypes
+                    .addAll(profileImport.getProfile().getApplicableStereotypes(stereotypedElement.eClass()));
         }
 
         return applicableStereotypes;
@@ -302,8 +286,7 @@ public class StereotypeAPI {
     }
 
     public static EList<StereotypeApplication> getStereotypeApplications(final EObject stereotypedElement) {
-        return new StereotypeApplicationCrossReferencer(stereotypedElement)
-        .findStereotypeApplications();
+        return new StereotypeApplicationCrossReferencer(stereotypedElement).findStereotypeApplications();
     }
 
     public static EList<StereotypeApplication> getStereotypeApplications(final EObject stereotypedElement,
@@ -335,8 +318,8 @@ public class StereotypeAPI {
     public static StereotypeApplication getStereotypeApplication(final EObject stereotypedElement,
             final Stereotype stereotype) {
         for (final StereotypeApplication stereotypeApplication : getStereotypeApplications(stereotypedElement)) {
-            if (EMFLoadHelper.getResourceURI(stereotypeApplication.getStereotype()).equals(
-                    EMFLoadHelper.getResourceURI(stereotype))) {
+            if (EMFLoadHelper.getResourceURI(stereotypeApplication.getStereotype())
+                    .equals(EMFLoadHelper.getResourceURI(stereotype))) {
                 return stereotypeApplication;
             }
         }
@@ -384,15 +367,15 @@ public class StereotypeAPI {
 
     public static void unapplyStereotype(final EObject stereotypedElement, final Stereotype stereotype) {
         if (!isStereotypeApplied(stereotypedElement, stereotype)) {
-            throw new RuntimeException("UnapplyStereotype failed: No application found for Stereotype \""
-                    + stereotype.getName() + "\"!");
+            throw new RuntimeException(
+                    "UnapplyStereotype failed: No application found for Stereotype \"" + stereotype.getName() + "\"!");
         }
 
         final StereotypeApplication stereotypeApplication = getStereotypeApplication(stereotypedElement, stereotype);
         stereotypeApplication.getProfileApplication().getStereotypeApplications().remove(stereotypeApplication);
 
-        stereotypedElement.eNotify(new MDSDProfilesNotifier(stereotypedElement,
-                MDSDProfilesNotifier.UNAPPLY_STEREOTYPE, stereotype));
+        stereotypedElement.eNotify(
+                new MDSDProfilesNotifier(stereotypedElement, MDSDProfilesNotifier.UNAPPLY_STEREOTYPE, stereotype));
     }
 
     public static void unapplyStereotype(final EObject stereotypedElement, final String stereotypeName) {
@@ -406,48 +389,45 @@ public class StereotypeAPI {
         unapplyStereotype(stereotypedElement, stereotypeApplications.get(0).getStereotype());
     }
 
-	/**
-	 * Returns the {@link EStructuralFeature}s that define the {@link Stereotype}`s
-	 * parameters.
-	 * 
-	 * @param stereotype
-	 *            the {@link Stereotype}
-	 * @return the parameters` features
-	 */
-	public static Collection<EStructuralFeature> getParameters(
-			final Stereotype stereotype) {
-		final Collection<EStructuralFeature> parameterFeatures = new LinkedList<>();
+    /**
+     * Returns the {@link EStructuralFeature}s that define the {@link Stereotype}`s parameters.
+     * 
+     * @param stereotype
+     *            the {@link Stereotype}
+     * @return the parameters` features
+     */
+    public static Collection<EStructuralFeature> getParameters(final Stereotype stereotype) {
+        final Collection<EStructuralFeature> parameterFeatures = new LinkedList<>();
 
-		for (EStructuralFeature eStructuralFeature : stereotype.getEAllStructuralFeatures()) {
-			if (!EXLUDED_PARAMETER_FEATURE_IDS.contains(eStructuralFeature.getFeatureID())) {
-				parameterFeatures.add(eStructuralFeature);
-			}
+        for (final EStructuralFeature eStructuralFeature : stereotype.getEAllStructuralFeatures()) {
+            if (!EXLUDED_PARAMETER_FEATURE_IDS.contains(eStructuralFeature.getFeatureID())) {
+                parameterFeatures.add(eStructuralFeature);
+            }
 
-		}
-		return parameterFeatures;
-	}
+        }
+        return parameterFeatures;
+    }
 
-	/**
-	 * Returns the {@link EStructuralFeature} that defines the given parameter
-	 * (identified by its name).
-	 * 
-	 * @param stereotype
-	 *            the {@link Stereotype}
-	 * @param parameterName
-	 *            the parameter`s name
-	 * @return the parameter`s {@link EStructuralFeature}
-	 */
-	public static EStructuralFeature getParameter(final Stereotype stereotype,
-			final String parameterName) {
-		for (EStructuralFeature parameterFeature : getParameters(stereotype)) {
-			if (parameterFeature.getName().equals(parameterName)) {
-				return parameterFeature;
-			}
-		}
+    /**
+     * Returns the {@link EStructuralFeature} that defines the given parameter (identified by its
+     * name).
+     * 
+     * @param stereotype
+     *            the {@link Stereotype}
+     * @param parameterName
+     *            the parameter`s name
+     * @return the parameter`s {@link EStructuralFeature}
+     */
+    public static EStructuralFeature getParameter(final Stereotype stereotype, final String parameterName) {
+        for (final EStructuralFeature parameterFeature : getParameters(stereotype)) {
+            if (parameterFeature.getName().equals(parameterName)) {
+                return parameterFeature;
+            }
+        }
 
-		throw new RuntimeException("The parameter with name \"" + parameterName
-				+ "\" does not exist on the Stereotype \"" + stereotype + "\"");
-	}
+        throw new RuntimeException("The parameter with name \"" + parameterName
+                + "\" does not exist on the Stereotype \"" + stereotype + "\"");
+    }
 
     private static ProfileApplication getProfileApplication(final EObject stereotypedElement) {
         return ProfileAPI.getProfileApplication(stereotypedElement.eResource());
