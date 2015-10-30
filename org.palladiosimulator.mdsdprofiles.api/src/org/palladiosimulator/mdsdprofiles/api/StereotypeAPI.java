@@ -178,6 +178,9 @@ public class StereotypeAPI {
         final StereotypeApplication stereotypeApplication = stereotypeApplications.get(0);
         final EStructuralFeature taggedValue = stereotypeApplication.getStereotype().getTaggedValue(taggedValueName);
         stereotypeApplication.eSet(taggedValue, newValue);
+
+        stereotypedElement.eNotify(new MDSDProfilesNotifier(stereotypedElement, MDSDProfilesNotifier.SET_TAGGED_VALUE,
+                new MDSDProfilesNotifier.TaggedValueTuple(stereotypeName, taggedValueName, newValue)));
     }
 
     public static boolean isStereotypeApplicable(final EObject stereotypedElement, final Stereotype stereotype) {
