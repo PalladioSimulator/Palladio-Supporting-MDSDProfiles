@@ -24,7 +24,7 @@ public class ProfileApplyUnapplyHandler extends AbstractApplyUnapplyHandler {
         final EObject eObject = getTargetElement(event);
         final EList<Profile> updatedProfiles = getUpdatedProfileElementsFromDialog(event, eObject,
                 ProfileAPI.getAppliedProfiles(eObject.eResource()),
-                ProfileAPI.getApplicableProfiles(eObject.eResource()), SELECT_PROFILE_TO_BE_APPLIED);
+                ProfileAPI.getApplicableProfiles(), SELECT_PROFILE_TO_BE_APPLIED);
 
         if (updatedProfiles != null) {
             final Command command = UpdateProfileElementsCommand.create(eObject.eResource(), updatedProfiles);

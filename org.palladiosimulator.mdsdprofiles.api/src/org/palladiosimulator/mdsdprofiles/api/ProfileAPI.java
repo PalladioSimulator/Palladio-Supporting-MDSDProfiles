@@ -43,22 +43,22 @@ public final class ProfileAPI {
         newProfileImport.setLocation(profile.eResource().getURI().toString());
         profileApplication.getImportedProfiles().add(newProfileImport);
 
-        profileApplicationStore.eNotify(new MDSDProfilesNotifier(profileApplicationStore,
-                MDSDProfilesNotifier.APPLY_PROFILE, profile));
+        profileApplicationStore.eNotify(
+                new MDSDProfilesNotifier(profileApplicationStore, MDSDProfilesNotifier.APPLY_PROFILE, profile));
     }
 
     public static void applyProfile(final Resource profileApplicationStore, final String profileName) {
-        final List<Profile> foundProfiles = new LinkedList<Profile>();
+        final List<Profile> foundProfiles = new LinkedList<>();
 
-        for (final Profile profile : getApplicableProfiles(profileApplicationStore)) {
+        for (final Profile profile : getApplicableProfiles()) {
             if (profile.getName().equals(profileName)) {
                 foundProfiles.add(profile);
             }
         }
 
         if (foundProfiles.size() == 0) {
-            throw new RuntimeException("ApplyProfile based on name failed: Name \"" + profileName
-                    + "\" not found in profile registry!");
+            throw new RuntimeException(
+                    "ApplyProfile based on name failed: Name \"" + profileName + "\" not found in profile registry!");
         }
         if (foundProfiles.size() > 1) {
             throw new RuntimeException("ApplyProfile based on name failed: Name \"" + profileName
@@ -71,8 +71,8 @@ public final class ProfileAPI {
     public static boolean updateProfileApplications(final Resource profileApplicationStore,
             final EList<Profile> profilesToBeApplied) {
         final List<Profile> appliedProfiles = getAppliedProfiles(profileApplicationStore);
-        final List<Profile> unchanged = new LinkedList<Profile>();
-        final List<Profile> additions = new LinkedList<Profile>();
+        final List<Profile> unchanged = new LinkedList<>();
+        final List<Profile> additions = new LinkedList<>();
 
         for (final Profile profile : profilesToBeApplied) {
             if (appliedProfiles.contains(profile)) {
@@ -119,7 +119,7 @@ public final class ProfileAPI {
             return false;
         }
 
-        final List<Profile> foundProfiles = new LinkedList<Profile>();
+        final List<Profile> foundProfiles = new LinkedList<>();
 
         for (final Profile profile : getAppliedProfiles(profileApplicationStore)) {
             if (profile.getName().equals(profileName)) {
@@ -135,8 +135,8 @@ public final class ProfileAPI {
             return true;
         }
 
-        throw new RuntimeException("ApplyProfile based on name failed: Name \"" + profileName
-                + "\" is not unique in profile registry!");
+        throw new RuntimeException(
+                "ApplyProfile based on name failed: Name \"" + profileName + "\" is not unique in profile registry!");
     }
 
     public static boolean hasProfileApplication(final Resource profileApplicationStore) {
@@ -160,8 +160,8 @@ public final class ProfileAPI {
         return profileApplication;
     }
 
-    public static EList<Profile> getApplicableProfiles(final Resource profileApplicationStore) {
-        final EList<Profile> applicableProfiles = new BasicEList<Profile>();
+    public static EList<Profile> getApplicableProfiles() {
+        final EList<Profile> applicableProfiles = new BasicEList<>();
 
         applicableProfiles.addAll(IProfileRegistry.eINSTANCE.getRegisteredProfiles());
 
@@ -169,7 +169,7 @@ public final class ProfileAPI {
     }
 
     public static EList<Profile> getAppliedProfiles(final Resource profileApplicationStore) {
-        final EList<Profile> appliedProfiles = new BasicEList<Profile>();
+        final EList<Profile> appliedProfiles = new BasicEList<>();
 
         if (hasProfileApplication(profileApplicationStore)) {
             for (final ProfileImport profileImport : getProfileApplication(profileApplicationStore)
@@ -205,8 +205,8 @@ public final class ProfileAPI {
             removeProfileApplication(profileApplicationStore);
         }
 
-        profileApplicationStore.eNotify(new MDSDProfilesNotifier(profileApplicationStore,
-                MDSDProfilesNotifier.UNAPPLY_PROFILE, profile));
+        profileApplicationStore.eNotify(
+                new MDSDProfilesNotifier(profileApplicationStore, MDSDProfilesNotifier.UNAPPLY_PROFILE, profile));
     }
 
     private static ProfileApplication ensureProfileApplicationExists(final Resource profileApplicationStore) {
@@ -246,8 +246,9 @@ public final class ProfileAPI {
      * @param profile
      *            The profile to be unapplied.
      */
-    private static void unapplyAllStereotypeApplications(final Resource profileApplicationStore, final Profile profile) {
-        final List<StereotypeApplication> stereotypeApplications = new LinkedList<StereotypeApplication>();
+    private static void unapplyAllStereotypeApplications(final Resource profileApplicationStore,
+            final Profile profile) {
+        final List<StereotypeApplication> stereotypeApplications = new LinkedList<>();
         stereotypeApplications.addAll(getProfileApplication(profileApplicationStore).getStereotypeApplications());
 
         for (final StereotypeApplication stereotypeApplication : stereotypeApplications) {

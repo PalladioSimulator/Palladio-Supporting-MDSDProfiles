@@ -91,7 +91,7 @@ public class ProfileableElementImpl extends StereotypableElementImpl implements 
      */
     @Override
     public EList<Profile> getApplicableProfiles() {
-        return ProfileAPI.getApplicableProfiles(this.getProfileApplicationStore());
+        return ProfileAPI.getApplicableProfiles();
     }
 
     /**
