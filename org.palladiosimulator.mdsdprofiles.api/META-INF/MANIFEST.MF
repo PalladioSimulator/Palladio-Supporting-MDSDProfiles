@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.10.2",
  org.modelversioning.emfprofile;bundle-version="1.1.0",
  org.modelversioning.emfprofile.registry,
- org.palladiosimulator.commons,
+ org.palladiosimulator.commons;bundle-version="1.0.1",
  org.eclipse.emf.edit;bundle-version="2.10.1",
  org.eclipse.emf.common
 Export-Package: org.palladiosimulator.mdsdprofiles.api,
