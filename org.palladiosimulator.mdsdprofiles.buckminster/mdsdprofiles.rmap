@@ -24,7 +24,7 @@
 
   <rm:searchPath name="EMFProfiles">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/emf-profiles-updatesite/"/>
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/emf-profiles/releases/latest"/>
     </rm:provider>
   </rm:searchPath>
 
