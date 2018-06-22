@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<library:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:library="http://library/1.0">
-  <writers name="TestWriter" books="//@books.0 //@books.1"/>
-  <books title="TestBook" pages="400" category="ScienceFiction" author="//@writers.0"/>
-  <books title="CheckBook" pages="200" author="//@writers.0"/>
-</library:Library>

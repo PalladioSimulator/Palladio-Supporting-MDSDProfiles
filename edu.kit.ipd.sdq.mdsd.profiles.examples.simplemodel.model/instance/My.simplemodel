@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<simplemodel:A xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:simplemodel="http://simplemodel/1.0" name="a1">
-  <bs name="b1"/>
-  <bs name="b2"/>
-</simplemodel:A>
