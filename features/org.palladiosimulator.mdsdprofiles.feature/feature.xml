@@ -32,6 +32,7 @@
       <import plugin="org.eclipse.emf.edit" version="2.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.palladiosimulator.commons" version="1.0.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.branding"/>
    </requires>
 
    <plugin
@@ -57,13 +58,6 @@
 
    <plugin
          id="org.palladiosimulator.mdsdprofiles.api"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
