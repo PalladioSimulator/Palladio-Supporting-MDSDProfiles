@@ -4,7 +4,7 @@ Bundle-Name: MDSD Profile API
 Bundle-SymbolicName: org.palladiosimulator.mdsdprofiles.api
 Bundle-Version: 1.0.1.qualifier
 Bundle-Vendor: palladiosimulator.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.10.2",
  org.modelversioning.emfprofile;bundle-version="1.1.0";visibility:=reexport,
  org.modelversioning.emfprofile.registry;visibility:=reexport,

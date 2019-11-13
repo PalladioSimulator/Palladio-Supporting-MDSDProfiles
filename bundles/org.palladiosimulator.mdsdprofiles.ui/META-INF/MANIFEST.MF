@@ -14,6 +14,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.transaction;bundle-version="1.8.0",
  org.palladiosimulator.mdsdprofiles.api,
  org.modelversioning.emfprofile.edit
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.mdsdprofiles.ui.dialogs
