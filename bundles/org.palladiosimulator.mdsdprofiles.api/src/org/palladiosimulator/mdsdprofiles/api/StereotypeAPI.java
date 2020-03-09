@@ -1,10 +1,10 @@
 package org.palladiosimulator.mdsdprofiles.api;
 
-import java.awt.print.Book;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -366,6 +366,41 @@ public class StereotypeAPI {
 
         return (DATA_TYPE) stereotypeApplication.eGet(taggedValue);
 
+    }
+        
+    /**
+     * Returns the tagged value of the specified {@link EObject}. This ensures that both the {@link EMFProfile}
+     * and the {@link Stereotype} are applied to it. If this is not the case, an empty {@link Optional} is returned.
+     * 
+     * @param <DATA_TYPE> the data type of the tagged value
+     * @param stereotypedElement the entity on which the stereotype is applied
+     * @param taggedValueName the tagged value`s name
+     * @param stereotypeName the stereotype`s name
+     * @return the tagged value of the specified {@link EObject}
+     * @see #getTaggedValue(EObject, String, String)
+     */
+    @SuppressWarnings("unchecked")
+    public static <DATA_TYPE> Optional<DATA_TYPE> getTaggedValueSafe(final EObject stereotypedElement, final String taggedValueName, final String stereotypeName) {
+        if (stereotypedElement == null || taggedValueName == null || stereotypeName == null) {
+            return Optional.empty();
+        }
+
+        if (hasStereotypeApplications(stereotypedElement) == false || isStereotypeApplied(stereotypedElement, stereotypeName) == false) {
+            return Optional.empty();
+        }
+
+        /*
+         * This is definitely not the finest possibility, but unfortunately it is currently the only feasible one.
+         * Since several other methods of this StereotypeAPI signalize via RuntimeExceptions that EMFProfile
+         * and/or Stereotype are not applied.
+         */
+        try {
+            final StereotypeApplication stereotypeApplication = getStereotypeApplications(stereotypedElement, stereotypeName).get(0);
+            final EStructuralFeature taggedValue = stereotypeApplication.getStereotype().getTaggedValue(taggedValueName);
+            return Optional.ofNullable((DATA_TYPE) stereotypeApplication.eGet(taggedValue));
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
     }
 
     public static void unapplyStereotype(final EObject stereotypedElement, final Stereotype stereotype) {
