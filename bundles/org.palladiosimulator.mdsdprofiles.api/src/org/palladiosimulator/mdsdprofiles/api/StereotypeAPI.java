@@ -389,16 +389,12 @@ public class StereotypeAPI {
             return Optional.empty();
         }
 
-        /*
-         * This is definitely not the finest possibility, but unfortunately it is currently the only feasible one.
-         * Since several other methods of this StereotypeAPI signalize via RuntimeExceptions that EMFProfile
-         * and/or Stereotype are not applied.
-         */
         try {
             final StereotypeApplication stereotypeApplication = getStereotypeApplications(stereotypedElement, stereotypeName).get(0);
             final EStructuralFeature taggedValue = stereotypeApplication.getStereotype().getTaggedValue(taggedValueName);
             return Optional.ofNullable((DATA_TYPE) stereotypeApplication.eGet(taggedValue));
         } catch (RuntimeException e) {
+            // Safeguards for future API changes. No specific exception could be selected because it is common in this API to signal exceptions via this type.
             return Optional.empty();
         }
     }
