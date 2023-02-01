@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.mdsdprofiles.api;bundle-version="1.0.0",
  org.modelversioning.emfprofile.project;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.mdsdprofiles,
  org.palladiosimulator.mdsdprofiles.impl,
  org.palladiosimulator.mdsdprofiles.util

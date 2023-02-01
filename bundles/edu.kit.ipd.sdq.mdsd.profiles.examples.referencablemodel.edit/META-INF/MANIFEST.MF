@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: myType.provider.MyTypeEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: myType.provider
 Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.mdsd.profiles.examples.referencablemodel;visibility:=reexport,
