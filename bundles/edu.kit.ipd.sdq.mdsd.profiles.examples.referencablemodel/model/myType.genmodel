@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.mdsd.profiles.examples.referencablemodel/src"
     modelPluginID="edu.kit.ipd.sdq.mdsd.profiles.examples.referencablemodel" modelName="MyType"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+    complianceLevel="17.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>myType.ecore</foreignModel>
   <genPackages prefix="MyType" disposableProviderFactory="true" ecorePackage="myType.ecore#/">
     <genClasses ecoreClass="myType.ecore#//MyType">
